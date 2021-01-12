@@ -1,7 +1,9 @@
 #[macro_use]
 extern crate gtk_extras;
 
+use gio::{SettingsBindFlags, SettingsExt};
 use gtk::prelude::*;
+use gtk_extras::settings;
 use libhandy::prelude::*;
 use pop_theme_switcher::PopThemeSwitcher;
 
@@ -40,6 +42,20 @@ fn radio_row<C: ContainerExt>(container: &C, title: &str, subtitle: Option<&str>
     };
     container.add(&row);
     radio
+}
+
+fn spin_row<C: ContainerExt>(container: &C, title: &str, min: f64, max: f64, step: f64) -> gtk::SpinButton {
+    let spin = cascade! {
+        gtk::SpinButton::with_range(min, max, step);
+        ..set_valign(gtk::Align::Center);
+    };
+    let row = cascade! {
+        libhandy::ActionRow::new();
+        ..set_title(Some(title));
+        ..add(&spin);
+    };
+    container.add(&row);
+    spin
 }
 
 fn switch_row<C: ContainerExt>(container: &C, title: &str) -> gtk::Switch {
@@ -143,8 +159,15 @@ fn dock_options<C: ContainerExt>(container: &C) {
         "All Displays",
         "TODO"
     ]);
-    switch_row(&list_box, "Automatically Hide Dock");
-    switch_row(&list_box, "Extend dock to the edges of the screen");
+
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
+        let switch = switch_row(&list_box, "Automatically Hide Dock");
+        settings.bind("dock-fixed", &switch, "active", SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN);
+
+        let switch = switch_row(&list_box, "Extend dock to the edges of the screen");
+        settings.bind("extend-height", &switch, "active", SettingsBindFlags::DEFAULT);
+    }
+
     switch_row(&list_box, "Show Launcher Icon in Dock");
     switch_row(&list_box, "Show Applications Icon in Dock");
     switch_row(&list_box, "Show Workspaces Icon in Dock");
@@ -207,6 +230,7 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
 }
 
 fn workspaces_page(stack: &gtk::Stack) {
+
     let page = settings_page(&stack, "Workspaces");
 
     let list_box = cascade! {
@@ -215,14 +239,24 @@ fn workspaces_page(stack: &gtk::Stack) {
     };
     page.add(&list_box);
 
-    let radio_dynamic = radio_row(&list_box, "Dynamic Workspaces", Some(
-        "Automatically removes empty workspaces."
-    ));
-    let radio_fixed = radio_row(&list_box, "Fixed Number of Workspaces", Some(
-        "Specify a number of workspaces"
-    ));
-    radio_fixed.join_group(Some(&radio_dynamic));
-    //TODO: Number of Workspaces
+    if let Some(settings) = settings::new_checked("org.gnome.mutter") {
+        let radio_dynamic = radio_row(&list_box, "Dynamic Workspaces", Some(
+            "Automatically removes empty workspaces."
+        ));
+        settings.bind("dynamic-workspaces", &radio_dynamic, "active", SettingsBindFlags::DEFAULT);
+        let radio_fixed = radio_row(&list_box, "Fixed Number of Workspaces", Some(
+            "Specify a number of workspaces"
+        ));
+        radio_fixed.join_group(Some(&radio_dynamic));
+
+        if let Some(settings) = settings::new_checked("org.gnome.desktop.wm.preferences") {
+            let spin_number = spin_row(&list_box, "Number of Workspaces", 1.0, 36.0, 1.0);
+            settings.bind("num-workspaces", &spin_number, "value", SettingsBindFlags::DEFAULT);
+            radio_fixed.bind_property("active", &spin_number, "sensitive")
+                .flags(glib::BindingFlags::SYNC_CREATE)
+                .build();
+        }
+    }
 
     workspaces_multi_monitor(&page);
     workspaces_position(&page);
