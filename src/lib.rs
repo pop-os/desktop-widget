@@ -3,6 +3,7 @@ extern crate gtk_extras;
 
 use gtk::prelude::*;
 use libhandy::prelude::*;
+use pop_theme_switcher::PopThemeSwitcher;
 
 use std::ops::Deref;
 
@@ -89,7 +90,7 @@ fn hot_corner<C: ContainerExt>(container: &C) {
         "Placing cursor in top-left corner opens the Window and Workspaces Overview"
     ));
     radio_workspaces.join_group(Some(&radio_disabled));
-    let radio_applications = radio_row(&list_box, "Workspaces", Some(
+    let radio_applications = radio_row(&list_box, "Applications", Some(
         "Placing cursor in top-left corner opens the Applications Overview"
     ));
     radio_applications.join_group(Some(&radio_disabled));
@@ -125,6 +126,13 @@ fn main_page(stack: &gtk::Stack) {
     hot_corner(&page);
     top_bar(&page);
     window_controls(&page);
+}
+
+fn appearance_page(stack: &gtk::Stack) {
+    let page = settings_page(&stack, "Appearance");
+
+    let theme_switcher = PopThemeSwitcher::new();
+    page.add(&*theme_switcher);
 }
 
 fn dock_options<C: ContainerExt>(container: &C) {
@@ -232,6 +240,7 @@ impl PopDesktopWidget {
         container.add(&stack);
 
         main_page(&stack);
+        appearance_page(&stack);
         dock_page(&stack);
         workspaces_page(&stack);
 

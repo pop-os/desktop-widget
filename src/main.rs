@@ -21,7 +21,7 @@ fn main() {
 
     application.connect_startup(|app| {
         let widget = cascade! {
-            gtk::Box::new(gtk::Orientation::Vertical, 12);
+            gtk::ScrolledWindow::new::<gtk::Adjustment, gtk::Adjustment>(None, None);
             ..add(&*cascade! {
                 PopDesktopWidget::new();
                 ..set_border_width(12);

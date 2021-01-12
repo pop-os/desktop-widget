@@ -537,6 +537,18 @@ dependencies = [
  "gtk 0.9.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "gtk-extras 0.3.0 (git+https://github.com/pop-os/gtk-extras)",
  "libhandy 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "pop-theme-switcher 0.1.1 (git+https://github.com/pop-os/theme-switcher?branch=build-script)",
+]
+
+[[package]]
+name = "pop-theme-switcher"
+version = "0.1.1"
+source = "git+https://github.com/pop-os/theme-switcher?branch=build-script#9d6c745c49694f31b77c0bae63896849ccc44fbb"
+dependencies = [
+ "gio 0.9.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "glib 0.10.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "gtk 0.9.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "gtk-extras 0.3.0 (git+https://github.com/pop-os/gtk-extras)",
 ]
 
 [[package]]
@@ -778,6 +790,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum pin-project-lite 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)" = "439697af366c49a6d0a010c56a0d97685bc140ce0d377b13a2ea2aa42d64a827"
 "checksum pin-utils 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 "checksum pkg-config 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)" = "3831453b3449ceb48b6d9c7ad7c96d5ea673e9b470a1dc578c2ce6521230884c"
+"checksum pop-theme-switcher 0.1.1 (git+https://github.com/pop-os/theme-switcher?branch=build-script)" = "<none>"
 "checksum proc-macro-crate 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "1d6ea3c4595b96363c13943497db34af4460fb474a95c43f4446ad341b8c9785"
 "checksum proc-macro-error 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)" = "da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c"
 "checksum proc-macro-error-attr 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)" = "a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869"
