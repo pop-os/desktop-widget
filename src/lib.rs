@@ -4,8 +4,6 @@ extern crate gtk_extras;
 use gtk::prelude::*;
 use libhandy::prelude::*;
 
-use std::cell::Cell;
-use std::rc::Rc;
 use std::ops::Deref;
 
 pub struct PopDesktopWidget(gtk::Container);
@@ -37,8 +35,8 @@ fn top_bar<C: ContainerExt>(container: &C) {
 
 impl PopDesktopWidget {
     pub fn new() -> Self {
+        let container = gtk::Box::new(gtk::Orientation::Vertical, 0);
 
-        //TODO: settings
         top_bar(&container);
 
         Self(container.upcast())
