@@ -1,0 +1,20 @@
+[package]
+name = "ffi"
+version = "0.1.1"
+authors = ["Michael Aaron Murphy <mmstick@pm.me>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+cdylib-link-lines = "0.1"
+
+[lib]
+name = "pop_desktop_widget"
+crate-type = [ "cdylib" ]
+
+[dependencies]
+glib = "0.10"
+gtk-sys = "0.10"
+gtk = "0.9"
+pop-desktop-widget = { path = "../" }

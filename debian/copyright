@@ -1,0 +1,7 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: pop-desktop-widget
+Source: https://github.com/pop-os/desktop-widget
+
+Files: *
+Copyright: Copyright 2021 System76
+License: LGPL-3
