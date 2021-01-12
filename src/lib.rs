@@ -2,6 +2,7 @@
 extern crate gtk_extras;
 
 use gio::{SettingsBindFlags, SettingsExt};
+use glib::clone;
 use gtk::prelude::*;
 use gtk_extras::settings;
 use libhandy::prelude::*;
@@ -27,6 +28,43 @@ fn combo_row<C: ContainerExt>(container: &C, title: &str, active: &str, values: 
     };
     container.add(&row);
     combo
+}
+
+fn radio_bindings(settings: &gio::Settings, key: &'static str, radios: Vec<(glib::Variant, gtk::RadioButton)>) {
+    // Set active radio when settings change
+    //TODO: if settings is dropped, changed event fails. Would only happen if radios is empty
+    {
+        let radios = radios.clone();
+        settings.connect_changed(move |settings, event_key| {
+            if event_key == key {
+                let event_value = settings.get_value(key);
+                for (value, radio) in radios.iter() {
+                    if &event_value == value {
+                        radio.set_active(true);
+                    }
+                }
+            }
+        });
+    }
+
+    // Set active radio based on current settings
+    {
+        let current_value = settings.get_value(key);
+        for (value, radio) in radios.iter() {
+            if &current_value == value {
+                radio.set_active(true);
+            }
+        }
+    }
+
+    // Set settings when radios are activated
+    for (value, radio) in radios {
+        radio.connect_property_active_notify(clone!(@strong settings => move |radio| {
+            if radio.get_active() {
+                let _ = settings.set_value(key, &value);
+            }
+        }));
+    }
 }
 
 fn radio_row<C: ContainerExt>(container: &C, title: &str, subtitle: Option<&str>) -> gtk::RadioButton {
@@ -101,12 +139,12 @@ fn settings_list_box<C: ContainerExt>(container: &C, title: &str) -> gtk::ListBo
 fn hot_corner<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Hot Corner");
 
-    let radio_disabled = radio_row(&list_box, "Disabled", None);
-    let radio_workspaces = radio_row(&list_box, "Workspaces", Some(
+    let radio_disabled = radio_row(&list_box, "Disabled (TODO)", None);
+    let radio_workspaces = radio_row(&list_box, "Workspaces (TODO)", Some(
         "Placing cursor in top-left corner opens the Window and Workspaces Overview"
     ));
     radio_workspaces.join_group(Some(&radio_disabled));
-    let radio_applications = radio_row(&list_box, "Applications", Some(
+    let radio_applications = radio_row(&list_box, "Applications (TODO)", Some(
         "Placing cursor in top-left corner opens the Applications Overview"
     ));
     radio_applications.join_group(Some(&radio_disabled));
@@ -115,14 +153,14 @@ fn hot_corner<C: ContainerExt>(container: &C) {
 fn top_bar<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Top Bar");
 
-    switch_row(&list_box, "Show Workspaces Button");
-    switch_row(&list_box, "Show Applications Button");
-    combo_row(&list_box, "Show Top Bar on Display", "Primary Display", &[
+    switch_row(&list_box, "Show Workspaces Button (TODO)");
+    switch_row(&list_box, "Show Applications Button (TODO)");
+    combo_row(&list_box, "Show Top Bar on Display (TODO)", "Primary Display", &[
         "Primary Display",
         "All Displays",
         "TODO"
     ]);
-    combo_row(&list_box, "Date and Time Position", "Center", &[
+    combo_row(&list_box, "Date and Time Position (TODO)", "Center", &[
         "Center",
         "Left",
         "Right"
@@ -132,8 +170,8 @@ fn top_bar<C: ContainerExt>(container: &C) {
 fn window_controls<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Window Controls");
 
-    switch_row(&list_box, "Show Minimize Button");
-    switch_row(&list_box, "Show Maximize Button");
+    switch_row(&list_box, "Show Minimize Button (TODO)");
+    switch_row(&list_box, "Show Maximize Button (TODO)");
 }
 
 fn main_page(stack: &gtk::Stack) {
@@ -154,7 +192,7 @@ fn appearance_page(stack: &gtk::Stack) {
 fn dock_options<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Dock Options");
 
-    combo_row(&list_box, "Show Dock on Display", "Primary Display", &[
+    combo_row(&list_box, "Show Dock on Display (TODO)", "Primary Display", &[
         "Primary Display",
         "All Displays",
         "TODO"
@@ -168,29 +206,45 @@ fn dock_options<C: ContainerExt>(container: &C) {
         settings.bind("extend-height", &switch, "active", SettingsBindFlags::DEFAULT);
     }
 
-    switch_row(&list_box, "Show Launcher Icon in Dock");
-    switch_row(&list_box, "Show Applications Icon in Dock");
-    switch_row(&list_box, "Show Workspaces Icon in Dock");
+    switch_row(&list_box, "Show Launcher Icon in Dock (TODO)");
+    switch_row(&list_box, "Show Applications Icon in Dock (TODO)");
+    switch_row(&list_box, "Show Workspaces Icon in Dock (TODO)");
 }
 
 fn dock_size<C: ContainerExt>(container: &C) {
-    let list_box = settings_list_box(container, "Dock Size");
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
+        let list_box = settings_list_box(container, "Dock Size");
 
-    let radio_small = radio_row(&list_box, "Small", None);
-    let radio_medium = radio_row(&list_box, "Medium", None);
-    radio_medium.join_group(Some(&radio_small));
-    let radio_large = radio_row(&list_box, "Large", None);
-    radio_large.join_group(Some(&radio_small));
+        let radio_small = radio_row(&list_box, "Small", None);
+        let radio_medium = radio_row(&list_box, "Medium", None);
+        radio_medium.join_group(Some(&radio_small));
+        let radio_large = radio_row(&list_box, "Large", None);
+        radio_large.join_group(Some(&radio_small));
+
+        radio_bindings(&settings, "dash-max-icon-size", vec![
+            (glib::Variant::from(24i32), radio_small),
+            (glib::Variant::from(32i32), radio_medium),
+            (glib::Variant::from(48i32), radio_large),
+        ]);
+    }
 }
 
 fn dock_position<C: ContainerExt>(container: &C) {
-    let list_box = settings_list_box(container, "Position on the Desktop");
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
+        let list_box = settings_list_box(container, "Position on the Desktop");
 
-    let radio_bottom = radio_row(&list_box, "Bottom of the screen", None);
-    let radio_left = radio_row(&list_box, "Along the left side", None);
-    radio_left.join_group(Some(&radio_bottom));
-    let radio_right = radio_row(&list_box, "Along the right side", None);
-    radio_right.join_group(Some(&radio_bottom));
+        let radio_bottom = radio_row(&list_box, "Bottom of the screen", None);
+        let radio_left = radio_row(&list_box, "Along the left side", None);
+        radio_left.join_group(Some(&radio_bottom));
+        let radio_right = radio_row(&list_box, "Along the right side", None);
+        radio_right.join_group(Some(&radio_bottom));
+
+        radio_bindings(&settings, "dock-position", vec![
+            (glib::Variant::from("BOTTOM"), radio_bottom),
+            (glib::Variant::from("LEFT"), radio_left),
+            (glib::Variant::from("RIGHT"), radio_right),
+        ]);
+    }
 }
 
 fn dock_page(stack: &gtk::Stack) {
@@ -202,7 +256,7 @@ fn dock_page(stack: &gtk::Stack) {
     };
     page.add(&list_box);
 
-    switch_row(&list_box, "Show Dock on the Desktop");
+    switch_row(&list_box, "Show Dock on the Desktop (TODO)");
 
     dock_options(&page);
     dock_size(&page);
@@ -212,20 +266,20 @@ fn dock_page(stack: &gtk::Stack) {
 fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Multi-monitor Behavior");
 
-    let radio_span = radio_row(&list_box, "Workspaces Span Displays", None);
-    let radio_separate = radio_row(&list_box, "Displays Have Separate Workspaces", None);
+    let radio_span = radio_row(&list_box, "Workspaces Span Displays (TODO)", None);
+    let radio_separate = radio_row(&list_box, "Displays Have Separate Workspaces (TODO)", None);
     radio_separate.join_group(Some(&radio_span));
 }
 
 fn workspaces_position<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Placement of the Workspace Picker");
 
-    let radio_left = radio_row(&list_box, "Along the Left Side", None);
-    let radio_right = radio_row(&list_box, "Along the Right Side", None);
+    let radio_left = radio_row(&list_box, "Along the Left Side (TODO)", None);
+    let radio_right = radio_row(&list_box, "Along the Right Side (TODO)", None);
     radio_right.join_group(Some(&radio_left));
-    let radio_top = radio_row(&list_box, "Top of the Screen", None);
+    let radio_top = radio_row(&list_box, "Top of the Screen (TODO)", None);
     radio_top.join_group(Some(&radio_left));
-    let radio_bottom = radio_row(&list_box, "Bottom of the Screen", None);
+    let radio_bottom = radio_row(&list_box, "Bottom of the Screen (TODO)", None);
     radio_bottom.join_group(Some(&radio_left));
 }
 
