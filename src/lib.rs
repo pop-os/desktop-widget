@@ -215,12 +215,17 @@ fn dock_size<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
         let list_box = settings_list_box(container, "Dock Size");
 
-        let scale = gtk::Scale::with_range(gtk::Orientation::Horizontal, 8.0, 128.0, 1.0);
-        scale.add_mark(36.0, gtk::PositionType::Bottom, Some("Small"));
-        scale.add_mark(48.0, gtk::PositionType::Bottom, Some("Medium"));
-        scale.add_mark(60.0, gtk::PositionType::Bottom, Some("Large"));
-        list_box.add(&scale);
-        settings.bind("dash-max-icon-size", &scale.get_adjustment(), "value", SettingsBindFlags::DEFAULT);
+        let radio_small = radio_row(&list_box, "Small", None);
+        let radio_medium = radio_row(&list_box, "Medium", None);
+        radio_medium.join_group(Some(&radio_small));
+        let radio_large = radio_row(&list_box, "Large", None);
+        radio_large.join_group(Some(&radio_small));
+
+        radio_bindings(&settings, "dash-max-icon-size", vec![
+            (glib::Variant::from(24i32), radio_small),
+            (glib::Variant::from(32i32), radio_medium),
+            (glib::Variant::from(48i32), radio_large),
+        ]);
     }
 }
 
