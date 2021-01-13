@@ -30,32 +30,36 @@ fn combo_row<C: ContainerExt>(container: &C, title: &str, active: &str, values: 
     combo
 }
 
-fn radio_bindings(settings: &gio::Settings, key: &'static str, radios: Vec<(glib::Variant, gtk::RadioButton)>) {
-    // Set active radio when settings change
-    //TODO: if settings is dropped, changed event fails. Would only happen if radios is empty
-    {
+fn radio_bindings(settings: &gio::Settings, key: &'static str, radios: Vec<(glib::Variant, gtk::RadioButton)>, custom_radio: Option<gtk::RadioButton>) {
+    let update = {
         let radios = radios.clone();
-        settings.connect_changed(move |settings, event_key| {
-            if event_key == key {
-                let event_value = settings.get_value(key);
-                for (value, radio) in radios.iter() {
-                    if &event_value == value {
-                        radio.set_active(true);
-                    }
+        move |event_value: glib::Variant| {
+            let mut custom = true;
+            for (value, radio) in radios.iter() {
+                if &event_value == value {
+                    radio.set_active(true);
+                    custom = false;
+                    break;
                 }
             }
-        });
-    }
-
-    // Set active radio based on current settings
-    {
-        let current_value = settings.get_value(key);
-        for (value, radio) in radios.iter() {
-            if &current_value == value {
-                radio.set_active(true);
+            if custom {
+                if let Some(ref radio) = custom_radio {
+                    radio.set_active(true);
+                }
             }
         }
-    }
+    };
+
+    // Set active radio based on current settings
+    update(settings.get_value(key));
+
+    // Set active radio when settings change
+    //TODO: if settings is dropped, changed event fails. Would only happen if radios is empty
+    settings.connect_changed(move |settings, event_key| {
+        if event_key == key {
+            update(settings.get_value(key));
+        }
+    });
 
     // Set settings when radios are activated
     for (value, radio) in radios {
@@ -215,17 +219,25 @@ fn dock_size<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
         let list_box = settings_list_box(container, "Dock Size");
 
-        let radio_small = radio_row(&list_box, "Small", None);
-        let radio_medium = radio_row(&list_box, "Medium", None);
+        let radio_small = radio_row(&list_box, "Small (36px)", None);
+        let radio_medium = radio_row(&list_box, "Medium (48px)", None);
         radio_medium.join_group(Some(&radio_small));
-        let radio_large = radio_row(&list_box, "Large", None);
+        let radio_large = radio_row(&list_box, "Large (60px)", None);
         radio_large.join_group(Some(&radio_small));
+        let radio_custom = radio_row(&list_box, "Custom", None);
+        radio_custom.join_group(Some(&radio_small));
+
+        let spin = spin_row(&list_box, "Custom Size", 8.0, 128.0, 1.0);
+        settings.bind("dash-max-icon-size", &spin, "value", SettingsBindFlags::DEFAULT);
+        radio_custom.bind_property("active", &spin, "sensitive")
+            .flags(glib::BindingFlags::SYNC_CREATE)
+            .build();
 
         radio_bindings(&settings, "dash-max-icon-size", vec![
             (glib::Variant::from(36i32), radio_small),
             (glib::Variant::from(48i32), radio_medium),
             (glib::Variant::from(60i32), radio_large),
-        ]);
+        ], Some(radio_custom));
     }
 }
 
@@ -243,7 +255,7 @@ fn dock_position<C: ContainerExt>(container: &C) {
             (glib::Variant::from("BOTTOM"), radio_bottom),
             (glib::Variant::from("LEFT"), radio_left),
             (glib::Variant::from("RIGHT"), radio_right),
-        ]);
+        ], None);
     }
 }
 
