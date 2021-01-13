@@ -222,9 +222,9 @@ fn dock_size<C: ContainerExt>(container: &C) {
         radio_large.join_group(Some(&radio_small));
 
         radio_bindings(&settings, "dash-max-icon-size", vec![
-            (glib::Variant::from(24i32), radio_small),
-            (glib::Variant::from(32i32), radio_medium),
-            (glib::Variant::from(48i32), radio_large),
+            (glib::Variant::from(36i32), radio_small),
+            (glib::Variant::from(48i32), radio_medium),
+            (glib::Variant::from(60i32), radio_large),
         ]);
     }
 }
@@ -256,7 +256,10 @@ fn dock_page(stack: &gtk::Stack) {
     };
     page.add(&list_box);
 
-    switch_row(&list_box, "Show Dock on the Desktop (TODO)");
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
+        let switch = switch_row(&list_box, "Show Dock on the Desktop");
+        settings.bind("manualhide", &switch, "active", SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN);
+    }
 
     dock_options(&page);
     dock_size(&page);
