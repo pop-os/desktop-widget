@@ -20,16 +20,21 @@ fn main() {
     });
 
     application.connect_startup(|app| {
+        let stack = gtk::Stack::new();
+        let stack_switcher = cascade! {
+            gtk::StackSwitcher::new();
+            ..set_stack(Some(&stack));
+        };
+
+        PopDesktopWidget::new(&stack);
+
         let widget = cascade! {
             gtk::ScrolledWindow::new::<gtk::Adjustment, gtk::Adjustment>(None, None);
-            ..add(&*cascade! {
-                PopDesktopWidget::new();
-                ..set_border_width(12);
-            });
+            ..add(&stack);
         };
 
         let headerbar = gtk::HeaderBarBuilder::new()
-            .title("Pop!_OS Desktop Widget")
+            .custom_title(&stack_switcher)
             .show_close_button(true)
             .build();
 

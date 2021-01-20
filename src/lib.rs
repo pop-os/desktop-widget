@@ -8,9 +8,7 @@ use gtk_extras::settings;
 use libhandy::prelude::*;
 use pop_theme_switcher::PopThemeSwitcher;
 
-use std::ops::Deref;
-
-pub struct PopDesktopWidget(gtk::Container);
+pub struct PopDesktopWidget;
 
 fn combo_row<C: ContainerExt>(container: &C, title: &str, active: &str, values: &[&str]) -> gtk::ComboBoxText {
     let combo = cascade! {
@@ -116,7 +114,15 @@ fn switch_row<C: ContainerExt>(container: &C, title: &str) -> gtk::Switch {
 
 fn settings_page(stack: &gtk::Stack, title: &str) -> gtk::Box {
     let vbox = gtk::Box::new(gtk::Orientation::Vertical, 48);
-    stack.add_titled(&vbox, title, title);
+    let clamp = cascade! {
+        libhandy::Clamp::new();
+        ..set_margin_top(32);
+        ..set_margin_bottom(32);
+        ..set_margin_start(12);
+        ..set_margin_end(12);
+        ..add(&vbox);
+    };
+    stack.add_titled(&clamp, title, title);
     vbox
 }
 
@@ -332,42 +338,14 @@ fn workspaces_page(stack: &gtk::Stack) {
 }
 
 impl PopDesktopWidget {
-    pub fn new() -> Self {
-        let container = gtk::Box::new(gtk::Orientation::Vertical, 12);
-
-        let stack_switcher = gtk::StackSwitcher::new();
-        container.add(&stack_switcher);
-
-        let stack = gtk::Stack::new();
-        stack_switcher.set_stack(Some(&stack));
-        container.add(&stack);
-
+    pub fn new(stack: &gtk::Stack) -> Self {
         main_page(&stack);
         appearance_page(&stack);
         dock_page(&stack);
         workspaces_page(&stack);
 
-        Self(container.upcast())
+        stack.show_all();
+
+        Self
     }
-
-    pub fn grab_focus(&self) {
-        use gtk_extras::widgets::iter_from;
-
-        for child in iter_from::<gtk::FlowBoxChild, gtk::Container>(&*self) {
-            if let Some(inner) = child.get_child() {
-                let inner = inner.downcast::<gtk::Container>().unwrap();
-                if let Some(radio) = iter_from::<gtk::RadioButton, _>(&inner).next() {
-                    if radio.get_active() {
-                        child.grab_focus();
-                    }
-                }
-            }
-        }
-    }
-}
-
-impl Deref for PopDesktopWidget {
-    type Target = gtk::Container;
-
-    fn deref(&self) -> &Self::Target { &self.0 }
 }

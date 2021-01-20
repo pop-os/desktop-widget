@@ -1,35 +1,20 @@
-use glib::object::{Cast, ObjectType};
+use glib::translate::FromGlibPtrNone;
 use pop_desktop_widget::PopDesktopWidget as RustWidget;
-use std::ptr;
 
 #[no_mangle]
 pub struct PopDesktopWidget;
 
 #[no_mangle]
-pub extern "C" fn pop_desktop_widget_new() -> *mut PopDesktopWidget {
+pub extern "C" fn pop_desktop_widget_new(
+    stack: *mut gtk_sys::GtkStack
+) -> *mut PopDesktopWidget {
     unsafe {
         gtk::set_initialized();
     }
 
-    Box::into_raw(Box::new(RustWidget::new())) as *mut PopDesktopWidget
-}
-
-#[no_mangle]
-pub extern "C" fn pop_desktop_widget_grab_focus(ptr: *const PopDesktopWidget) {
-    if let Some(rust_widget) = unsafe { (ptr as *const RustWidget).as_ref() } {
-        rust_widget.grab_focus();
-    }
-}
-
-#[no_mangle]
-pub extern "C" fn pop_desktop_widget_widget(
-    ptr: *const PopDesktopWidget,
-) -> *mut gtk_sys::GtkWidget {
-    let value = unsafe { (ptr as *const RustWidget).as_ref() };
-    value.map_or(ptr::null_mut(), |widget| {
-        let widget: &gtk::Container = widget.as_ref();
-        widget.upcast_ref::<gtk::Widget>().as_ptr()
-    })
+    Box::into_raw(Box::new(RustWidget::new(
+        unsafe { &gtk::Stack::from_glib_none(stack) }
+    ))) as *mut PopDesktopWidget
 }
 
 #[no_mangle]
