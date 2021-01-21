@@ -7,9 +7,36 @@ use pop_desktop_widget::PopDesktopWidget;
 
 pub const APP_ID: &str = "com.system76.PopDesktopWidget";
 
+fn monitors() -> Result<(), Box<dyn std::error::Error>> {
+    let display_manager = gdk::DisplayManager::get();
+    if let Some(display) = display_manager.get_default_display() {
+        for i in 0..display.get_n_monitors() {
+            if let Some(monitor) = display.get_monitor(i) {
+                let rect = monitor.get_geometry();
+                println!("{}: {}, {}, {}, {}", i, rect.x, rect.y, rect.width, rect.height);
+                if let Some(manufacturer) = monitor.get_manufacturer() {
+                    println!("  Manufacturer: {}", manufacturer);
+                }
+                if let Some(model) = monitor.get_model() {
+                    println!("  Model: {}", model);
+                }
+            } else {
+                eprintln!("Failed to get monitor {}", i);
+            }
+        }
+    } else {
+        eprintln!("Failed to get default display");
+    }
+
+    Ok(())}
+
 fn main() {
     glib::set_program_name(APP_ID.into());
     gtk::init().expect("failed to init GTK");
+
+    if let Err(err) = monitors() {
+        eprintln!("monitors error: {}", err);
+    }
 
     let application = gtk::ApplicationBuilder::new().application_id(APP_ID).build();
 

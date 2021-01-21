@@ -12,9 +12,10 @@ members = [ "ffi", "tools" ]
 
 [dependencies]
 cascade = "1.0.0"
-gtk-extras = { git = "https://github.com/pop-os/gtk-extras" }
+gdk = "0.13.2"
 glib = "0.10.3"
 gtk = "0.9.2"
+gtk-extras = { git = "https://github.com/pop-os/gtk-extras" }
 gio = "0.9.1"
 libhandy = "0.7.1"
 pop-theme-switcher = { git = "https://github.com/pop-os/theme-switcher", branch = "build-script" }
