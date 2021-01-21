@@ -7,6 +7,7 @@ use gtk::prelude::*;
 use gtk_extras::settings;
 use libhandy::prelude::*;
 use pop_theme_switcher::PopThemeSwitcher;
+use std::rc::Rc;
 
 pub struct PopDesktopWidget;
 
@@ -177,11 +178,67 @@ fn top_bar<C: ContainerExt>(container: &C) {
     ]);
 }
 
-fn window_controls<C: ContainerExt>(container: &C) {
-    let list_box = settings_list_box(container, "Window Controls");
+pub struct ButtonLayout {
+    settings: gio::Settings,
+    key: &'static str,
+    switch_min: gtk::Switch,
+    switch_max: gtk::Switch,
+}
 
-    switch_row(&list_box, "Show Minimize Button (TODO)");
-    switch_row(&list_box, "Show Maximize Button (TODO)");
+impl ButtonLayout {
+    fn update(&self, write: bool) {
+        let default_value = "appmenu:close";
+        let value = self.settings.get_string("button-layout")
+            .unwrap_or(glib::GString::from(default_value));
+        if write {
+            let new_value = match (self.switch_min.get_active(), self.switch_max.get_active()) {
+                (false, false) => default_value,
+                (false, true) => "appmenu:maximize,close",
+                (true, false) => "appmenu:minimize,close",
+                (true, true) => "appmenu:minimize,maximize,close",
+            };
+
+            let _ = self.settings.set_string("button-layout", &new_value);
+        } else {
+            self.switch_min.set_active(value.contains("minimize"));
+            self.switch_max.set_active(value.contains("maximize"));
+        }
+    }
+}
+
+fn window_controls<C: ContainerExt>(container: &C) {
+    if let Some(settings) = settings::new_checked("org.gnome.desktop.wm.preferences") {
+        let list_box = settings_list_box(container, "Window Controls");
+
+        let switch_min = switch_row(&list_box, "Show Minimize Button");
+        let switch_max = switch_row(&list_box, "Show Maximize Button");
+
+        let button_layout = Rc::new(ButtonLayout {
+            settings,
+            key: "button-layout",
+            switch_min,
+            switch_max,
+        });
+
+        button_layout.update(false);
+
+        let button_layout_event = button_layout.clone();
+        button_layout.settings.connect_changed(move |_, event_key| {
+            if event_key == button_layout_event.key {
+                button_layout_event.update(false);
+            }
+        });
+
+        let button_layout_event = button_layout.clone();
+        button_layout.switch_min.connect_property_active_notify(move |_| {
+            button_layout_event.update(true);
+        });
+
+        let button_layout_event = button_layout.clone();
+        button_layout.switch_max.connect_property_active_notify(move |_| {
+            button_layout_event.update(true);
+        });
+    }
 }
 
 fn main_page(stack: &gtk::Stack) {
