@@ -186,6 +186,27 @@ pub struct ButtonLayout {
 }
 
 impl ButtonLayout {
+    fn connect(self: Rc<Self>) {
+        self.update(false);
+
+        let self_event = self.clone();
+        self.settings.connect_changed(move |_, event_key| {
+            if event_key == self_event.key {
+                self_event.update(false);
+            }
+        });
+
+        let self_event = self.clone();
+        self.switch_min.connect_property_active_notify(move |_| {
+            self_event.update(true);
+        });
+
+        let self_event = self.clone();
+        self.switch_max.connect_property_active_notify(move |_| {
+            self_event.update(true);
+        });
+    }
+
     fn update(&self, write: bool) {
         let default_value = "appmenu:close";
         let value = self.settings.get_string("button-layout")
@@ -220,24 +241,7 @@ fn window_controls<C: ContainerExt>(container: &C) {
             switch_max,
         });
 
-        button_layout.update(false);
-
-        let button_layout_event = button_layout.clone();
-        button_layout.settings.connect_changed(move |_, event_key| {
-            if event_key == button_layout_event.key {
-                button_layout_event.update(false);
-            }
-        });
-
-        let button_layout_event = button_layout.clone();
-        button_layout.switch_min.connect_property_active_notify(move |_| {
-            button_layout_event.update(true);
-        });
-
-        let button_layout_event = button_layout.clone();
-        button_layout.switch_max.connect_property_active_notify(move |_| {
-            button_layout_event.update(true);
-        });
+        button_layout.connect();
     }
 }
 
