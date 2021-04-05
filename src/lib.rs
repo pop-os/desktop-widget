@@ -11,6 +11,17 @@ use std::rc::Rc;
 
 pub struct PopDesktopWidget;
 
+fn header_func(row: &gtk::ListBoxRow, before: Option<&gtk::ListBoxRow>) {
+    if before.is_none() {
+        row.set_header::<gtk::Widget>(None)
+    } else if row.get_header().is_none() {
+        row.set_header(Some(&cascade! {
+            gtk::Separator::new(gtk::Orientation::Horizontal);
+            ..show();
+        }));
+    }
+}
+
 fn combo_row<C: ContainerExt>(container: &C, title: &str, active: &str, values: &[&str]) -> gtk::ComboBoxText {
     let combo = cascade! {
         gtk::ComboBoxText::new();
@@ -140,6 +151,8 @@ fn settings_list_box<C: ContainerExt>(container: &C, title: &str) -> gtk::ListBo
 
     let list_box = cascade! {
         gtk::ListBox::new();
+        ..get_style_context().add_class("frame");
+        ..set_header_func(Some(Box::new(header_func)));
         ..set_selection_mode(gtk::SelectionMode::None);
     };
     vbox.add(&list_box);
@@ -331,6 +344,8 @@ fn dock_page(stack: &gtk::Stack) {
 
     let list_box = cascade! {
         gtk::ListBox::new();
+        ..get_style_context().add_class("frame");
+        ..set_header_func(Some(Box::new(header_func)));
         ..set_selection_mode(gtk::SelectionMode::None);
     };
     page.add(&list_box);
@@ -371,6 +386,8 @@ fn workspaces_page(stack: &gtk::Stack) {
 
     let list_box = cascade! {
         gtk::ListBox::new();
+        ..get_style_context().add_class("frame");
+        ..set_header_func(Some(Box::new(header_func)));
         ..set_selection_mode(gtk::SelectionMode::None);
     };
     page.add(&list_box);
