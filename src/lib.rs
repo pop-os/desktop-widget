@@ -134,7 +134,11 @@ fn settings_page(stack: &gtk::Stack, title: &str) -> gtk::Box {
         ..set_margin_end(12);
         ..add(&vbox);
     };
-    stack.add_titled(&clamp, title, title);
+    let scrolled_window = cascade! {
+        gtk::ScrolledWindow::new::<gtk::Adjustment, gtk::Adjustment>(None, None);
+        ..add(&clamp);
+    };
+    stack.add_titled(&scrolled_window, title, title);
     vbox
 }
 

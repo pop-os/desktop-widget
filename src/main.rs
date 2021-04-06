@@ -55,11 +55,6 @@ fn main() {
 
         PopDesktopWidget::new(&stack);
 
-        let widget = cascade! {
-            gtk::ScrolledWindow::new::<gtk::Adjustment, gtk::Adjustment>(None, None);
-            ..add(&stack);
-        };
-
         let headerbar = gtk::HeaderBarBuilder::new()
             .custom_title(&stack_switcher)
             .show_close_button(true)
@@ -72,14 +67,14 @@ fn main() {
                 .window_position(gtk::WindowPosition::Center)
                 .build();
             ..set_titlebar(Some(&headerbar));
-            ..add(&widget);
+            ..add(&stack);
             ..show_all();
             ..connect_delete_event(move |window, _| {
                 window.close();
 
                 // Allow this closure to attain ownership of our firmware widget,
                 // so that this widget will exist for as long as the window exists.
-                let _widget = &widget;
+                let _widget = &stack;
 
                 Inhibit(false)
             });
