@@ -181,8 +181,13 @@ fn hot_corner<C: ContainerExt>(container: &C) {
 fn top_bar<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Top Bar");
 
-    switch_row(&list_box, "Show Workspaces Button (TODO)");
-    switch_row(&list_box, "Show Applications Button (TODO)");
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
+        let switch = switch_row(&list_box, "Show Workspaces Button");
+        settings.bind("show-workspaces-button", &switch, "active", SettingsBindFlags::DEFAULT);
+        let switch = switch_row(&list_box, "Show Applications Button");
+        settings.bind("show-applications-button", &switch, "active", SettingsBindFlags::DEFAULT);
+    }
+
     combo_row(&list_box, "Show Top Bar on Display (TODO)", "Primary Display", &[
         "Primary Display",
         "All Displays",
