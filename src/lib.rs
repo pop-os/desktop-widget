@@ -208,8 +208,19 @@ fn top_bar<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
         let switch = switch_row(&list_box, "Show Workspaces Button");
         settings.bind("show-workspaces-button", &switch, "active", SettingsBindFlags::DEFAULT);
+
         let switch = switch_row(&list_box, "Show Applications Button");
         settings.bind("show-applications-button", &switch, "active", SettingsBindFlags::DEFAULT);
+
+        let combo = combo_row(&list_box, "Date and Time Position", "Center", &[
+            "Center",
+            "Left",
+            "Right"
+        ]);
+        combo.set_active(Some(settings.get_enum("clock-alignment") as u32));
+        combo.connect_changed(clone!(@strong settings => move |combo| {
+            settings.set_enum("clock-alignment", combo.get_active().unwrap_or(0) as i32).unwrap();
+        }));
     }
 
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.multi-monitors-add-on") {
@@ -230,12 +241,6 @@ fn top_bar<C: ContainerExt>(container: &C) {
             settings.set_boolean("show-panel", all_displays).unwrap();
         }));
     }
-
-    combo_row(&list_box, "Date and Time Position (TODO)", "Center", &[
-        "Center",
-        "Left",
-        "Right"
-    ]);
 }
 
 pub struct ButtonLayout {
