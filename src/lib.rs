@@ -164,6 +164,30 @@ fn settings_list_box<C: ContainerExt>(container: &C, title: &str) -> gtk::ListBo
     list_box
 }
 
+fn super_key<C: ContainerExt>(container: &C) {
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
+        let list_box = settings_list_box(container, "Super Key Action");
+
+        let radio_launcher = radio_row(&list_box, "Launcher", Some(
+            "Pressing the Super key opens the Launcher"
+        ));
+        let radio_workspaces = radio_row(&list_box, "Workspaces", Some(
+            "Pressing the Super key opens the Window and Workspaces Overview"
+        ));
+        radio_workspaces.join_group(Some(&radio_launcher));
+        let radio_applications = radio_row(&list_box, "Applications", Some(
+            "Pressing the Super key opens the Applications Overview"
+        ));
+        radio_applications.join_group(Some(&radio_launcher));
+
+        radio_bindings(&settings, "overlay-key-action", vec![
+            (glib::Variant::from("LAUNCHER"), radio_launcher),
+            (glib::Variant::from("WORKSPACES"), radio_workspaces),
+            (glib::Variant::from("APPLICATIONS"), radio_applications),
+        ], None);
+    }
+}
+
 fn hot_corner<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Hot Corner");
 
@@ -284,6 +308,7 @@ fn window_controls<C: ContainerExt>(container: &C) {
 fn main_page(stack: &gtk::Stack) {
     let page = settings_page(stack, "Desktop");
 
+    super_key(&page);
     hot_corner(&page);
     top_bar(&page);
     window_controls(&page);
