@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate gtk_extras;
 
-use gio::{SettingsBindFlags, SettingsExt};
+use gio::{SettingsBindFlags, Settings, SettingsExt};
 use glib::clone;
 use gtk::prelude::*;
 use gtk_extras::settings;
@@ -427,9 +427,16 @@ fn dock_page(stack: &gtk::Stack) {
 fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
     let list_box = settings_list_box(container, "Multi-monitor Behavior");
 
-    let radio_span = radio_row(&list_box, "Workspaces Span Displays (TODO)", None);
-    let radio_separate = radio_row(&list_box, "Displays Have Separate Workspaces (TODO)", None);
-    radio_separate.join_group(Some(&radio_span));
+    let settings = Settings::new("org.gnome.mutter");
+
+    let radio_span = radio_row(&list_box, "Workspaces Span Displays", None);
+    let radio_primary = radio_row(&list_box, "Workspaces on Primary Display Only", None);
+    radio_primary.join_group(Some(&radio_span));
+
+    radio_bindings(&settings, "workspaces-only-on-primary", vec![
+        (glib::Variant::from(false), radio_span),
+        (glib::Variant::from(true), radio_primary),
+    ], None);
 }
 
 fn workspaces_position<C: ContainerExt>(container: &C) {
