@@ -311,7 +311,7 @@ fn window_controls<C: ContainerExt>(container: &C) {
 }
 
 fn main_page(stack: &gtk::Stack) {
-    let page = settings_page(stack, "Desktop");
+    let page = settings_page(stack, "General");
 
     super_key(&page);
     hot_corner(&page);
@@ -481,7 +481,17 @@ fn workspaces_page(stack: &gtk::Stack) {
 
 impl PopDesktopWidget {
     pub fn new(stack: &gtk::Stack) -> Self {
+        let mut children = Vec::new();
+        stack.foreach(|w| {
+            let name = stack.get_child_name(w).unwrap();
+            let title = stack.get_child_title(w).unwrap();
+            stack.remove(w);
+            children.push((w.clone(), name, title));
+        });
         main_page(&stack);
+        for (w, name, title) in children {
+            stack.add_titled(&w, &name, &title);
+        }
         appearance_page(&stack);
         dock_page(&stack);
         workspaces_page(&stack);
