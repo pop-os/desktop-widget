@@ -368,14 +368,11 @@ fn dock_size<C: ContainerExt>(container: &C) {
         radio_medium.join_group(Some(&radio_small));
         let radio_large = radio_row(&list_box, "Large (60px)", None);
         radio_large.join_group(Some(&radio_small));
-        let radio_custom = radio_row(&list_box, "Custom", None);
+        let radio_custom = gtk::RadioButton::new();
+        radio_custom.set_no_show_all(true);
         radio_custom.join_group(Some(&radio_small));
-
         let spin = spin_row(&list_box, "Custom Size", 8.0, 128.0, 1.0);
         settings.bind("dash-max-icon-size", &spin, "value", SettingsBindFlags::DEFAULT);
-        radio_custom.bind_property("active", &spin, "sensitive")
-            .flags(glib::BindingFlags::SYNC_CREATE)
-            .build();
 
         radio_bindings(&settings, "dash-max-icon-size", vec![
             (glib::Variant::from(36i32), radio_small),
