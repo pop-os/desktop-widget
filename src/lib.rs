@@ -464,11 +464,12 @@ fn workspaces_page(stack: &gtk::Stack) {
         let radio_dynamic = radio_row(&list_box, "Dynamic Workspaces", Some(
             "Automatically removes empty workspaces."
         ));
-        settings.bind("dynamic-workspaces", &radio_dynamic, "active", SettingsBindFlags::DEFAULT);
         let radio_fixed = radio_row(&list_box, "Fixed Number of Workspaces", Some(
             "Specify a number of workspaces"
         ));
         radio_fixed.join_group(Some(&radio_dynamic));
+        settings.bind("dynamic-workspaces", &radio_dynamic, "active", SettingsBindFlags::DEFAULT);
+        settings.bind("dynamic-workspaces", &radio_fixed, "active", SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN);
 
         if let Some(settings) = settings::new_checked("org.gnome.desktop.wm.preferences") {
             let spin_number = spin_row(&list_box, "Number of Workspaces", 1.0, 36.0, 1.0);
