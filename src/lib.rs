@@ -212,7 +212,7 @@ fn top_bar<C: ContainerExt>(container: &C) {
         let switch = switch_row(&list_box, "Show Applications Button");
         settings.bind("show-applications-button", &switch, "active", SettingsBindFlags::DEFAULT);
 
-        let combo = combo_row(&list_box, "Date and Time Position", "Center", &[
+        let combo = combo_row(&list_box, "Date & Time and Notifications Position", "Center", &[
             "Center",
             "Left",
             "Right"
