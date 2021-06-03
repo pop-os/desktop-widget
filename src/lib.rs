@@ -350,6 +350,9 @@ fn dock_options<C: ContainerExt>(container: &C) {
 
         let switch = switch_row(&list_box, "Extend dock to the edges of the screen");
         settings.bind("extend-height", &switch, "active", SettingsBindFlags::DEFAULT);
+
+        let switch = switch_row(&list_box, "Show Mounted Volumes");
+        settings.bind("show-mounts", &switch, "active", SettingsBindFlags::DEFAULT);
     }
 
     switch_row(&list_box, "Show Launcher Icon in Dock (TODO)");
