@@ -228,7 +228,6 @@ fn top_bar<C: ContainerExt>(container: &C) {
         let combo = combo_row(&list_box, "Show Top Bar on Display", "Primary Display", &[
             "Primary Display",
             "All Displays",
-            "TODO"
         ]);
         let id = if settings.get_boolean("show-panel") {
             "All Displays"
@@ -334,7 +333,6 @@ fn dock_options<C: ContainerExt>(container: &C) {
         let combo = combo_row(&list_box, "Show Dock on Display", "Primary Display", &[
             "Primary Display",
             "All Displays",
-            "TODO"
         ]);
         let id = if settings.get_boolean("multi-monitor") {
             "All Displays"
