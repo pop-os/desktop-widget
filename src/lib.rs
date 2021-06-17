@@ -189,17 +189,13 @@ fn super_key<C: ContainerExt>(container: &C) {
 }
 
 fn hot_corner<C: ContainerExt>(container: &C) {
-    let list_box = settings_list_box(container, "Hot Corner");
+    // TODO: Support more options in the future
 
-    let radio_disabled = radio_row(&list_box, "Disabled (TODO)", None);
-    let radio_workspaces = radio_row(&list_box, "Workspaces (TODO)", Some(
-        "Placing cursor in top-left corner opens the Window and Workspaces Overview"
-    ));
-    radio_workspaces.join_group(Some(&radio_disabled));
-    let radio_applications = radio_row(&list_box, "Applications (TODO)", Some(
-        "Placing cursor in top-left corner opens the Applications Overview"
-    ));
-    radio_applications.join_group(Some(&radio_disabled));
+    let list_box = settings_list_box(container, "Hot Corner");
+    let settings = gio::Settings::new("org.gnome.desktop.interface");
+
+    let switch = switch_row(&list_box, "Enable top-left hot corner for Workspaces");
+    settings.bind("enable-hot-corners", &switch, "active", SettingsBindFlags::DEFAULT);
 }
 
 fn top_bar<C: ContainerExt>(container: &C) {
