@@ -439,10 +439,6 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
     let radio_left = radio_row(&list_box, "Along the Left Side (TODO)", None);
     let radio_right = radio_row(&list_box, "Along the Right Side (TODO)", None);
     radio_right.join_group(Some(&radio_left));
-    let radio_top = radio_row(&list_box, "Top of the Screen (TODO)", None);
-    radio_top.join_group(Some(&radio_left));
-    let radio_bottom = radio_row(&list_box, "Bottom of the Screen (TODO)", None);
-    radio_bottom.join_group(Some(&radio_left));
 }
 
 fn workspaces_page(stack: &gtk::Stack) {
