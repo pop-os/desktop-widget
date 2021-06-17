@@ -434,11 +434,31 @@ fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
 }
 
 fn workspaces_position<C: ContainerExt>(container: &C) {
-    let list_box = settings_list_box(container, "Placement of the Workspace Picker");
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
+        if !settings.get_property_settings_schema().map_or(false, |x| x.has_key("workspace-picker-left")) {
+            return;
+        }
 
-    let radio_left = radio_row(&list_box, "Along the Left Side (TODO)", None);
-    let radio_right = radio_row(&list_box, "Along the Right Side (TODO)", None);
-    radio_right.join_group(Some(&radio_left));
+        let list_box = settings_list_box(container, "Placement of the Workspace Picker");
+
+        let radio_left = radio_row(&list_box, "Along the Left Side", None);
+        let radio_right = radio_row(&list_box, "Along the Right Side", None);
+        radio_right.join_group(Some(&radio_left));
+        radio_bindings(&settings, "workspace-picker-left", vec![
+            (glib::Variant::from(false), radio_right),
+            (glib::Variant::from(true), radio_left),
+        ], None);
+
+        if let Some(mm_settings) = settings::new_checked("org.gnome.shell.extensions.multi-monitors-add-on") {
+            if mm_settings.get_property_settings_schema().map_or(false, |x| x.has_key("thumbnails-on-left-side")) {
+                let settings_clone = settings.clone();
+                settings.connect_local("changed::workspace-picker-left", false, move |_| {
+                    mm_settings.set_boolean("thumbnails-on-left-side", settings_clone.get_boolean("workspace-picker-left")).unwrap();
+                    None
+                }).unwrap();
+            }
+        }
+    }
 }
 
 fn workspaces_page(stack: &gtk::Stack) {
