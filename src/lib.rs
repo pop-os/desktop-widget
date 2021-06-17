@@ -341,9 +341,6 @@ fn dock_options<C: ContainerExt>(container: &C) {
             settings.set_boolean("multi-monitor", all_displays).unwrap();
         }));
 
-        let switch = switch_row(&list_box, "Automatically Hide Dock");
-        settings.bind("dock-fixed", &switch, "active", SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN);
-
         let switch = switch_row(&list_box, "Extend dock to the edges of the screen");
         settings.bind("extend-height", &switch, "active", SettingsBindFlags::DEFAULT);
 
@@ -419,6 +416,53 @@ fn dock_options<C: ContainerExt>(container: &C) {
     connect_switch(&applications_switch, "pop-cosmic-applications.desktop", 2);
 }
 
+fn dock_visibility<C: ContainerExt>(container: &C) {
+    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
+        let list_box = settings_list_box(container, "Dock Visibility");
+
+        let radio_visible = radio_row(&list_box, "Always visible", None);
+        let radio_autohide = radio_row(&list_box, "Always hide", Some(
+            "Dock always hides unless actively being revealed by the mouse"
+        ));
+        radio_autohide.join_group(Some(&radio_visible));
+        let radio_intellihide = radio_row(&list_box, "Intelligently hide", Some(
+            "Dock hides when any window overlaps the dock area"
+        ));
+        radio_intellihide.join_group(Some(&radio_visible));
+
+        let update_radios = clone!(@strong radio_visible, @strong radio_autohide, @strong radio_intellihide => move |settings: &gio::Settings| {
+            let radio = if settings.get_boolean("dock-fixed") {
+                &radio_visible
+            } else if settings.get_boolean("intellihide") {
+                &radio_intellihide
+            } else {
+                &radio_autohide
+            };
+            if !radio.get_active() {
+                radio.set_active(true);
+            }
+        });
+        update_radios(&settings);
+        //shell_settings.block_signal(&handler_id);
+        let handler_id = Rc::new(settings.connect_changed(move |settings, key| {
+            if key == "dock-fixed" || key == "intellihide" {
+                update_radios(settings);
+            }
+        }));
+        radio_visible.connect_property_active_notify(clone!(@strong settings, @strong handler_id => move |radio| {
+            settings.block_signal(&handler_id);
+            settings.set_boolean("dock-fixed", radio.get_active()).unwrap();
+            settings.unblock_signal(&handler_id);
+        }));
+        radio_intellihide.connect_property_active_notify(clone!(@strong settings => move |radio| {
+            settings.block_signal(&handler_id);
+            settings.set_boolean("intellihide", radio.get_active()).unwrap();
+            settings.unblock_signal(&handler_id);
+        }));
+
+    }
+}
+
 fn dock_size<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
         let list_box = settings_list_box(container, "Dock Size");
@@ -477,6 +521,7 @@ fn dock_page(stack: &gtk::Stack) {
     }
 
     dock_options(&page);
+    dock_visibility(&page);
     dock_size(&page);
     dock_position(&page);
 }
