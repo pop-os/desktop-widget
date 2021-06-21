@@ -514,8 +514,9 @@ fn dock_page(stack: &gtk::Stack) {
     };
     page.add(&list_box);
 
+    let switch = switch_row(&list_box, "Enable Dock");
+
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
-        let switch = switch_row(&list_box, "Enable Dock");
         settings.bind("manualhide", &switch, "active", SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN);
     }
 
@@ -523,6 +524,13 @@ fn dock_page(stack: &gtk::Stack) {
     dock_visibility(&page);
     dock_size(&page);
     dock_position(&page);
+
+
+    page.foreach(|child| {
+        if child != list_box.upcast_ref::<gtk::Widget>() {
+            switch.bind_property("active", child, "sensitive").build();
+        }
+    });
 }
 
 fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
