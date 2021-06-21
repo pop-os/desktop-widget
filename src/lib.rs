@@ -325,22 +325,6 @@ fn dock_options<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
         let list_box = settings_list_box(container, "Dock Options");
 
-        // TODO: Use `bind_with_mapping` when gtk-rs version with that is released
-        let combo = combo_row(&list_box, "Show Dock on Display", "Primary Display", &[
-            "Primary Display",
-            "All Displays",
-        ]);
-        let id = if settings.get_boolean("multi-monitor") {
-            "All Displays"
-        } else {
-            "Primary Display"
-        };
-        combo.set_active_id(Some(id));
-        combo.connect_changed(clone!(@strong settings => move |combo| {
-            let all_displays = combo.get_active_id().map_or(false, |x| x == "All Displays" );
-            settings.set_boolean("multi-monitor", all_displays).unwrap();
-        }));
-
         let switch = switch_row(&list_box, "Extend dock to the edges of the screen");
         settings.bind("extend-height", &switch, "active", SettingsBindFlags::DEFAULT);
 
@@ -460,6 +444,21 @@ fn dock_visibility<C: ContainerExt>(container: &C) {
             settings.unblock_signal(&handler_id);
         }));
 
+        // TODO: Use `bind_with_mapping` when gtk-rs version with that is released
+        let combo = combo_row(&list_box, "Show Dock on Display", "Primary Display", &[
+            "Primary Display",
+            "All Displays",
+        ]);
+        let id = if settings.get_boolean("multi-monitor") {
+            "All Displays"
+        } else {
+            "Primary Display"
+        };
+        combo.set_active_id(Some(id));
+        combo.connect_changed(clone!(@strong settings => move |combo| {
+            let all_displays = combo.get_active_id().map_or(false, |x| x == "All Displays" );
+            settings.set_boolean("multi-monitor", all_displays).unwrap();
+        }));
     }
 }
 
