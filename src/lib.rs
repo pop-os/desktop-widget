@@ -515,7 +515,7 @@ fn dock_page(stack: &gtk::Stack) {
     page.add(&list_box);
 
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
-        let switch = switch_row(&list_box, "Show Dock");
+        let switch = switch_row(&list_box, "Enable Dock");
         settings.bind("manualhide", &switch, "active", SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN);
     }
 
