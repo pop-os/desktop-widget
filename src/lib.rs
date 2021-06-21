@@ -322,9 +322,9 @@ fn appearance_page(stack: &gtk::Stack) {
 }
 
 fn dock_options<C: ContainerExt>(container: &C) {
-    let list_box = settings_list_box(container, "Dock Options");
-
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
+        let list_box = settings_list_box(container, "Dock Options");
+
         // TODO: Use `bind_with_mapping` when gtk-rs version with that is released
         let combo = combo_row(&list_box, "Show Dock on Display", "Primary Display", &[
             "Primary Display",
@@ -344,76 +344,76 @@ fn dock_options<C: ContainerExt>(container: &C) {
         let switch = switch_row(&list_box, "Extend dock to the edges of the screen");
         settings.bind("extend-height", &switch, "active", SettingsBindFlags::DEFAULT);
 
-        let switch = switch_row(&list_box, "Show Mounted Volumes");
+        let shell_settings = gio::Settings::new("org.gnome.shell");
+        let launcher_switch = switch_row(&list_box, "Show Launcher Icon in Dock");
+        let workspaces_switch = switch_row(&list_box, "Show Workspaces Icon in Dock");
+        let applications_switch = switch_row(&list_box, "Show Applications Icon in Dock");
+        let update_switches = clone!(@strong shell_settings, @strong launcher_switch, @strong workspaces_switch, @strong applications_switch => move || {
+            let mut launcher_active = false;
+            let mut workspaces_active = false;
+            let mut applications_active = false;
+            for favorite in shell_settings.get_strv("favorite-apps") {
+                match favorite.as_str() {
+                    "pop-cosmic-launcher.desktop" => launcher_active = true,
+                    "pop-cosmic-workspaces.desktop" => workspaces_active = true,
+                    "pop-cosmic-applications.desktop" => applications_active = true,
+                    _ => {}
+                }
+            }
+            launcher_switch.set_active(launcher_active);
+            workspaces_switch.set_active(workspaces_active);
+            applications_switch.set_active(applications_active);
+        });
+        update_switches();
+        let handler_id = Rc::new(
+            shell_settings
+                .connect_local("changed::favorite-apps", false, move |_| {
+                    update_switches();
+                    None
+                })
+                .unwrap(),
+        );
+        let connect_switch = move |switch: &gtk::Switch, desktop, pos: usize| {
+            let shell_settings = shell_settings.clone();
+            let handler_id = handler_id.clone();
+            switch.connect_property_active_notify(move |switch| {
+                let active = switch.get_active();
+                let favorites = shell_settings.get_strv("favorite-apps");
+                let mut favorites = favorites.iter().map(|x| x.as_str()).collect::<Vec<_>>();
+                let index = favorites.iter().position(|x| *x == desktop);
+                if !active {
+                    if let Some(index) = index {
+                        favorites.remove(index);
+                    }
+                } else if index.is_none() {
+                    // Insert at `pos`, or before first non-cosmic favorite
+                    let pos = pos.min(
+                        favorites[..2]
+                            .iter()
+                            .position(|x| {
+                                ![
+                                    "pop-cosmic-launcher.desktop",
+                                    "pop-cosmic-workspaces.desktop",
+                                    "pop-cosmic-applications.desktop",
+                                ]
+                                .contains(x)
+                            })
+                            .unwrap_or(2),
+                    );
+                    favorites.insert(pos, desktop);
+                }
+                shell_settings.block_signal(&handler_id);
+                shell_settings.set_strv("favorite-apps", &favorites).unwrap();
+                shell_settings.unblock_signal(&handler_id);
+            });
+        };
+        connect_switch(&launcher_switch, "pop-cosmic-launcher.desktop", 0);
+        connect_switch(&workspaces_switch, "pop-cosmic-workspaces.desktop", 1);
+        connect_switch(&applications_switch, "pop-cosmic-applications.desktop", 2);
+
+        let switch = switch_row(&list_box, "Show Mounted Drives");
         settings.bind("show-mounts", &switch, "active", SettingsBindFlags::DEFAULT);
     }
-
-    let shell_settings = gio::Settings::new("org.gnome.shell");
-    let launcher_switch = switch_row(&list_box, "Show Launcher Icon in Dock");
-    let workspaces_switch = switch_row(&list_box, "Show Workspaces Icon in Dock");
-    let applications_switch = switch_row(&list_box, "Show Applications Icon in Dock");
-    let update_switches = clone!(@strong shell_settings, @strong launcher_switch, @strong workspaces_switch, @strong applications_switch => move || {
-        let mut launcher_active = false;
-        let mut workspaces_active = false;
-        let mut applications_active = false;
-        for favorite in shell_settings.get_strv("favorite-apps") {
-            match favorite.as_str() {
-                "pop-cosmic-launcher.desktop" => launcher_active = true,
-                "pop-cosmic-workspaces.desktop" => workspaces_active = true,
-                "pop-cosmic-applications.desktop" => applications_active = true,
-                _ => {}
-            }
-        }
-        launcher_switch.set_active(launcher_active);
-        workspaces_switch.set_active(workspaces_active);
-        applications_switch.set_active(applications_active);
-    });
-    update_switches();
-    let handler_id = Rc::new(
-        shell_settings
-            .connect_local("changed::favorite-apps", false, move |_| {
-                update_switches();
-                None
-            })
-            .unwrap(),
-    );
-    let connect_switch = move |switch: &gtk::Switch, desktop, pos: usize| {
-        let shell_settings = shell_settings.clone();
-        let handler_id = handler_id.clone();
-        switch.connect_property_active_notify(move |switch| {
-            let active = switch.get_active();
-            let favorites = shell_settings.get_strv("favorite-apps");
-            let mut favorites = favorites.iter().map(|x| x.as_str()).collect::<Vec<_>>();
-            let index = favorites.iter().position(|x| *x == desktop);
-            if !active {
-                if let Some(index) = index {
-                    favorites.remove(index);
-                }
-            } else if index.is_none() {
-                // Insert at `pos`, or before first non-cosmic favorite
-                let pos = pos.min(
-                    favorites[..2]
-                        .iter()
-                        .position(|x| {
-                            ![
-                                "pop-cosmic-launcher.desktop",
-                                "pop-cosmic-workspaces.desktop",
-                                "pop-cosmic-applications.desktop",
-                            ]
-                            .contains(x)
-                        })
-                        .unwrap_or(2),
-                );
-                favorites.insert(pos, desktop);
-            }
-            shell_settings.block_signal(&handler_id);
-            shell_settings.set_strv("favorite-apps", &favorites).unwrap();
-            shell_settings.unblock_signal(&handler_id);
-        });
-    };
-    connect_switch(&launcher_switch, "pop-cosmic-launcher.desktop", 0);
-    connect_switch(&workspaces_switch, "pop-cosmic-workspaces.desktop", 1);
-    connect_switch(&applications_switch, "pop-cosmic-applications.desktop", 2);
 }
 
 fn dock_visibility<C: ContainerExt>(container: &C) {
