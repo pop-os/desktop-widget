@@ -65,6 +65,8 @@ fn main() {
                 .application(app)
                 .icon_name("pop-desktop-widget")
                 .window_position(gtk::WindowPosition::Center)
+                .default_height(600)
+                .default_width(800)
                 .build();
             ..set_titlebar(Some(&headerbar));
             ..add(&stack);
