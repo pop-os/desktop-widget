@@ -22,5 +22,17 @@ fn main() -> io::Result<()> {
     let target = ["target/", &app, ".pc"].concat();
     let mut file = File::create(&target).expect("unable to create pkgconfig file");
 
-    writeln!(&mut file, "libdir={}\nincludedir={}\nname={}\n{}", libdir, includedir, app, PKGCONFIG)
+    let cargo = fs::read_to_string("Cargo.toml").expect("no parent Cargo.toml");
+
+    let version = cargo
+        .lines()
+        .find(|line| line.starts_with("version ="))
+        .expect("no version found in parent Cargo.toml")
+        .split_whitespace()
+        .nth(2)
+        .expect("no version string on version key in Cargo.toml");
+
+    let config = PKGCONFIG.replace("{version}", version);
+
+    writeln!(&mut file, "libdir={}\nincludedir={}\nname={}\n{}", libdir, includedir, app, config)
 }
