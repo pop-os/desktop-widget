@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate gtk_extras;
 
+pub mod gis;
+pub mod gresource;
+
 use gio::{SettingsBindFlags, Settings, SettingsExt};
 use glib::clone;
 use gtk::prelude::*;
@@ -159,6 +162,7 @@ fn settings_list_box<C: ContainerExt>(container: &C, title: &str) -> gtk::ListBo
         ..set_header_func(Some(Box::new(header_func)));
         ..set_selection_mode(gtk::SelectionMode::None);
     };
+
     vbox.add(&list_box);
 
     list_box
@@ -199,16 +203,14 @@ fn hot_corner<C: ContainerExt>(container: &C) {
 }
 
 fn top_bar<C: ContainerExt>(container: &C) {
-    let list_box = settings_list_box(container, "Top Bar");
-
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
-        let switch = switch_row(&list_box, "Show Workspaces Button");
+        let switch = switch_row(container, "Show Workspaces Button");
         settings.bind("show-workspaces-button", &switch, "active", SettingsBindFlags::DEFAULT);
 
-        let switch = switch_row(&list_box, "Show Applications Button");
+        let switch = switch_row(container, "Show Applications Button");
         settings.bind("show-applications-button", &switch, "active", SettingsBindFlags::DEFAULT);
 
-        let combo = combo_row(&list_box, "Date & Time and Notifications Position", "Center", &[
+        let combo = combo_row(container, "Date & Time and Notifications Position", "Center", &[
             "Center",
             "Left",
             "Right"
@@ -221,7 +223,7 @@ fn top_bar<C: ContainerExt>(container: &C) {
 
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.multi-monitors-add-on") {
         // TODO: Use `bind_with_mapping` when gtk-rs version with that is released
-        let combo = combo_row(&list_box, "Show Top Bar on Display", "Primary Display", &[
+        let combo = combo_row(container, "Show Top Bar on Display", "Primary Display", &[
             "Primary Display",
             "All Displays",
         ]);
@@ -310,7 +312,7 @@ fn main_page(stack: &gtk::Stack) {
 
     super_key(&page);
     hot_corner(&page);
-    top_bar(&page);
+    top_bar(&settings_list_box(&page, "Top Bar"));
     window_controls(&page);
 }
 
@@ -398,6 +400,53 @@ fn dock_options<C: ContainerExt>(container: &C) {
         let switch = switch_row(&list_box, "Show Mounted Drives");
         settings.bind("show-mounts", &switch, "active", SettingsBindFlags::DEFAULT);
     }
+}
+
+fn dock_selector() -> gtk::Box {
+    let container = cascade! {
+        gtk::Box::new(gtk::Orientation::Horizontal, 12);
+        ..set_vexpand(true);
+        ..set_valign(gtk::Align::Center);
+        ..set_homogeneous(true);
+    };
+
+    if let Some(settings) = gtk_extras::settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
+        let radio_no_dock = gtk::RadioButton::with_label("No dock");
+        settings.bind("manualhide", &radio_no_dock, "active", gio::SettingsBindFlags::DEFAULT);
+
+        let radio_extend = gtk::RadioButton::with_label_from_widget(&radio_no_dock, "Dock extends to edges");
+        settings.bind("extend-height", &radio_extend, "active", gio::SettingsBindFlags::DEFAULT);
+
+        let radio_no_extend = gtk::RadioButton::with_label_from_widget(&radio_extend, "Dock doesn't extend to edges");
+
+        (if settings.get_boolean("manualhide") {
+            &radio_no_dock
+        } else if settings.get_boolean("extend-height") {
+            &radio_extend
+        } else {
+            &radio_no_extend
+        }).set_active(true);
+
+        fn create_option(button: &gtk::RadioButton, image_resource: &str) -> gtk::Box {
+            let image = gtk::ImageBuilder::new()
+                .resource(image_resource)
+                .halign(gtk::Align::Start)
+                .margin_start(4)
+                .build();
+
+            cascade! {
+                gtk::Box::new(gtk::Orientation::Vertical, 16);
+                ..add(button);
+                ..add(&image);
+            }
+        }
+
+        container.add(&create_option(&radio_no_dock, "/org/pop/desktop-widget/no-dock.png"));
+        container.add(&create_option(&radio_extend, "/org/pop/desktop-widget/extend.png"));
+        container.add(&create_option(&radio_no_extend, "/org/pop/desktop-widget/no-extend.png"));
+    }
+
+    container
 }
 
 fn dock_visibility<C: ContainerExt>(container: &C) {
@@ -506,12 +555,7 @@ fn dock_position<C: ContainerExt>(container: &C) {
 fn dock_page(stack: &gtk::Stack) {
     let page = settings_page(&stack, "Dock");
 
-    let list_box = cascade! {
-        gtk::ListBox::new();
-        ..get_style_context().add_class("frame");
-        ..set_header_func(Some(Box::new(header_func)));
-        ..set_selection_mode(gtk::SelectionMode::None);
-    };
+    let list_box = framed_list_box();
     page.add(&list_box);
 
     let switch = switch_row(&list_box, "Enable Dock");
@@ -531,6 +575,15 @@ fn dock_page(stack: &gtk::Stack) {
             switch.bind_property("active", child, "sensitive").build();
         }
     });
+}
+
+fn framed_list_box() -> gtk::ListBox {
+    cascade! {
+        gtk::ListBox::new();
+        ..get_style_context().add_class("frame");
+        ..set_header_func(Some(Box::new(header_func)));
+        ..set_selection_mode(gtk::SelectionMode::None);
+    }
 }
 
 fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
