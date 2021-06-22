@@ -1,6 +1,6 @@
 [package]
 name = "pop-desktop-widget"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Michael Aaron Murphy <mmstick@pm.me>"]
 description = "GTK desktop settings widget for Pop!_OS"
 edition = "2018"
