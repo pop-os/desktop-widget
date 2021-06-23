@@ -483,13 +483,30 @@ fn dock_visibility<C: ContainerExt>(container: &C) {
             }
         }));
         radio_visible.connect_property_active_notify(clone!(@strong settings, @strong handler_id => move |radio| {
+            if !radio.get_active() {
+                return;
+            }
             settings.block_signal(&handler_id);
-            settings.set_boolean("dock-fixed", radio.get_active()).unwrap();
+            settings.set_boolean("dock-fixed", true).unwrap();
+            settings.set_boolean("intellihide", false).unwrap();
             settings.unblock_signal(&handler_id);
         }));
-        radio_intellihide.connect_property_active_notify(clone!(@strong settings => move |radio| {
+        radio_intellihide.connect_property_active_notify(clone!(@strong settings, @strong handler_id => move |radio| {
+            if !radio.get_active() {
+                return;
+            }
             settings.block_signal(&handler_id);
-            settings.set_boolean("intellihide", radio.get_active()).unwrap();
+            settings.set_boolean("dock-fixed", false).unwrap();
+            settings.set_boolean("intellihide", true).unwrap();
+            settings.unblock_signal(&handler_id);
+        }));
+        radio_autohide.connect_property_active_notify(clone!(@strong settings => move |radio| {
+            if !radio.get_active() {
+                return;
+            }
+            settings.block_signal(&handler_id);
+            settings.set_boolean("dock-fixed", false).unwrap();
+            settings.set_boolean("intellihide", false).unwrap();
             settings.unblock_signal(&handler_id);
         }));
 
