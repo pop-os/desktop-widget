@@ -220,24 +220,6 @@ fn top_bar<C: ContainerExt>(container: &C) {
             settings.set_enum("clock-alignment", combo.get_active().unwrap_or(0) as i32).unwrap();
         }));
     }
-
-    if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.multi-monitors-add-on") {
-        // TODO: Use `bind_with_mapping` when gtk-rs version with that is released
-        let combo = combo_row(container, "Show Top Bar on Display", "Primary Display", &[
-            "Primary Display",
-            "All Displays",
-        ]);
-        let id = if settings.get_boolean("show-panel") {
-            "All Displays"
-        } else {
-            "Primary Display"
-        };
-        combo.set_active_id(Some(id));
-        combo.connect_changed(clone!(@strong settings => move |combo| {
-            let all_displays = combo.get_active_id().map_or(false, |x| x == "All Displays" );
-            settings.set_boolean("show-panel", all_displays).unwrap();
-        }));
-    }
 }
 
 pub struct ButtonLayout {
