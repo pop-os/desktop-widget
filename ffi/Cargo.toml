@@ -18,3 +18,4 @@ glib = "0.10"
 gtk-sys = "0.10"
 gtk = "0.9"
 pop-desktop-widget = { path = "../" }
+libc = "0.2.97"

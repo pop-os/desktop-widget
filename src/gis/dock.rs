@@ -14,5 +14,11 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
             "Dock appearance, its size, and position can be changed at any time ",
             "from the Settings application."
         ))));
-    }).upcast()
+    })
+    .upcast()
+}
+
+pub fn title() -> String {
+    // TODO: Localize
+    String::from("Welcome to Pop!_OS")
 }
