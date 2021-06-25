@@ -21,5 +21,11 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
         ..add(header);
         ..add(&framed_box);
         ..add(&extra_notice);
-    }).upcast()
+    })
+    .upcast()
+}
+
+pub fn title() -> String {
+    // TODO: Localize
+    String::from("Configure the Top Bar")
 }

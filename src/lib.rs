@@ -1,4 +1,6 @@
 #[macro_use]
+extern crate fomat_macros;
+#[macro_use]
 extern crate gtk_extras;
 
 pub mod gis;
@@ -97,6 +99,22 @@ fn radio_row<C: ContainerExt>(container: &C, title: &str, subtitle: Option<&str>
     };
     container.add(&row);
     radio
+}
+
+fn scaled_image_from_resource(resource: &str, pixels: i32) -> gtk::ImageBuilder {
+    let pixels = f64::from(pixels);
+    let mut pixbuf = gdk_pixbuf::Pixbuf::from_resource(resource).expect("missing resource");
+
+    let mut width = f64::from(pixbuf.get_width());
+    let mut height = f64::from(pixbuf.get_height());
+    let scale = f64::min(pixels / width, pixels / height);
+
+    width = scale * width;
+    height = scale * height;
+
+    pixbuf = pixbuf.scale_simple(width.round() as i32, height.round() as i32, gdk_pixbuf::InterpType::Hyper).unwrap();
+
+    gtk::ImageBuilder::new().pixbuf(&pixbuf)
 }
 
 fn spin_row<C: ContainerExt>(container: &C, title: &str, min: f64, max: f64, step: f64) -> gtk::SpinButton {

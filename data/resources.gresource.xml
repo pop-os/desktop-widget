@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/org/pop/desktop-widget/">
-      <file>no-dock.png</file>
       <file>extend.png</file>
+      <file>extension.png</file>
+      <file>gestures.png</file>
+      <file>launcher.png</file>
+      <file>no-dock.png</file>
       <file>no-extend.png</file>
     </gresource>
 </gresources>
