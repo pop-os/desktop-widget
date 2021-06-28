@@ -5,6 +5,7 @@ extern crate gtk_extras;
 
 pub mod gis;
 pub mod gresource;
+mod gst_video;
 
 use gio::{SettingsBindFlags, Settings, SettingsExt};
 use glib::clone;
