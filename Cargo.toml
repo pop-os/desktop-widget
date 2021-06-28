@@ -21,3 +21,4 @@ gio = "0.9.1"
 libhandy = "0.7.1"
 pop-theme-switcher = { git = "https://github.com/pop-os/theme-switcher" }
 gdk-pixbuf = "0.9"
+gstreamer = "0.16"

@@ -12,25 +12,21 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
         ))
         .build();
 
-    let image = gtk::ImageBuilder::new()
+    let video = gtk::ImageBuilder::new()
         .resource("/org/pop/desktop-widget/gestures.png")
         .halign(gtk::Align::Center)
         .valign(gtk::Align::Start)
         .vexpand(true)
         .margin_top(32)
-        .build();
-
-    let extra_notice = gtk::LabelBuilder::new()
-        .label("Super key configuration can be changed at any time from the Settings application.")
-        .build();
+        .build()
+        .upcast::<gtk::Widget>();
 
     (cascade! {
         gtk::Box::new(gtk::Orientation::Vertical, 0);
         ..set_halign(gtk::Align::Center);
         ..add(header);
         ..add(&description);
-        ..add(&image);
-        ..add(&extra_notice);
+        ..add(&video);
     })
     .upcast()
 }
