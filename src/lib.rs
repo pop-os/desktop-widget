@@ -375,7 +375,7 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 } else if index.is_none() {
                     // Insert at `pos`, or before first non-cosmic favorite
                     let pos = pos.min(
-                        favorites[..2]
+                        favorites
                             .iter()
                             .position(|x| {
                                 ![
@@ -385,7 +385,7 @@ fn dock_options<C: ContainerExt>(container: &C) {
                                 ]
                                 .contains(x)
                             })
-                            .unwrap_or(2),
+                            .unwrap_or(0),
                     );
                     favorites.insert(pos, desktop);
                 }
