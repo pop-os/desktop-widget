@@ -13,6 +13,7 @@ use gtk::prelude::*;
 use gtk_extras::settings;
 use libhandy::prelude::*;
 use pop_theme_switcher::PopThemeSwitcher;
+use std::cell::RefCell;
 use std::rc::Rc;
 
 pub struct PopDesktopWidget;
@@ -352,18 +353,26 @@ fn dock_options<C: ContainerExt>(container: &C) {
             applications_switch.set_active(applications_active);
         });
         update_switches();
+        let switch_handlers = Rc::new(RefCell::new(Vec::<(gtk::Switch, glib::SignalHandlerId)>::new()));
         let handler_id = Rc::new(
             shell_settings
-                .connect_local("changed::favorite-apps", false, move |_| {
+                .connect_local("changed::favorite-apps", false, clone!(@strong switch_handlers => move |_| {
+                    let ids = switch_handlers.borrow();
+                    for (switch, id) in ids.iter() {
+                        switch.block_signal(id);
+                    }
                     update_switches();
+                    for (switch, id) in ids.iter() {
+                        switch.unblock_signal(id);
+                    }
                     None
-                })
+                }))
                 .unwrap(),
         );
         let connect_switch = move |switch: &gtk::Switch, desktop, pos: usize| {
             let shell_settings = shell_settings.clone();
             let handler_id = handler_id.clone();
-            switch.connect_property_active_notify(move |switch| {
+            let id = switch.connect_property_active_notify(move |switch| {
                 let active = switch.get_active();
                 let favorites = shell_settings.get_strv("favorite-apps");
                 let mut favorites = favorites.iter().map(|x| x.as_str()).collect::<Vec<_>>();
@@ -393,6 +402,7 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 shell_settings.set_strv("favorite-apps", &favorites).unwrap();
                 shell_settings.unblock_signal(&handler_id);
             });
+            switch_handlers.borrow_mut().push((switch.clone(), id));
         };
         connect_switch(&launcher_switch, "pop-cosmic-launcher.desktop", 0);
         connect_switch(&workspaces_switch, "pop-cosmic-workspaces.desktop", 1);
