@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=COSMIC
+Comment=Customize COSMIC settings
+Exec=env POP_DESKTOP_PAGE=main gnome-control-center background
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=GNOME;GTK;Settings;DesktopSettings;X-GNOME-Settings-Panel;X-GNOME-PersonalizationSettings;
+OnlyShowIn=GNOME;
+# Translators: Search terms to find the Background panel. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+Keywords=COSMIC
