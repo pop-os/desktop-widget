@@ -16,6 +16,11 @@ use pop_theme_switcher::PopThemeSwitcher;
 use std::cell::RefCell;
 use std::rc::Rc;
 
+const PAGE_APPEARANCE: &str = "appearance";
+const PAGE_DOCK: &str = "dock";
+const PAGE_MAIN: &str = "main";
+const PAGE_WORKSPACES: &str = "workspaces";
+
 pub struct PopDesktopWidget;
 
 fn header_func(row: &gtk::ListBoxRow, before: Option<&gtk::ListBoxRow>) {
@@ -147,7 +152,8 @@ fn switch_row<C: ContainerExt>(container: &C, title: &str) -> gtk::Switch {
     switch
 }
 
-fn settings_page(stack: &gtk::Stack, title: &str) -> gtk::Box {
+/// Template for a settings page. `id` is used internally for stack switching.
+fn settings_page(stack: &gtk::Stack, id: &str, title: &str) -> gtk::Box {
     let vbox = gtk::Box::new(gtk::Orientation::Vertical, 48);
     let clamp = cascade! {
         libhandy::Clamp::new();
@@ -161,7 +167,7 @@ fn settings_page(stack: &gtk::Stack, title: &str) -> gtk::Box {
         gtk::ScrolledWindow::new::<gtk::Adjustment, gtk::Adjustment>(None, None);
         ..add(&clamp);
     };
-    stack.add_titled(&scrolled_window, title, title);
+    stack.add_titled(&scrolled_window, id, title);
     vbox
 }
 
@@ -310,7 +316,7 @@ fn window_controls<C: ContainerExt>(container: &C) {
 }
 
 fn main_page(stack: &gtk::Stack) {
-    let page = settings_page(stack, "General");
+    let page = settings_page(stack, PAGE_MAIN, "General");
 
     super_key(&page);
     hot_corner(&page);
@@ -319,7 +325,7 @@ fn main_page(stack: &gtk::Stack) {
 }
 
 fn appearance_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, "Appearance");
+    let page = settings_page(&stack, PAGE_APPEARANCE, "Appearance");
 
     let theme_switcher = PopThemeSwitcher::new();
     page.add(&*theme_switcher);
@@ -581,7 +587,7 @@ fn dock_position<C: ContainerExt>(container: &C) {
 }
 
 fn dock_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, "Dock");
+    let page = settings_page(&stack, PAGE_DOCK, "Dock");
 
     let list_box = framed_list_box();
     page.add(&list_box);
@@ -658,8 +664,7 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
 }
 
 fn workspaces_page(stack: &gtk::Stack) {
-
-    let page = settings_page(&stack, "Workspaces");
+    let page = settings_page(&stack, PAGE_WORKSPACES, "Workspaces");
 
     let list_box = cascade! {
         gtk::ListBox::new();
@@ -673,9 +678,11 @@ fn workspaces_page(stack: &gtk::Stack) {
         let radio_dynamic = radio_row(&list_box, "Dynamic Workspaces", Some(
             "Automatically removes empty workspaces."
         ));
+
         let radio_fixed = radio_row(&list_box, "Fixed Number of Workspaces", Some(
             "Specify a number of workspaces"
         ));
+
         radio_fixed.join_group(Some(&radio_dynamic));
         settings.bind("dynamic-workspaces", &radio_dynamic, "active", SettingsBindFlags::DEFAULT);
         settings.bind("dynamic-workspaces", &radio_fixed, "active", SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN);
@@ -702,15 +709,21 @@ impl PopDesktopWidget {
             stack.remove(w);
             children.push((w.clone(), name, title));
         });
+
         main_page(&stack);
         for (w, name, title) in children {
             stack.add_titled(&w, &name, &title);
         }
+
         appearance_page(&stack);
         dock_page(&stack);
         workspaces_page(&stack);
 
         stack.show_all();
+
+        if let Ok(page) = std::env::var("POP_DESKTOP_PAGE") {
+            stack.set_visible_child_name(&page);
+        }
 
         Self
     }
