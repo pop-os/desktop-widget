@@ -1,4 +1,4 @@
-use gio::prelude::*;
+use crate::fl;
 use gtk::prelude::*;
 
 pub fn page(header: &gtk::Widget) -> gtk::Widget {
@@ -6,19 +6,11 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
         gtk::Box::new(gtk::Orientation::Vertical, 0);
         ..set_halign(gtk::Align::Center);
         ..add(header);
-        ..add(&gtk::Label::new(Some(
-            "Continue the desktop setup by choosing your preferred layout."
-        )));
+        ..add(&gtk::Label::new(Some(&fl!("gis-dock-header"))));
         ..add(&crate::dock_selector());
-        ..add(&gtk::Label::new(Some(concat!(
-            "Dock appearance, its size, and position can be changed at any time ",
-            "from the Settings application."
-        ))));
+        ..add(&gtk::Label::new(Some(&fl!("gis-dock-description"))));
     })
     .upcast()
 }
 
-pub fn title() -> String {
-    // TODO: Localize
-    String::from("Welcome to Pop!_OS")
-}
+pub fn title() -> String { fl!("gis-dock-title") }

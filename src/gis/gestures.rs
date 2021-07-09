@@ -1,3 +1,4 @@
+use crate::fl;
 use gio::prelude::*;
 use gtk::prelude::*;
 
@@ -5,11 +6,7 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     let description = gtk::LabelBuilder::new()
         .wrap(true)
         .justify(gtk::Justification::Center)
-        .label(concat!(
-            "Use four finger swipe left to open Workspaces and windows overview, four fingers swipe ",
-            "right to open Applications, and four fingers swipe up or down to switch between ",
-            "workspaces. Swipe with three fingers to switch between windows."
-        ))
+        .label(&fl!("gis-gestures-description"))
         .build();
 
     let video = gtk::ImageBuilder::new()
@@ -31,6 +28,4 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     .upcast()
 }
 
-pub fn title() -> String {
-    String::from("Use Gestures for Easier Navigation")
-}
+pub fn title() -> String { fl!("gis-gestures-title") }

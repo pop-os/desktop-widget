@@ -1,10 +1,9 @@
+use crate::fl;
 use gio::prelude::*;
 use gtk::prelude::*;
 
 pub fn page(header: &gtk::Widget) -> gtk::Widget {
-    let extra_notice = gtk::LabelBuilder::new()
-        .label("Top bar configuration can be changed at any time from the Settings application.")
-        .build();
+    let extra_notice = gtk::LabelBuilder::new().label(&fl!("gis-panel-notice")).build();
 
     let framed_box = cascade! {
         crate::framed_list_box();
@@ -25,7 +24,4 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     .upcast()
 }
 
-pub fn title() -> String {
-    // TODO: Localize
-    String::from("Configure the Top Bar")
-}
+pub fn title() -> String { fl!("gis-panel-title") }

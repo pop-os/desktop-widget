@@ -22,3 +22,7 @@ libhandy = "0.7.1"
 pop-theme-switcher = { git = "https://github.com/pop-os/theme-switcher" }
 gdk-pixbuf = "0.9"
 gstreamer = "0.16"
+i18n-embed = { version = "0.12", features = ["fluent-system", "desktop-requester"] }
+i18n-embed-fl = "0.5"
+rust-embed = { version = "5.9", features = ["debug-embed"] }
+once_cell = "1.8"
