@@ -28,9 +28,11 @@ fn monitors() -> Result<(), Box<dyn std::error::Error>> {
         eprintln!("Failed to get default display");
     }
 
-    Ok(())}
+    Ok(())
+}
 
 fn main() {
+    pop_desktop_widget::localize();
     glib::set_program_name(APP_ID.into());
     gtk::init().expect("failed to init GTK");
 
@@ -74,8 +76,6 @@ fn main() {
             ..connect_delete_event(move |window, _| {
                 window.close();
 
-                // Allow this closure to attain ownership of our firmware widget,
-                // so that this widget will exist for as long as the window exists.
                 let _widget = &stack;
 
                 Inhibit(false)

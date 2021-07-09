@@ -1,3 +1,4 @@
+use crate::fl;
 use gio::prelude::*;
 use gtk::prelude::*;
 
@@ -5,11 +6,7 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     let description = gtk::LabelBuilder::new()
         .wrap(true)
         .justify(gtk::Justification::Center)
-        .label(concat!(
-            "Press Super key or use an icon in the dock to display the Launcher search field. Use ",
-            "arrow keys to quickly switch between open windows or type the name of the application ",
-            "to launch it. The Launcher makes navigating the desktop faster and more fluid."
-        ))
+        .label(&fl!("gis-launcher-description"))
         .build();
 
     let image = gtk::ImageBuilder::new()
@@ -20,9 +17,7 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
         .margin_top(32)
         .build();
 
-    let extra_notice = gtk::LabelBuilder::new()
-        .label("Super key configuration can be changed at any time from the Settings application.")
-        .build();
+    let extra_notice = gtk::LabelBuilder::new().label(&fl!("gis-launcher-notice")).build();
 
     (cascade! {
         gtk::Box::new(gtk::Orientation::Vertical, 0);
@@ -35,6 +30,4 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     .upcast()
 }
 
-pub fn title() -> String {
-    String::from("Open and Switch Applications from Launcher")
-}
+pub fn title() -> String { fl!("gis-launcher-title") }

@@ -1,3 +1,11 @@
+debian/*
+!debian/source
+!debian/changelog
+!debian/compat
+!debian/control
+!debian/copyright
+!debian/*.install
+!debian/rules
 vendor.tar
 target/
 vendor/
