@@ -5,8 +5,10 @@ extern crate gtk_extras;
 
 pub mod gis;
 pub mod gresource;
-mod gst_video;
 pub mod localize;
+
+mod gst_video;
+mod tiling;
 
 use gio::{Settings, SettingsBindFlags, SettingsExt};
 use glib::clone;
@@ -827,6 +829,7 @@ impl PopDesktopWidget {
         appearance_page(&stack);
         dock_page(&stack);
         workspaces_page(&stack);
+        tiling::view(&stack);
 
         stack.show_all();
 

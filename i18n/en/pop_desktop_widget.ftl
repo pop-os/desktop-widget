@@ -60,6 +60,7 @@ multi-monitor-behavior = Multi-monitor Behavior
 page-appearance = Appearance
 page-dock = Dock
 page-main = General
+page-tiling = Tiling
 page-workspaces = Workspaces
 
 position-bottom = Bottom of the screen
@@ -78,6 +79,14 @@ size-small = Small
 
 super-key-action = Super Key Action
 
+tiling-active-hint = Show active window hint
+tiling-gap-inner = Inner
+tiling-gap-outer = Outer
+tiling-gaps = Gaps
+tiling-show-title = Show window title decorations
+tiling-smart-gaps = Smart
+tiling-snap-to-grid = Snap floating windows to grid
+
 top-bar = Top Bar
 
 window-controls = Window Controls
@@ -91,4 +100,3 @@ workspaces-fixed = Fixed Number of Workspaces
 workspaces-fixed-description = Specify a number of workspaces
 workspaces-primary = Workspaces on Primary Display Only
 workspaces-span-displays = Workspaces Span Displays
-
