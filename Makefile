@@ -42,6 +42,7 @@ install:
 	install -Dm0644 data/gnome-background-panel-cosmic.desktop "$(DESTDIR)$(prefix)/share/applications/"
 	install -Dm0644 data/gnome-background-panel-dock.desktop "$(DESTDIR)$(prefix)/share/applications/"
 	install -Dm0644 data/gnome-background-panel-workspaces.desktop "$(DESTDIR)$(prefix)/share/applications/"
+	install -Dm0644 data/gnome-background-panel-tiling.desktop "$(DESTDIR)$(prefix)/share/applications/"
 
 $(PKGCONFIG): $(FFI) tools/src/pkgconfig.rs
 	cargo run -p tools --bin pkgconfig $(DESKTOP_ARGS) -- \
