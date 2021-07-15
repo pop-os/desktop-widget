@@ -1,6 +1,7 @@
 use glib::translate::{FromGlibPtrNone, ToGlibPtr};
 use gtk_sys::GtkWidget;
 use pop_desktop_widget::PopDesktopWidget as RustWidget;
+use pop_desktop_widget::localize;
 use std::ffi::CString;
 
 #[no_mangle]
@@ -11,6 +12,8 @@ pub extern "C" fn pop_desktop_widget_new(stack: *mut gtk_sys::GtkStack) -> *mut 
     unsafe {
         gtk::set_initialized();
     }
+
+    localize();
 
     Box::into_raw(Box::new(RustWidget::new(unsafe { &gtk::Stack::from_glib_none(stack) })))
         as *mut PopDesktopWidget
