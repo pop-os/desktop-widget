@@ -5,7 +5,7 @@ action-launcher-description = Pressionando a tecla Super abre o Lançador
 action-workspaces = Áreas de Trabalho
 action-workspaces-description = Pressionando a tecla Super abre as Janelas e Áreas de Trabalho
 
-date-combo = Data & Tempo e Posição das Notificações
+date-combo = Posição da Data, Tempo e Notificações
 date-combo-center = Centro
 date-combo-left = Esquerda
 date-combo-right = Direita
@@ -27,7 +27,7 @@ dock-intelligently-hide-description = A dock se esconde quando qualquer janela s
 dock-launcher = Mostrar Icone do Lançador na Dock
 dock-mounted-drives = Mostrar Partições Montadas
 dock-options = Opções da Dock
-dock-position = Posição na Área de trabalho
+dock-position = Posição na Área de Trabalho
 dock-show-on-display = Mostrar Dock na Tela
 dock-visibility = Visibilidade da Dock
 dock-workspaces = Mostrar o Icone das Áreas de Trabalho na Dock
@@ -53,9 +53,9 @@ gis-panel-notice = A configuração da Barra superior pode ser alterada a qualqu
 gis-panel-title = Configure a Barra Superior
 
 hot-corner = Hot Corner
-hot-corner-description = Ative o hot corner do canto superior esquerdo para mostrar as Áreas de Trabalho
+hot-corner-description = Ativar Hot Corner do canto superior esquerdo para exibir as Áreas de Trabalho
 
-multi-monitor-behavior = Comportamento de Multi-monitor
+multi-monitor-behavior = Comportamento dos Monitores
 
 page-appearance = Aparência
 page-dock = Dock
@@ -82,7 +82,7 @@ top-bar = Barra Superior
 
 window-controls = Controles das Janelas
 
-workspace-picker-position = Lugar do Selecionador de Áreas de Trabalho
+workspace-picker-position = Lugar do Seletor de Áreas de Trabalho
 
 workspaces-amount = Número de Áreas de Trabalho
 workspaces-dynamic = Áreas de Trabalho Dinâmicas
@@ -90,5 +90,5 @@ workspaces-dynamic-description = Automaticamente remove áreas de trabalho vazia
 workspaces-fixed = Número fixado de Áreas de Trabalho
 workspaces-fixed-description = Especifique um número de áreas de trabalho
 workspaces-primary = Mostrar Áreas de Trabalho apenas no monitor principal
-workspaces-span-displays = Exibições das Áreas de Trabalho
+workspaces-span-displays = Mostrar as Áreas de Trabalho em todos os monitores
 
