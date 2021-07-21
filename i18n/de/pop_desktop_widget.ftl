@@ -1,9 +1,9 @@
 action-applications = Anwendungen
-action-applications-description = Durch drücken der Super-Taste wird die Anwendungsübersicht geöffnet 
+action-applications-description = Durch Drücken der Super-Taste wird die Anwendungsübersicht geöffnet 
 action-launcher = Programmstarter
 action-launcher-description = Drücken der Super-Taste öffnet den Programmstarter
 action-workspaces = Aktivitäten
-action-workspaces-description = Durch drücken der Super-Taste öffnet sich die Fenster sowie Aktivitätsübersicht.
+action-workspaces-description = Durch Drücken der Super-Taste öffnet sich die Fenster sowie Aktivitätsübersicht.
 
 date-combo = Datum & Zeit sowie Benachrichtigungsposition
 date-combo-center = Mitte
@@ -28,9 +28,9 @@ dock-launcher = Zeige Programmstarter im Dock
 dock-mounted-drives = Zeige eingehängte Laufwerke
 dock-options = Dockoptionen
 dock-position = Position auf dem Desktop
-dock-show-on-display = Zeige das Dock auf dem Anzeigegerät
+dock-show-on-display = Dock anzeigen
 dock-visibility = Sichtbarkeit des Docks
-dock-workspaces = Zeige Aktivitätsübersicht im Dock
+dock-workspaces = Zeige eine Schaltfläche für die Aktivitätsübersicht im Dock
 
 gis-dock-description = Aussehen, Größe und Position des Docks kann jederzeit in den Einstellungen geändert werden.
 gis-dock-header = Bitte wählen Sie ihr bevorzugtes Layout um fortzufahren
