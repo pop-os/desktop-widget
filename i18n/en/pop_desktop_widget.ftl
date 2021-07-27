@@ -27,6 +27,7 @@ dock-intelligently-hide-description = Dock hides when any window overlaps the do
 dock-launcher = Show Launcher Icon in Dock
 dock-mounted-drives = Show Mounted Drives
 dock-options = Dock Options
+dock-size = Dock Size
 dock-position = Position on the Desktop
 dock-show-on-display = Show Dock on Display
 dock-visibility = Dock Visibility
