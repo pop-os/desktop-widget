@@ -27,6 +27,7 @@ dock-intelligently-hide-description = A dock se esconde quando qualquer janela s
 dock-launcher = Mostrar Icone do Lançador na Dock
 dock-mounted-drives = Mostrar Partições Montadas
 dock-options = Opções da Dock
+dock-size = Tamanho da Dock
 dock-position = Posição na Área de Trabalho
 dock-show-on-display = Mostrar Dock na Tela
 dock-visibility = Visibilidade da Dock
