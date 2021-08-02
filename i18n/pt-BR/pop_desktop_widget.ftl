@@ -56,7 +56,7 @@ gis-panel-title = Configure a Barra Superior
 hot-corner = Hot Corner
 hot-corner-description = Ativar Hot Corner do canto superior esquerdo para exibir as Áreas de Trabalho
 
-multi-monitor-behavior = Comportamento dos Monitores
+multi-monitor-behavior = Comportamento nos Monitores
 
 page-appearance = Aparência
 page-dock = Dock
@@ -83,13 +83,13 @@ top-bar = Barra Superior
 
 window-controls = Controles das Janelas
 
-workspace-picker-position = Lugar do Seletor de Áreas de Trabalho
+workspace-picker-position = Posição do Seletor de Áreas de Trabalho
 
 workspaces-amount = Número de Áreas de Trabalho
 workspaces-dynamic = Áreas de Trabalho Dinâmicas
-workspaces-dynamic-description = Automaticamente remove áreas de trabalho vazias.
-workspaces-fixed = Número fixado de Áreas de Trabalho
+workspaces-dynamic-description = Automaticamente remove áreas de trabalho vazias
+workspaces-fixed = Número fixo de Áreas de Trabalho
 workspaces-fixed-description = Especifique um número de áreas de trabalho
-workspaces-primary = Mostrar Áreas de Trabalho apenas no monitor principal
+workspaces-primary = Mostrar as Áreas de Trabalho apenas no monitor principal
 workspaces-span-displays = Mostrar as Áreas de Trabalho em todos os monitores
 
