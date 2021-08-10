@@ -37,10 +37,10 @@ gis-dock-description = Aparência da Dock, seu tamanho, e posição pode ser alt
 gis-dock-header = Continue a configuração do sistema escolhendo o seu layout preferido.
 gis-dock-title = Bem-vindo ao Pop!_OS
 
-gis-extensions-label1 = Extensões do GNOME Shell manualmente instaladas estão desativadas para assegurar que as atualizações sejam seguras. As extensões geralmente não são testadas pelo Pop!_OS e pode causar problemas. Você pode reativar alguma delas manualmente para ter certeza da compatibilidade de cada extensão. Para reativar, instale elas novamente de {$url}, ou restaure elas da pasta de backup.
+gis-extensions-label1 = Extensões do GNOME Shell instaladas manualmente estão desativadas para assegurar que as atualizações sejam confiáveis. As extensões geralmente não são testadas pelo Pop!_OS e podem causar problemas. Você pode reativá-las manualmente, uma por vez, para garantir a compatibilidade de cada extensão. Para reativar, instale elas novamente de {$url}, ou restaure elas da pasta de backup.
 
  Suas extensões do GNOME Shell foram movidas de:
-gis-extensions-label2 = Esta pasta de backup:
+gis-extensions-label2 = Para esta pasta de backup:
 gis-extensions-title = Atualizações das Extensões do GNOME Shell
 
 gis-gestures-description = Use quatro dedos para deslizar a esquerda e abrir as Áreas de Trabalho e também janelas, quatro dedos para deslizar a direita e abrir os Aplicativos, e quatro dedos para cima ou para baixo para mudar entre as áreas de trabalho. Deslize com três dedos para mudar entre janelas.
@@ -56,7 +56,7 @@ gis-panel-title = Configure a Barra Superior
 hot-corner = Hot Corner
 hot-corner-description = Ativar Hot Corner do canto superior esquerdo para exibir as Áreas de Trabalho
 
-multi-monitor-behavior = Comportamento nos Monitores
+multi-monitor-behavior = Comportamento para Multi-Monitores
 
 page-appearance = Aparência
 page-dock = Dock
