@@ -4,6 +4,10 @@ action-launcher = Launcher
 action-launcher-description = Pressing the Super key opens the Launcher
 action-workspaces = Workspaces
 action-workspaces-description = Pressing the Super key opens the Window and Workspaces Overview
+disabled-super-warning =
+  Super key override was disabled via advanced settings.
+   • Super will open Workspaces unless behavior is specified by other extensions.
+   • Selecting an option below will re-enable the override.
 
 date-combo = Date & Time and Notifications Position
 date-combo-center = Center

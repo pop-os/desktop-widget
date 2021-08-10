@@ -11,6 +11,7 @@ pub mod localize;
 use gio::{Settings, SettingsBindFlags, SettingsExt};
 use glib::clone;
 use gtk::prelude::*;
+use gtk::BoxExt;
 use gtk_extras::settings;
 use i18n_embed::DesktopLanguageRequester;
 use libhandy::prelude::*;
@@ -248,6 +249,8 @@ fn super_key<C: ContainerExt>(container: &C) {
         );
         radio_applications.join_group(Some(&radio_launcher));
 
+        let visible_radios = radio_launcher.get_group();
+
         radio_bindings(
             &settings,
             "overlay-key-action",
@@ -258,6 +261,47 @@ fn super_key<C: ContainerExt>(container: &C) {
             ],
             None,
         );
+
+        if let Some(settings_box) = list_box.get_parent() {
+            if let Ok(settings_box) = settings_box.downcast::<gtk::Box>() {
+                // This hidden radio allows the visible ones to be unselected
+                let hidden_disabled_radio = gtk::RadioButton::new();
+                hidden_disabled_radio.join_group(Some(&visible_radios[0]));
+
+                let disabled_message = cascade! {
+                    gtk::Label::new(Some(&fl!("disabled-super-warning")));
+                    ..set_xalign(0.0);
+                    ..set_no_show_all(true);
+                };
+                settings_box.add(&disabled_message);
+                settings_box.reorder_child(&disabled_message, 1);
+
+                let settings_key = "disable-overlay-key";
+                let on_disabled_setting_changed = clone!(@strong disabled_message, @strong hidden_disabled_radio => move |is_disabled| {
+                    disabled_message.set_visible(is_disabled);
+                    hidden_disabled_radio.set_active(is_disabled);
+                });
+
+                // Set UI based on current settings
+                on_disabled_setting_changed(settings.get_boolean(settings_key));
+
+                // Update disabled setting when a radio is selected
+                for radio in visible_radios {
+                    radio.connect_property_active_notify(clone!(@strong settings => move |radio| {
+                        if radio.get_active() {
+                            let _ = settings.set_boolean(settings_key, false);
+                        }
+                    }));
+                }
+
+                // Update UI when disabled setting changes
+                settings.connect_changed(move |settings, event_key| {
+                    if event_key == settings_key {
+                        on_disabled_setting_changed(settings.get_boolean(settings_key));
+                    }
+                });
+            }
+        }
     }
 }
 
