@@ -38,7 +38,7 @@ gis-dock-title = Willkommen zu Pop!_OS
 
 gis-extensions-label1 = Manuell installierte Gnome-Shell Erweiterungen werden aus Stabilitätsgründen deaktiviert. Die Erweiterungen sind im Normalfall nicht von Pop!_OS getestet und können Probleme verursachen. Sie können die Erweiterungen nacheinander aktivieren um die Kompatiblität jeder Erweiterung sicherzustellen. Um die gewünschte Erweiterung wieder zu aktivieren, installieren Sie die Erweiterung erneut von {$url}, oder stellen Sie die Erweiterungen aus einer Sicherung wieder her.
 
- Ihre GNOME-Shell Erweiterungen wurden aus folgender Quell verschoben:
+ Ihre GNOME-Shell Erweiterungen wurden aus folgender Quelle verschoben:
 gis-extensions-label2 = Zu diesem Sicherungsordner:
 gis-extensions-title = GNOME-Shell Erweiterungsupdate
 
