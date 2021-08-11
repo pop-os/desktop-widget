@@ -277,9 +277,14 @@ fn super_key<C: ContainerExt>(container: &C) {
                 settings_box.reorder_child(&disabled_message, 1);
 
                 let settings_key = "disable-overlay-key";
-                let on_disabled_setting_changed = clone!(@strong disabled_message, @strong hidden_disabled_radio => move |is_disabled| {
+                let on_disabled_setting_changed = clone!(@strong disabled_message, @strong hidden_disabled_radio, @strong settings => move |is_disabled| {
                     disabled_message.set_visible(is_disabled);
-                    hidden_disabled_radio.set_active(is_disabled);
+                    if is_disabled {
+                        hidden_disabled_radio.set_active(true);
+                    } else {
+                        settings
+                            .set_value("overlay-key-action", &settings.get_value("overlay-key-action"));
+                    }
                 });
 
                 // Set UI based on current settings
