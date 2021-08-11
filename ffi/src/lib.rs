@@ -29,6 +29,8 @@ pub extern "C" fn pop_desktop_widget_gis_dock_page(header: *mut GtkWidget) -> *m
     unsafe {
         gtk::set_initialized();
     }
+    
+    localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
     pop_desktop_widget::gis::dock::page(&header).to_glib_full()
@@ -44,6 +46,8 @@ pub extern "C" fn pop_desktop_widget_gis_extensions_page(header: *mut GtkWidget)
     unsafe {
         gtk::set_initialized();
     }
+    
+    localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
     pop_desktop_widget::gis::extensions::page(&header).to_glib_full()
@@ -59,6 +63,8 @@ pub extern "C" fn pop_desktop_widget_gis_gestures_page(header: *mut GtkWidget) -
     unsafe {
         gtk::set_initialized();
     }
+    
+    localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
     pop_desktop_widget::gis::gestures::page(&header).to_glib_full()
@@ -74,6 +80,8 @@ pub extern "C" fn pop_desktop_widget_gis_launcher_page(header: *mut GtkWidget) -
     unsafe {
         gtk::set_initialized();
     }
+    
+    localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
     pop_desktop_widget::gis::launcher::page(&header).to_glib_full()
@@ -89,6 +97,8 @@ pub extern "C" fn pop_desktop_widget_gis_panel_page(header: *mut GtkWidget) -> *
     unsafe {
         gtk::set_initialized();
     }
+    
+    localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
     pop_desktop_widget::gis::panel::page(&header).to_glib_full()
