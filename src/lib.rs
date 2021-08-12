@@ -278,6 +278,7 @@ fn super_key<C: ContainerExt>(container: &C) {
                         gtk::Label::new(Some(&fl!("disabled-super-warning")));
                         ..set_xalign(0.0);
                         ..set_no_show_all(true);
+                        ..set_line_wrap(true);
                     };
                     settings_box.add(&disabled_message);
                     settings_box.reorder_child(&disabled_message, 1);
