@@ -38,6 +38,8 @@ pub extern "C" fn pop_desktop_widget_gis_dock_page(header: *mut GtkWidget) -> *m
 
 #[no_mangle]
 pub extern "C" fn pop_desktop_widget_gis_dock_title() -> *mut libc::c_char {
+    localize();
+
     string_create(pop_desktop_widget::gis::dock::title())
 }
 
