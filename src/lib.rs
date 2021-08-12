@@ -228,6 +228,8 @@ fn settings_list_box<C: ContainerExt>(container: &C, title: &str) -> gtk::ListBo
 }
 
 fn super_key<C: ContainerExt>(container: &C) {
+    const DISABLE_SUPER_SETTINGS_KEY: &str = "disable-overlay-key";
+
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
         let list_box = settings_list_box(container, &fl!("super-key-action"));
 
@@ -262,49 +264,57 @@ fn super_key<C: ContainerExt>(container: &C) {
             None,
         );
 
-        if let Some(settings_box) = list_box.get_parent() {
-            if let Ok(settings_box) = settings_box.downcast::<gtk::Box>() {
-                // This hidden radio allows the visible ones to be unselected
-                let hidden_disabled_radio = gtk::RadioButton::new();
-                hidden_disabled_radio.join_group(Some(&visible_radios[0]));
+        let has_disable_super_setting = settings
+            .get_property_settings_schema()
+            .map_or(false, |x| x.has_key(DISABLE_SUPER_SETTINGS_KEY));
+        if has_disable_super_setting {
+            if let Some(settings_box) = list_box.get_parent() {
+                if let Ok(settings_box) = settings_box.downcast::<gtk::Box>() {
+                    // This hidden radio allows the visible ones to be unselected
+                    let hidden_disabled_radio = gtk::RadioButton::new();
+                    hidden_disabled_radio.join_group(Some(&visible_radios[0]));
 
-                let disabled_message = cascade! {
-                    gtk::Label::new(Some(&fl!("disabled-super-warning")));
-                    ..set_xalign(0.0);
-                    ..set_no_show_all(true);
-                };
-                settings_box.add(&disabled_message);
-                settings_box.reorder_child(&disabled_message, 1);
+                    let disabled_message = cascade! {
+                        gtk::Label::new(Some(&fl!("disabled-super-warning")));
+                        ..set_xalign(0.0);
+                        ..set_no_show_all(true);
+                    };
+                    settings_box.add(&disabled_message);
+                    settings_box.reorder_child(&disabled_message, 1);
 
-                let settings_key = "disable-overlay-key";
-                let on_disabled_setting_changed = clone!(@strong disabled_message, @strong hidden_disabled_radio, @strong settings => move |is_disabled| {
-                    disabled_message.set_visible(is_disabled);
-                    if is_disabled {
-                        hidden_disabled_radio.set_active(true);
-                    } else {
-                        settings
-                            .set_value("overlay-key-action", &settings.get_value("overlay-key-action"));
-                    }
-                });
-
-                // Set UI based on current settings
-                on_disabled_setting_changed(settings.get_boolean(settings_key));
-
-                // Update disabled setting when a radio is selected
-                for radio in visible_radios {
-                    radio.connect_property_active_notify(clone!(@strong settings => move |radio| {
-                        if radio.get_active() {
-                            let _ = settings.set_boolean(settings_key, false);
+                    let on_disabled_setting_changed = clone!(@strong disabled_message, @strong hidden_disabled_radio, @strong settings => move |is_disabled| {
+                        disabled_message.set_visible(is_disabled);
+                        if is_disabled {
+                            hidden_disabled_radio.set_active(true);
+                        } else {
+                            let _ = settings
+                                .set_value("overlay-key-action", &settings.get_value("overlay-key-action"));
                         }
-                    }));
-                }
+                    });
 
-                // Update UI when disabled setting changes
-                settings.connect_changed(move |settings, event_key| {
-                    if event_key == settings_key {
-                        on_disabled_setting_changed(settings.get_boolean(settings_key));
+                    // Set UI based on current settings
+                    on_disabled_setting_changed(settings.get_boolean(DISABLE_SUPER_SETTINGS_KEY));
+
+                    // Update disabled setting when a radio is selected
+                    for radio in visible_radios {
+                        radio.connect_property_active_notify(
+                            clone!(@strong settings => move |radio| {
+                                if radio.get_active() {
+                                    let _ = settings.set_boolean(DISABLE_SUPER_SETTINGS_KEY, false);
+                                }
+                            }),
+                        );
                     }
-                });
+
+                    // Update UI when disabled setting changes
+                    settings.connect_changed(move |settings, event_key| {
+                        if event_key == DISABLE_SUPER_SETTINGS_KEY {
+                            on_disabled_setting_changed(
+                                settings.get_boolean(DISABLE_SUPER_SETTINGS_KEY),
+                            );
+                        }
+                    });
+                }
             }
         }
     }
@@ -345,8 +355,8 @@ fn top_bar<C: ContainerExt>(container: &C) {
 }
 
 pub struct ButtonLayout {
-    settings:   gio::Settings,
-    key:        &'static str,
+    settings: gio::Settings,
+    key: &'static str,
     switch_min: gtk::Switch,
     switch_max: gtk::Switch,
 }
