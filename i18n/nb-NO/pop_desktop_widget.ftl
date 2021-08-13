@@ -53,8 +53,8 @@ gis-launcher-title = Åpne og Bytt Applikasjoner fra Launcher
 gis-panel-notice = Topp Felt konfigurasjonen kan når som helst endres fra Innstillinger applikasjonen.
 gis-panel-title = Konfigurer Topp Feltet
 
-hot-corner = Hot Corner
-hot-corner-description = Aktiver øverst-til-venstre hot corner for Arbeidsområder
+hot-corner = Aktivt Hjørne
+hot-corner-description = Aktiver øverst-til-venstre aktivt hjørne for Arbeidsområder
 
 multi-monitor-behavior = Flere skjermer Oppførsel
 
