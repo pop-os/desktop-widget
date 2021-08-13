@@ -47,7 +47,7 @@ gis-gestures-description = Bruk fire finger sveip mot venstre for å åpne overs
 gis-gestures-title = Bruk Bevegelser for Enklere Navigering
 
 gis-launcher-description = Trykk super-tasten eller bruk et ikon i dock for å vise Launcher søkefeltet. Bruk piltaster for å raskt bytte mellom åpne vinduer eller skriv inn navnet på applikasjonen for å åpne det. Launcher gjør navigering raskere.
-gis-launcher-notice = Super-tast konfigurasjonen kan endres når som helst fra Innstillinger applikasjonen.
+gis-launcher-notice = Super-tast konfigurasjonen kan når som helst endres fra Innstillinger applikasjonen.
 gis-launcher-title = Åpne og Bytt Applikasjoner fra Launcher
 
 gis-panel-notice = Topp Felt konfigurasjonen kan når som helst endres fra Innstillinger applikasjonen.
