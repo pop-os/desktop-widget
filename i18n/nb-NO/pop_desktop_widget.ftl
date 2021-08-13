@@ -1,7 +1,7 @@
 action-applications = Applikasjoner
 action-applications-description = Når du trykker super-tasten, åpnes oversikten over Applikasjoner
 action-launcher = Launcher
-action-launcher-description = Når du trykker super-tasten, åpnes Launcheren
+action-launcher-description = Når du trykker super-tasten, åpnes Launcher
 action-workspaces = Arbeidsområder
 action-workspaces-description = Når du trykker super-tasten, åpnes oversikten over Vinduer og Arbeidsområder
 
@@ -50,11 +50,11 @@ gis-launcher-description = Trykk super-tasten eller bruk et ikon i dock for å v
 gis-launcher-notice = Super-tast konfigurasjonen kan endres når som helst fra Innstillinger applikasjonen.
 gis-launcher-title = Åpne og Bytt Applikasjoner fra Launcher
 
-gis-panel-notice = Topp Bar konfigurasjonen kan når som helst endres fra Innstillinger applikasjonen.
-gis-panel-title = Konfigurer Topp Bar
+gis-panel-notice = Topp Felt konfigurasjonen kan når som helst endres fra Innstillinger applikasjonen.
+gis-panel-title = Konfigurer Topp Feltet
 
 hot-corner = Hot Corner
-hot-corner-description = Aktiver øverst til venstre hot corner for Arbeidsområder
+hot-corner-description = Aktiver øverst-til-venstre hot corner for Arbeidsområder
 
 multi-monitor-behavior = Flere skjermer Oppførsel
 
@@ -79,7 +79,7 @@ size-small = Liten
 
 super-key-action = Super-tast Handling
 
-top-bar = Topp Bar
+top-bar = Topp Felt
 
 window-controls = Vindu Kontroller
 
