@@ -11,7 +11,7 @@ endif
 
 VENDOR ?= 0
 ifneq ($(VENDOR),0)
-	ARGS += --frozen
+	ARGS += --frozen --offline
 endif
 
 PACKAGE = pop_desktop_widget
