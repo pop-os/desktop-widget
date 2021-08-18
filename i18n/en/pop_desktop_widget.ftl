@@ -4,6 +4,8 @@ action-launcher = Launcher
 action-launcher-description = Pressing the Super key opens the Launcher
 action-workspaces = Workspaces
 action-workspaces-description = Pressing the Super key opens the Window and Workspaces Overview
+click-action-cycle = Launch or Cycle Windows
+click-action-minimize = Launch or Minimize Windows
 disabled-super-warning =
   Super key override was disabled via advanced settings.
    • Super will open Workspaces unless behavior is specified by other extensions.
@@ -21,6 +23,7 @@ dock-always-hide = Always hide
 dock-always-hide-description = Dock always hides unless actively being revealed by the mouse
 dock-always-visible = Always visible
 dock-applications = Show Applications Icon in Dock
+dock-click-action = Icon Click Action
 dock-disable = No dock
 dock-dynamic = Dock doesn't extend to edges
 dock-enable = Enable Dock
