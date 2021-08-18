@@ -261,9 +261,8 @@ fn super_key<C: ContainerExt>(container: &C) {
             None,
         );
 
-        let has_disable_super_setting = settings
-            .settings_schema()
-            .map_or(false, |x| x.has_key(DISABLE_SUPER_SETTINGS_KEY));
+        let has_disable_super_setting =
+            settings.settings_schema().map_or(false, |x| x.has_key(DISABLE_SUPER_SETTINGS_KEY));
         if has_disable_super_setting {
             if let Some(settings_box) = list_box.parent() {
                 if let Ok(settings_box) = settings_box.downcast::<gtk::Box>() {
@@ -295,21 +294,22 @@ fn super_key<C: ContainerExt>(container: &C) {
 
                     // Update disabled setting when a radio is selected
                     for radio in visible_radios {
-                        radio.connect_active_notify(
-                            clone!(@strong settings => move |radio| {
-                                if radio.is_active() {
-                                    let _ = settings.set_boolean(DISABLE_SUPER_SETTINGS_KEY, false);
-                                }
-                            }),
-                        );
+                        radio.connect_active_notify(clone!(@strong settings => move |radio| {
+                            if radio.is_active() {
+                                let _ = settings.set_boolean(DISABLE_SUPER_SETTINGS_KEY, false);
+                            }
+                        }));
                     }
 
                     // Update UI when disabled setting changes
-                    settings.connect_changed(Some(DISABLE_SUPER_SETTINGS_KEY), move |settings, _| {
-                        on_disabled_setting_changed(
-                            settings.boolean(DISABLE_SUPER_SETTINGS_KEY),
-                        );
-                    });
+                    settings.connect_changed(
+                        Some(DISABLE_SUPER_SETTINGS_KEY),
+                        move |settings, _| {
+                            on_disabled_setting_changed(
+                                settings.boolean(DISABLE_SUPER_SETTINGS_KEY),
+                            );
+                        },
+                    );
                 }
             }
         }
@@ -720,14 +720,11 @@ fn dock_page(stack: &gtk::Stack) {
     let switch = switch_row(&list_box, &fl!("dock-enable"));
 
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
-        settings.bind(
-            "manualhide",
-            &switch,
-            "active",
-        )
-        .mapping(|variant, _| Some((!variant.get::<bool>().unwrap()).to_value()))
-        .set_mapping(|value, _| Some((!value.get::<bool>().unwrap()).to_variant()))
-        .build();
+        settings
+            .bind("manualhide", &switch, "active")
+            .mapping(|variant, _| Some((!variant.get::<bool>().unwrap()).to_value()))
+            .set_mapping(|value, _| Some((!value.get::<bool>().unwrap()).to_variant()))
+            .build();
     }
 
     dock_options(&page);
@@ -770,10 +767,7 @@ fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
 
 fn workspaces_position<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
-        if !settings
-            .settings_schema()
-            .map_or(false, |x| x.has_key("workspace-picker-left"))
-        {
+        if !settings.settings_schema().map_or(false, |x| x.has_key("workspace-picker-left")) {
             return;
         }
 
@@ -785,19 +779,14 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
         radio_bindings(
             &settings,
             "workspace-picker-left",
-            vec![
-                (false.to_variant(), radio_right),
-                (true.to_variant(), radio_left),
-            ],
+            vec![(false.to_variant(), radio_right), (true.to_variant(), radio_left)],
             None,
         );
 
         if let Some(mm_settings) =
             settings::new_checked("org.gnome.shell.extensions.multi-monitors-add-on")
         {
-            if mm_settings
-                .settings_schema()
-                .map_or(false, |x| x.has_key("thumbnails-on-left-side"))
+            if mm_settings.settings_schema().map_or(false, |x| x.has_key("thumbnails-on-left-side"))
             {
                 let settings_clone = settings.clone();
                 settings
@@ -842,14 +831,11 @@ fn workspaces_page(stack: &gtk::Stack) {
 
         radio_fixed.join_group(Some(&radio_dynamic));
         settings.bind("dynamic-workspaces", &radio_dynamic, "active").build();
-        settings.bind(
-            "dynamic-workspaces",
-            &radio_fixed,
-            "active",
-        )
-        .mapping(|variant, _| Some((!variant.get::<bool>().unwrap()).to_value()))
-        .set_mapping(|value, _| Some((!value.get::<bool>().unwrap()).to_variant()))
-        .build();
+        settings
+            .bind("dynamic-workspaces", &radio_fixed, "active")
+            .mapping(|variant, _| Some((!variant.get::<bool>().unwrap()).to_value()))
+            .set_mapping(|value, _| Some((!value.get::<bool>().unwrap()).to_variant()))
+            .build();
 
         if let Some(settings) = settings::new_checked("org.gnome.desktop.wm.preferences") {
             let spin_number = spin_row(&list_box, &fl!("workspaces-amount"), 1.0, 36.0, 1.0);

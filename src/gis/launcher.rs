@@ -30,4 +30,6 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     .upcast()
 }
 
-pub fn title() -> String { fl!("gis-launcher-title") }
+pub fn title() -> String {
+    fl!("gis-launcher-title")
+}
