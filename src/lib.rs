@@ -336,17 +336,23 @@ fn top_bar<C: ContainerExt>(container: &C) {
 
         let center = &fl!("date-combo-center");
 
-        cascade! {
-            combo_row(container, &fl!("date-combo"), center, &[
-                center,
-                &fl!("date-combo-left"),
-                &fl!("date-combo-right")
-            ]);
-            ..set_active(Some(settings.enum_("clock-alignment") as u32));
-            ..connect_changed(clone!(@strong settings => move |combo| {
-                settings.set_enum("clock-alignment", combo.active().unwrap_or(0) as i32).unwrap();
-            }));
-        };
+        let combo = combo_row(
+            container,
+            &fl!("date-combo"),
+            center,
+            &[center, &fl!("date-combo-left"), &fl!("date-combo-right")],
+        );
+        static ENUM_NAMES: [&str; 3] = ["CENTER", "LEFT", "RIGHT"];
+        settings
+            .bind("clock-alignment", &combo, "active")
+            .mapping(|variant, _| {
+                let value = variant.get::<String>().unwrap();
+                Some((ENUM_NAMES.iter().position(|x| x == &value)? as i32).to_value())
+            })
+            .set_mapping(|value, _| {
+                Some(ENUM_NAMES[value.get::<i32>().ok()? as usize].to_variant())
+            })
+            .build();
     }
 }
 
@@ -456,25 +462,19 @@ fn dock_options<C: ContainerExt>(container: &C) {
         update_switches();
         let switch_handlers =
             Rc::new(RefCell::new(Vec::<(gtk::Switch, glib::SignalHandlerId)>::new()));
-        let handler_id = Rc::new(
-            shell_settings
-                .connect_local(
-                    "changed::favorite-apps",
-                    false,
-                    clone!(@strong switch_handlers => move |_| {
-                        let ids = switch_handlers.borrow();
-                        for (switch, id) in ids.iter() {
-                            switch.block_signal(id);
-                        }
-                        update_switches();
-                        for (switch, id) in ids.iter() {
-                            switch.unblock_signal(id);
-                        }
-                        None
-                    }),
-                )
-                .unwrap(),
-        );
+        let handler_id = Rc::new(shell_settings.connect_changed(
+            Some("favorite-apps"),
+            clone!(@strong switch_handlers => move |_, _| {
+                let ids = switch_handlers.borrow();
+                for (switch, id) in ids.iter() {
+                    switch.block_signal(id);
+                }
+                update_switches();
+                for (switch, id) in ids.iter() {
+                    switch.unblock_signal(id);
+                }
+            }),
+        ));
         let connect_switch = move |switch: &gtk::Switch, desktop, pos: usize| {
             let shell_settings = shell_settings.clone();
             let handler_id = handler_id.clone();
@@ -640,16 +640,16 @@ fn dock_visibility<C: ContainerExt>(container: &C) {
             settings.unblock_signal(&handler_id);
         }));
 
-        // TODO: Use `bind_with_mapping` when gtk-rs version with that is released
         let primary = fl!("display-primary");
         let all = fl!("display-all");
         let combo = combo_row(&list_box, &fl!("dock-show-on-display"), &primary, &[&primary, &all]);
-        let id = if settings.boolean("multi-monitor") { &all } else { &primary };
-        combo.set_active_id(Some(id));
-        combo.connect_changed(clone!(@strong settings => move |combo| {
-            let all_displays = combo.active_id().map_or(false, |x| &x == &all );
-            settings.set_boolean("multi-monitor", all_displays).unwrap();
-        }));
+        settings
+            .bind("multi-monitor", &combo, "active-id")
+            .mapping(clone!(@strong primary, @strong all => move |variant, _| {
+                Some(if variant.get::<bool>().unwrap() { &all } else { &primary }.to_value())
+            }))
+            .set_mapping(move |value, _| Some((value.get::<&str>() == Ok(&all)).to_variant()))
+            .build();
     }
 }
 
@@ -788,18 +788,14 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
         {
             if mm_settings.settings_schema().map_or(false, |x| x.has_key("thumbnails-on-left-side"))
             {
-                let settings_clone = settings.clone();
-                settings
-                    .connect_local("changed::workspace-picker-left", false, move |_| {
-                        mm_settings
-                            .set_boolean(
-                                "thumbnails-on-left-side",
-                                settings_clone.boolean("workspace-picker-left"),
-                            )
-                            .unwrap();
-                        None
-                    })
-                    .unwrap();
+                settings.connect_changed(Some("workspace-picker-left"), move |settings, _| {
+                    mm_settings
+                        .set_boolean(
+                            "thumbnails-on-left-side",
+                            settings.boolean("workspace-picker-left"),
+                        )
+                        .unwrap();
+                });
             }
         }
     }
