@@ -527,10 +527,12 @@ fn dock_options<C: ContainerExt>(container: &C) {
 
         let cycle_windows = &fl!("click-action-cycle");
         let minimize = &fl!("click-action-minimize");
+        let minimize_or_previews = &fl!("click-action-minimize-or-previews");
         fn map_click_action_selection(selection: i32) -> &'static str {
             return match selection {
                 0 => "cycle-windows",
                 1 => "minimize",
+                2 => "minimize-or-previews",
                 _ => "cycle-windows"
             };
         }
@@ -538,13 +540,15 @@ fn dock_options<C: ContainerExt>(container: &C) {
             return match setting {
                 "cycle-windows" => 0,
                 "minimize" => 1,
+                "minimize-or-previews" => 2,
                 _ => 0
             }
         }
         cascade! {
             combo_row(&list_box, &fl!("dock-click-action"), cycle_windows, &[
                 cycle_windows,
-                minimize
+                minimize,
+                minimize_or_previews
             ]);
             ..set_active(Some(map_click_action_setting(&settings.get_string("click-action").unwrap())));
             ..connect_changed(clone!(@strong settings => move |combo| {

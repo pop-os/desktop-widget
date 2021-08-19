@@ -6,6 +6,7 @@ action-workspaces = Workspaces
 action-workspaces-description = Pressing the Super key opens the Window and Workspaces Overview
 click-action-cycle = Launch or Cycle Windows
 click-action-minimize = Launch or Minimize Windows
+click-action-minimize-or-previews = Launch, Minimize, or Preview Windows
 disabled-super-warning =
   Super key override was disabled via advanced settings.
    • Super will open Workspaces unless behavior is specified by other extensions.
