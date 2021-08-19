@@ -525,9 +525,6 @@ fn dock_options<C: ContainerExt>(container: &C) {
         let switch = switch_row(&list_box, &fl!("dock-mounted-drives"));
         settings.bind("show-mounts", &switch, "active", SettingsBindFlags::DEFAULT);
 
-        let cycle_windows = &fl!("click-action-cycle");
-        let minimize = &fl!("click-action-minimize");
-        let minimize_or_previews = &fl!("click-action-minimize-or-previews");
         fn map_click_action_selection(selection: i32) -> &'static str {
             return match selection {
                 0 => "cycle-windows",
@@ -544,6 +541,9 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 _ => 0
             }
         }
+        let cycle_windows = &fl!("click-action-cycle");
+        let minimize = &fl!("click-action-minimize");
+        let minimize_or_previews = &fl!("click-action-minimize-or-previews");
         cascade! {
             combo_row(&list_box, &fl!("dock-click-action"), cycle_windows, &[
                 cycle_windows,
