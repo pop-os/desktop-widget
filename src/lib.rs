@@ -530,7 +530,7 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 0 => "cycle-windows",
                 1 => "minimize",
                 2 => "minimize-or-previews",
-                _ => "cycle-windows"
+                _ => "cycle-windows",
             }
         }
         fn map_click_action_setting(setting: &str) -> u32 {
@@ -538,7 +538,7 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 "cycle-windows" => 0,
                 "minimize" => 1,
                 "minimize-or-previews" => 2,
-                _ => 0
+                _ => 0,
             }
         }
         let cycle_windows = &fl!("click-action-cycle");

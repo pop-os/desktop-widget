@@ -58,7 +58,9 @@ pub fn page(header: &gtk::Widget) -> Option<gtk::Widget> {
     )
 }
 
-pub fn title() -> String { fl!("gis-extensions-title") }
+pub fn title() -> String {
+    fl!("gis-extensions-title")
+}
 
 fn gnome_shell_data_dir() -> PathBuf {
     glib::get_user_data_dir().expect("XDG_DATA_HOME path not found").join("gnome-shell")
