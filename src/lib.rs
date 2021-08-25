@@ -141,8 +141,8 @@ fn scaled_image_from_resource(resource: &str, pixels: i32) -> gtk::ImageBuilder 
     let mut height = f64::from(pixbuf.get_height());
     let scale = f64::min(pixels / width, pixels / height);
 
-    width = scale * width;
-    height = scale * height;
+    width *= scale;
+    height *= scale;
 
     pixbuf = pixbuf
         .scale_simple(width.round() as i32, height.round() as i32, gdk_pixbuf::InterpType::Hyper)
@@ -396,7 +396,7 @@ impl ButtonLayout {
                 (true, true) => "appmenu:minimize,maximize,close",
             };
 
-            let _ = self.settings.set_string("button-layout", &new_value);
+            let _ = self.settings.set_string("button-layout", new_value);
         } else {
             self.switch_min.set_active(value.contains("minimize"));
             self.switch_max.set_active(value.contains("maximize"));
@@ -428,7 +428,7 @@ fn main_page(stack: &gtk::Stack) {
 }
 
 fn appearance_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, PAGE_APPEARANCE, &fl!("page-appearance"));
+    let page = settings_page(stack, PAGE_APPEARANCE, &fl!("page-appearance"));
 
     let theme_switcher = PopThemeSwitcher::new();
     page.add(&*theme_switcher);
@@ -526,15 +526,15 @@ fn dock_options<C: ContainerExt>(container: &C) {
         settings.bind("show-mounts", &switch, "active", SettingsBindFlags::DEFAULT);
 
         fn map_click_action_selection(selection: i32) -> &'static str {
-            return match selection {
+            match selection {
                 0 => "cycle-windows",
                 1 => "minimize",
                 2 => "minimize-or-previews",
                 _ => "cycle-windows"
-            };
+            }
         }
         fn map_click_action_setting(setting: &str) -> u32 {
-            return match setting {
+            match setting {
                 "cycle-windows" => 0,
                 "minimize" => 1,
                 "minimize-or-previews" => 2,
@@ -752,7 +752,7 @@ fn dock_position<C: ContainerExt>(container: &C) {
 }
 
 fn dock_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, PAGE_DOCK, &fl!("page-dock"));
+    let page = settings_page(stack, PAGE_DOCK, &fl!("page-dock"));
 
     let list_box = framed_list_box();
     page.add(&list_box);
@@ -855,7 +855,7 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
 }
 
 fn workspaces_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, PAGE_WORKSPACES, &fl!("page-workspaces"));
+    let page = settings_page(stack, PAGE_WORKSPACES, &fl!("page-workspaces"));
 
     let list_box = cascade! {
         gtk::ListBox::new();
@@ -911,14 +911,14 @@ impl PopDesktopWidget {
             children.push((w.clone(), name, title));
         });
 
-        main_page(&stack);
+        main_page(stack);
         for (w, name, title) in children {
             stack.add_titled(&w, &name, &title);
         }
 
-        appearance_page(&stack);
-        dock_page(&stack);
-        workspaces_page(&stack);
+        appearance_page(stack);
+        dock_page(stack);
+        workspaces_page(stack);
 
         stack.show_all();
 
