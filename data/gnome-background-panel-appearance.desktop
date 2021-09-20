@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Appearace
+Name=Appearance
 Comment=Set light or dark theme
 Exec=env POP_DESKTOP_PAGE=appearance gnome-control-center background
 # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
