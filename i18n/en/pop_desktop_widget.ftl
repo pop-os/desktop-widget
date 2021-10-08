@@ -62,6 +62,7 @@ page-dock = Dock
 page-main = General
 page-workspaces = Workspaces
 
+vertical-workspaces = Vertical workspaces in overview
 position-bottom = Bottom of the screen
 position-left = Along the left side
 position-right = Along the right side
