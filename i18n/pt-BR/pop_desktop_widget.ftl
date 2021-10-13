@@ -4,6 +4,13 @@ action-launcher = Lançador
 action-launcher-description = Pressionando a tecla Super abre o Lançador
 action-workspaces = Áreas de Trabalho
 action-workspaces-description = Pressionando a tecla Super abre as Janelas e Áreas de Trabalho
+click-action-cycle = Iniciar ou Trocar entre Janelas
+click-action-minimize = Iniciar or Minimizar Janelas
+click-action-minimize-or-previews = Iniciar, Minimizar ou Pré-visualizar Janelas
+disabled-super-warning =
+  A substituição da tecla Super foi desativada nas configurações avançadas.
+   • O Super abrirá as Áreas de Trabalho a menos que o comportamento seja especificado por outras extensões.
+   • Selecionar uma opção abaixo reativará a substituição.
 
 date-combo = Posição da Data, Tempo e Notificações
 date-combo-center = Centro
@@ -17,15 +24,16 @@ dock-always-hide = Sempre escondida
 dock-always-hide-description = Dock sempre escondida, mas pode ser revelada pelo mouse
 dock-always-visible = Sempre visível
 dock-applications = Mostrar o Icone de Aplicativos na Dock
+dock-click-action = Ação do Clique em Ícones
 dock-disable = Nenhuma dock
-dock-dynamic = A dock não se estende até as bordas
+dock-dynamic = A Dock não se estende até as bordas
 dock-enable = Ativar Dock
-dock-extend = A dock se estende até as bordas da tela
-dock-extends = A dock se estende até as bordas
+dock-extend = A Dock se estende até as bordas da tela
+dock-extends = A Dock se estende até as bordas
 dock-intelligently-hide = Se esconder de forma inteligente
 dock-intelligently-hide-description = A dock se esconde quando qualquer janela sobrepõem a área da dock
 dock-launcher = Mostrar Icone do Lançador na Dock
-dock-mounted-drives = Mostrar Partições Montadas
+dock-mounted-drives = Mostrar Partições Montadas na Dock
 dock-options = Opções da Dock
 dock-size = Tamanho da Dock
 dock-position = Posição na Área de Trabalho
@@ -72,7 +80,7 @@ show-maximize-button = Mostrar Botão de Maximizar
 show-minimize-button = Mostrar Botão de Minimizar
 show-workspaces-button = Mostrar Botão das Áreas de Trabalho
 
-size-custom = Tamanho Customizado
+size-custom = Personalizado
 size-large = Grande
 size-medium = Médio
 size-small = Pequeno
