@@ -1,8 +1,4 @@
-use std::{
-    env,
-    fs,
-    process,
-};
+use std::{env, fs, process};
 
 fn main() {
     println!("cargo:rerun-if-changed=data");
@@ -12,13 +8,13 @@ fn main() {
     }
 
     let out_dir = env::var("OUT_DIR").unwrap();
-	let status = process::Command::new("glib-compile-resources")
-		.arg("--sourcedir=data")
-		.arg(format!("--target={}/compiled.gresource", out_dir))
-		.arg("data/resources.gresource.xml")
+    let status = process::Command::new("glib-compile-resources")
+        .arg("--sourcedir=data")
+        .arg(format!("--target={}/compiled.gresource", out_dir))
+        .arg("data/resources.gresource.xml")
         .status()
         .expect("Failed to run glib-compile-resources");
-    if ! status.success() {
+    if !status.success() {
         panic!("glib-compile-resources exited with status {}", status);
     }
 }

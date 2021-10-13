@@ -24,4 +24,6 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     .upcast()
 }
 
-pub fn title() -> String { fl!("gis-panel-title") }
+pub fn title() -> String {
+    fl!("gis-panel-title")
+}

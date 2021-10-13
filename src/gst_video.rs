@@ -22,7 +22,7 @@ impl Player {
         player.set_property("video-sink", &glsinkbin)?;
 
         // Register a signal to listen for events from the player's pipeline bus
-        if let Some(bus) = player.get_bus() {
+        if let Some(bus) = player.bus() {
             let player = player.downgrade();
             let _ = bus.add_watch_local(move |_, msg| {
                 let player = match player.upgrade() {
@@ -40,9 +40,9 @@ impl Player {
                     gst::MessageView::Error(err) => {
                         eprintln!(
                             "Gstreamer error from {:?}: {} ({:?})",
-                            err.get_src().map(|s| s.get_path_string()),
-                            err.get_error(),
-                            err.get_debug()
+                            err.src().map(|s| s.path_string()),
+                            err.error(),
+                            err.debug()
                         );
                     }
                     _ => (),
@@ -56,10 +56,9 @@ impl Player {
         let container = (cascade! {
             gtk::Box::new(gtk::Orientation::Vertical, 0);
             ..connect_realize(glib::clone!(@strong player => move |container| {
-                let widget = sink.get_property("widget")
+                let widget = sink.property("widget")
                     .unwrap()
                     .get::<gtk::Widget>()
-                    .unwrap()
                     .unwrap();
                 widget.set_hexpand(false);
                 widget.set_halign(gtk::Align::Center);

@@ -1,7 +1,7 @@
 use glib::translate::{FromGlibPtrNone, ToGlibPtr};
 use gtk_sys::GtkWidget;
-use pop_desktop_widget::PopDesktopWidget as RustWidget;
 use pop_desktop_widget::localize;
+use pop_desktop_widget::PopDesktopWidget as RustWidget;
 use std::ffi::CString;
 
 #[no_mangle]
@@ -29,7 +29,7 @@ pub extern "C" fn pop_desktop_widget_gis_dock_page(header: *mut GtkWidget) -> *m
     unsafe {
         gtk::set_initialized();
     }
-    
+
     localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
@@ -48,7 +48,7 @@ pub extern "C" fn pop_desktop_widget_gis_extensions_page(header: *mut GtkWidget)
     unsafe {
         gtk::set_initialized();
     }
-    
+
     localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
@@ -65,7 +65,7 @@ pub extern "C" fn pop_desktop_widget_gis_gestures_page(header: *mut GtkWidget) -
     unsafe {
         gtk::set_initialized();
     }
-    
+
     localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
@@ -82,7 +82,7 @@ pub extern "C" fn pop_desktop_widget_gis_launcher_page(header: *mut GtkWidget) -
     unsafe {
         gtk::set_initialized();
     }
-    
+
     localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
@@ -99,7 +99,7 @@ pub extern "C" fn pop_desktop_widget_gis_panel_page(header: *mut GtkWidget) -> *
     unsafe {
         gtk::set_initialized();
     }
-    
+
     localize();
 
     let header = unsafe { gtk::Widget::from_glib_none(header) };
