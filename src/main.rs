@@ -9,15 +9,15 @@ pub const APP_ID: &str = "com.system76.PopDesktopWidget";
 
 fn monitors() -> Result<(), Box<dyn std::error::Error>> {
     let display_manager = gdk::DisplayManager::get();
-    if let Some(display) = display_manager.get_default_display() {
-        for i in 0..display.get_n_monitors() {
-            if let Some(monitor) = display.get_monitor(i) {
-                let rect = monitor.get_geometry();
+    if let Some(display) = display_manager.default_display() {
+        for i in 0..display.n_monitors() {
+            if let Some(monitor) = display.monitor(i) {
+                let rect = monitor.geometry();
                 println!("{}: {}, {}, {}, {}", i, rect.x, rect.y, rect.width, rect.height);
-                if let Some(manufacturer) = monitor.get_manufacturer() {
+                if let Some(manufacturer) = monitor.manufacturer() {
                     println!("  Manufacturer: {}", manufacturer);
                 }
-                if let Some(model) = monitor.get_model() {
+                if let Some(model) = monitor.model() {
                     println!("  Model: {}", model);
                 }
             } else {
@@ -43,7 +43,7 @@ fn main() {
     let application = gtk::ApplicationBuilder::new().application_id(APP_ID).build();
 
     application.connect_activate(|app| {
-        if let Some(window) = app.get_window_by_id(0) {
+        if let Some(window) = app.window_by_id(0) {
             window.present();
         }
     });
@@ -83,5 +83,5 @@ fn main() {
         };
     });
 
-    application.run(&[]);
+    application.run();
 }

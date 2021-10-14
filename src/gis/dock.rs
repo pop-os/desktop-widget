@@ -13,4 +13,6 @@ pub fn page(header: &gtk::Widget) -> gtk::Widget {
     .upcast()
 }
 
-pub fn title() -> String { fl!("gis-dock-title") }
+pub fn title() -> String {
+    fl!("gis-dock-title")
+}
