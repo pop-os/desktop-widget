@@ -5,6 +5,10 @@ action-launcher-description = Pressing the Super key opens the Launcher
 action-workspaces = Workspaces
 action-workspaces-description = Pressing the Super key opens the Window and Workspaces Overview
 
+click-action-cycle = Launch or Cycle Windows
+click-action-minimize = Launch or Minimize Windows
+click-action-minimize-or-previews = Launch, Minimize, or Preview Windows
+
 date-combo = Date & Time and Notifications Position
 date-combo-center = Center
 date-combo-left = Left
@@ -17,6 +21,7 @@ dock-always-hide = Always hide
 dock-always-hide-description = Dock always hides unless actively being revealed by the mouse
 dock-always-visible = Always visible
 dock-applications = Show Applications Icon in Dock
+dock-click-action = Icon Click Action
 dock-disable = No dock
 dock-dynamic = Dock doesn't extend to edges
 dock-enable = Enable Dock
