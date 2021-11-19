@@ -542,9 +542,9 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 minimize,
                 minimize_or_previews
             ]);
-            ..set_active(Some(map_click_action_setting(&settings.get_string("click-action").unwrap())));
+            ..set_active(Some(map_click_action_setting(&settings.string("click-action"))));
             ..connect_changed(clone!(@strong settings => move |combo| {
-                let click_action_selection = combo.get_active().unwrap_or(0) as i32;
+                let click_action_selection = combo.active().unwrap_or(0) as i32;
                 settings.set_string("click-action", map_click_action_selection(click_action_selection)).unwrap();
             }));
         };
