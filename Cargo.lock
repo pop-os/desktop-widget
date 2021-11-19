@@ -1000,7 +1000,7 @@ dependencies = [
 [[package]]
 name = "pop-theme-switcher"
 version = "0.1.1"
-source = "git+https://github.com/pop-os/theme-switcher#abd8796325946a2048f2a3bc17d849b376b282b1"
+source = "git+https://github.com/pop-os/theme-switcher?branch=appearance-reflow#f0c1243e0e069b61d12147f6e4296af682a5ddef"
 dependencies = [
  "gio",
  "glib",
