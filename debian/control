@@ -14,7 +14,7 @@ Standards-Version: 4.3.0
 Homepage: https://github.com/pop-os/desktop-widget
 
 Package: libpop-desktop-widget
-Architecture: amd64
+Architecture: linux-any
 Depends:
   ${misc:Depends},
   ${shlibs:Depends}
