@@ -7,7 +7,7 @@ action-workspaces-description = Super-Taste zeigt die Fenster und Workspaces-Üb
 
 click-action-cycle = Fenster starten oder durchwechseln
 click-action-minimize = Fenster starten oder minimieren
-click-action-minimize-or-previews = Fenster starten, minimieren oder vorschauen **
+click-action-minimize-or-previews = Fenster starten, minimieren oder Vorschau starten
 
 date-combo = Datum & Zeit und Benachrichtigungs-Position
 date-combo-center = Mittig
