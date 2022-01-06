@@ -60,7 +60,7 @@ gis-panel-title = Configure a barra superior
 hot-corner = Ação Rápida
 hot-corner-description = Habilitar ação rápida no superior esquerdo para as Mesas
 
-multi-monitor-behavior = Comportamento com méltiplos monitores
+multi-monitor-behavior = Comportamento com múltiplos monitores
 
 page-appearance = Aparência
 page-dock = Dock
