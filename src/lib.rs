@@ -184,23 +184,25 @@ fn switch_row<C: ContainerExt>(container: &C, title: &str) -> gtk::Switch {
     switch
 }
 
+fn settings_vbox() -> gtk::Box {
+    gtk::Box::new(gtk::Orientation::Vertical, 48)
+}
+
 /// Template for a settings page. `id` is used internally for stack switching.
-fn settings_page(stack: &gtk::Stack, id: &str, title: &str) -> gtk::Box {
-    let vbox = gtk::Box::new(gtk::Orientation::Vertical, 48);
+fn settings_page<T: IsA<gtk::Widget>>(stack: &gtk::Stack, content: &T, id: &str, title: &str) {
     let clamp = cascade! {
         libhandy::Clamp::new();
         ..set_margin_top(32);
         ..set_margin_bottom(32);
         ..set_margin_start(12);
         ..set_margin_end(12);
-        ..add(&vbox);
+        ..add(content);
     };
     let scrolled_window = cascade! {
         gtk::ScrolledWindow::new::<gtk::Adjustment, gtk::Adjustment>(None, None);
         ..add(&clamp);
     };
     stack.add_titled(&scrolled_window, id, title);
-    vbox
 }
 
 fn settings_list_box<C: ContainerExt>(container: &C, title: &str) -> gtk::ListBox {
@@ -358,20 +360,24 @@ fn window_controls<C: ContainerExt>(container: &C) {
     }
 }
 
-fn main_page(stack: &gtk::Stack) {
-    let page = settings_page(stack, PAGE_MAIN, &fl!("page-main"));
+fn main_page() -> gtk::Box {
+    let page = settings_vbox();
 
     super_key(&page);
     hot_corner(&page);
     top_bar(&settings_list_box(&page, &fl!("top-bar")));
     window_controls(&page);
+
+    page
 }
 
-fn appearance_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, PAGE_APPEARANCE, &fl!("page-appearance"));
+fn appearance_page() -> gtk::Box {
+    let page = settings_vbox();
 
     let theme_switcher = PopThemeSwitcher::new();
     page.add(&*theme_switcher);
+
+    page
 }
 
 fn dock_options<C: ContainerExt>(container: &C) {
@@ -691,8 +697,8 @@ fn dock_position<C: ContainerExt>(container: &C) {
     }
 }
 
-fn dock_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, PAGE_DOCK, &fl!("page-dock"));
+fn dock_page() -> gtk::Box {
+    let page = settings_vbox();
 
     let list_box = framed_list_box();
     page.add(&list_box);
@@ -718,6 +724,8 @@ fn dock_page(stack: &gtk::Stack) {
             switch.bind_property("active", child, "sensitive").build();
         }
     });
+
+    page
 }
 
 fn framed_list_box() -> gtk::ListBox {
@@ -794,8 +802,8 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
     }
 }
 
-fn workspaces_page(stack: &gtk::Stack) {
-    let page = settings_page(&stack, PAGE_WORKSPACES, &fl!("page-workspaces"));
+fn workspaces_page() -> gtk::Box {
+    let page = settings_vbox();
 
     let list_box = cascade! {
         gtk::ListBox::new();
@@ -839,6 +847,8 @@ fn workspaces_page(stack: &gtk::Stack) {
 
     workspaces_multi_monitor(&page);
     workspaces_position(&page);
+
+    page
 }
 
 impl PopDesktopWidget {
@@ -851,14 +861,14 @@ impl PopDesktopWidget {
             children.push((w.clone(), name, title));
         });
 
-        main_page(&stack);
+        settings_page(stack, &main_page(), PAGE_MAIN, &fl!("page-main"));
         for (w, name, title) in children {
             stack.add_titled(&w, &name, &title);
         }
 
-        appearance_page(&stack);
-        dock_page(&stack);
-        workspaces_page(&stack);
+        settings_page(stack, &appearance_page(), PAGE_APPEARANCE, &fl!("page-appearance"));
+        settings_page(stack, &dock_page(), PAGE_DOCK, &fl!("page-dock"));
+        settings_page(stack, &workspaces_page(), PAGE_WORKSPACES, &fl!("page-workspaces"));
 
         stack.show_all();
 
