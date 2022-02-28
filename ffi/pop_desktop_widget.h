@@ -44,3 +44,11 @@ void pop_desktop_widget_localize ();
 
 /** Frees strings created by this library */
 void pop_desktop_widget_string_free (char *string);
+
+GtkWidget* pop_desktop_widget_gcc_main_page (void);
+
+GtkWidget* pop_desktop_widget_gcc_appearance_page (void);
+
+GtkWidget* pop_desktop_widget_gcc_dock_page (void);
+
+GtkWidget* pop_desktop_widget_gcc_workspaces_page (void);
