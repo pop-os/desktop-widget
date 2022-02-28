@@ -1,3 +1,9 @@
+pop-desktop-widget (0.2.0) impish; urgency=medium
+
+  * Provide API to create each settings panel separately
+
+ -- Ian Douglas Scott <idscott@system76.com>  Mon, 28 Feb 2022 14:34:07 -0800
+
 pop-desktop-widget (0.1.0) groovy; urgency=medium
 
   * Initial release

@@ -1,10 +1,11 @@
+use glib::Cast;
 use glib::translate::{FromGlibPtrNone, ToGlibPtr};
+use gtk::prelude::*;
 use gtk_sys::GtkWidget;
 use pop_desktop_widget::PopDesktopWidget as RustWidget;
 use pop_desktop_widget::localize;
 use std::ffi::CString;
 
-#[no_mangle]
 pub struct PopDesktopWidget;
 
 #[no_mangle]
@@ -124,4 +125,44 @@ fn string_free(string: *mut libc::c_char) {
             CString::from_raw(string);
         }
     }
+}
+
+#[no_mangle]
+pub extern "C" fn pop_desktop_widget_gcc_main_page() -> *mut GtkWidget {
+    unsafe {
+        gtk::set_initialized();
+    }
+    let widget = pop_desktop_widget::main_page();
+    widget.show_all();
+    widget.upcast::<gtk::Widget>().to_glib_full()
+}
+
+#[no_mangle]
+pub extern "C" fn pop_desktop_widget_gcc_appearance_page() -> *mut GtkWidget {
+    unsafe {
+        gtk::set_initialized();
+    }
+    let widget = pop_desktop_widget::appearance_page();
+    widget.show_all();
+    widget.upcast::<gtk::Widget>().to_glib_full()
+}
+
+#[no_mangle]
+pub extern "C" fn pop_desktop_widget_gcc_dock_page() -> *mut GtkWidget {
+    unsafe {
+        gtk::set_initialized();
+    }
+    let widget = pop_desktop_widget::dock_page();
+    widget.show_all();
+    widget.upcast::<gtk::Widget>().to_glib_full()
+}
+
+#[no_mangle]
+pub extern "C" fn pop_desktop_widget_gcc_workspaces_page() -> *mut GtkWidget {
+    unsafe {
+        gtk::set_initialized();
+    }
+    let widget = pop_desktop_widget::workspaces_page();
+    widget.show_all();
+    widget.upcast::<gtk::Widget>().to_glib_full()
 }

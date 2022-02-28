@@ -360,7 +360,7 @@ fn window_controls<C: ContainerExt>(container: &C) {
     }
 }
 
-fn main_page() -> gtk::Box {
+pub fn main_page() -> gtk::Box {
     let page = settings_vbox();
 
     super_key(&page);
@@ -371,7 +371,7 @@ fn main_page() -> gtk::Box {
     page
 }
 
-fn appearance_page() -> gtk::Box {
+pub fn appearance_page() -> gtk::Box {
     let page = settings_vbox();
 
     let theme_switcher = PopThemeSwitcher::new();
@@ -697,7 +697,7 @@ fn dock_position<C: ContainerExt>(container: &C) {
     }
 }
 
-fn dock_page() -> gtk::Box {
+pub fn dock_page() -> gtk::Box {
     let page = settings_vbox();
 
     let list_box = framed_list_box();
@@ -802,7 +802,7 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
     }
 }
 
-fn workspaces_page() -> gtk::Box {
+pub fn workspaces_page() -> gtk::Box {
     let page = settings_vbox();
 
     let list_box = cascade! {
