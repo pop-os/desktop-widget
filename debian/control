@@ -8,7 +8,6 @@ Build-Depends:
   libgstreamer1.0-dev,
   libgtk-3-dev,
   libhandy-1-dev,
-  lm-sensors,
   pkg-config,
   rustc (>=1.36.0)
 Standards-Version: 4.3.0
@@ -18,7 +17,8 @@ Package: libpop-desktop-widget
 Architecture: linux-any
 Depends:
   ${misc:Depends},
-  ${shlibs:Depends}
+  ${shlibs:Depends},
+  lm-sensors
 Description: Pop desktop settings widget library
  Shared library for C which provides the Pop!_OS desktop settings widget as a GTK widget.
 
