@@ -1,3 +1,9 @@
+pop-desktop-widget (0.2.1) impish; urgency=medium
+
+  * Fix lm-sensors issue on non-System76 hardware
+
+ -- Aaron Honeycutt <aaron@system76.com>  Thu, 03 Mar 2022 13:20:25 -0700
+
 pop-desktop-widget (0.2.0) impish; urgency=medium
 
   * Provide API to create each settings panel separately
