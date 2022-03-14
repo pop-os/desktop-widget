@@ -34,6 +34,7 @@ dock-mounted-drives = Show Mounted Drives
 dock-options = Dock Options
 dock-position = Position on the Desktop
 dock-show-on-display = Show Dock on Display
+dock-size = Dock Size
 dock-visibility = Dock Visibility
 dock-workspaces = Show Workspaces Icon in Dock
 
