@@ -14,8 +14,8 @@ name = "pop_desktop_widget"
 crate-type = [ "cdylib" ]
 
 [dependencies]
-glib = "0.10"
-gtk-sys = "0.10"
-gtk = "0.9"
+glib = "0.14"
+gtk = "0.14"
+gtk-sys = "0.14"
 pop-desktop-widget = { path = "../" }
 libc = "0.2.97"
