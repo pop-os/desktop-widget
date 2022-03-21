@@ -8,7 +8,7 @@ pub mod gresource;
 mod gst_video;
 pub mod localize;
 
-use gio::{Settings, SettingsBindFlags, SettingsExt};
+use gio::{Settings, SettingsBindFlags, prelude::SettingsExt};
 use glib::clone;
 use gtk::prelude::*;
 use gtk_extras::settings;
@@ -36,7 +36,7 @@ pub struct PopDesktopWidget;
 fn header_func(row: &gtk::ListBoxRow, before: Option<&gtk::ListBoxRow>) {
     if before.is_none() {
         row.set_header::<gtk::Widget>(None)
-    } else if row.get_header().is_none() {
+    } else if row.header().is_none() {
         row.set_header(Some(&cascade! {
             gtk::Separator::new(gtk::Orientation::Horizontal);
             ..show();
@@ -93,20 +93,20 @@ fn radio_bindings(
     };
 
     // Set active radio based on current settings
-    update(settings.get_value(key));
+    update(settings.value(key));
 
     // Set active radio when settings change
     // TODO: if settings is dropped, changed event fails. Would only happen if radios is empty
-    settings.connect_changed(move |settings, event_key| {
+    settings.connect_changed(None, move |settings, event_key| {
         if event_key == key {
-            update(settings.get_value(key));
+            update(settings.value(key));
         }
     });
 
     // Set settings when radios are activated
     for (value, radio) in radios {
-        radio.connect_property_active_notify(clone!(@strong settings => move |radio| {
-            if radio.get_active() {
+        radio.connect_active_notify(clone!(@strong settings => move |radio| {
+            if radio.is_active() {
                 let _ = settings.set_value(key, &value);
             }
         }));
@@ -136,8 +136,8 @@ fn scaled_image_from_resource(resource: &str, pixels: i32) -> gtk::ImageBuilder 
     let pixels = f64::from(pixels);
     let mut pixbuf = gdk_pixbuf::Pixbuf::from_resource(resource).expect("missing resource");
 
-    let mut width = f64::from(pixbuf.get_width());
-    let mut height = f64::from(pixbuf.get_height());
+    let mut width = f64::from(pixbuf.width());
+    let mut height = f64::from(pixbuf.height());
     let scale = f64::min(pixels / width, pixels / height);
 
     width = scale * width;
@@ -218,7 +218,7 @@ fn settings_list_box<C: ContainerExt>(container: &C, title: &str) -> gtk::ListBo
 
     let list_box = cascade! {
         gtk::ListBox::new();
-        ..get_style_context().add_class("frame");
+        ..style_context().add_class("frame");
         ..set_header_func(Some(Box::new(header_func)));
         ..set_selection_mode(gtk::SelectionMode::None);
     };
@@ -254,9 +254,9 @@ fn super_key<C: ContainerExt>(container: &C) {
             &settings,
             "overlay-key-action",
             vec![
-                (glib::Variant::from("LAUNCHER"), radio_launcher),
-                (glib::Variant::from("WORKSPACES"), radio_workspaces),
-                (glib::Variant::from("APPLICATIONS"), radio_applications),
+                ("LAUNCHER".to_variant(), radio_launcher),
+                ("WORKSPACES".to_variant(), radio_workspaces),
+                ("APPLICATIONS".to_variant(), radio_applications),
             ],
             None,
         );
@@ -270,16 +270,16 @@ fn hot_corner<C: ContainerExt>(container: &C) {
     let settings = gio::Settings::new("org.gnome.desktop.interface");
 
     let switch = switch_row(&list_box, &fl!("hot-corner-description"));
-    settings.bind("enable-hot-corners", &switch, "active", SettingsBindFlags::DEFAULT);
+    settings.bind("enable-hot-corners", &switch, "active").build();
 }
 
 fn top_bar<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
         let switch = switch_row(container, &fl!("show-workspaces-button"));
-        settings.bind("show-workspaces-button", &switch, "active", SettingsBindFlags::DEFAULT);
+        settings.bind("show-workspaces-button", &switch, "active").build();
 
         let switch = switch_row(container, &fl!("show-applications-button"));
-        settings.bind("show-applications-button", &switch, "active", SettingsBindFlags::DEFAULT);
+        settings.bind("show-applications-button", &switch, "active").build();
 
         let center = &fl!("date-combo-center");
 
@@ -289,9 +289,9 @@ fn top_bar<C: ContainerExt>(container: &C) {
                 &fl!("date-combo-left"),
                 &fl!("date-combo-right")
             ]);
-            ..set_active(Some(settings.get_enum("clock-alignment") as u32));
+            ..set_active(Some(settings.enum_("clock-alignment") as u32));
             ..connect_changed(clone!(@strong settings => move |combo| {
-                settings.set_enum("clock-alignment", combo.get_active().unwrap_or(0) as i32).unwrap();
+                settings.set_enum("clock-alignment", combo.active().unwrap_or(0) as i32).unwrap();
             }));
         };
     }
@@ -309,29 +309,28 @@ impl ButtonLayout {
         self.update(false);
 
         let self_event = self.clone();
-        self.settings.connect_changed(move |_, event_key| {
+        self.settings.connect_changed(None, move |_, event_key| {
             if event_key == self_event.key {
                 self_event.update(false);
             }
         });
 
         let self_event = self.clone();
-        self.switch_min.connect_property_active_notify(move |_| {
+        self.switch_min.connect_active_notify(move |_| {
             self_event.update(true);
         });
 
         let self_event = self.clone();
-        self.switch_max.connect_property_active_notify(move |_| {
+        self.switch_max.connect_active_notify(move |_| {
             self_event.update(true);
         });
     }
 
     fn update(&self, write: bool) {
         let default_value = "appmenu:close";
-        let value =
-            self.settings.get_string("button-layout").unwrap_or(glib::GString::from(default_value));
+        let value = self.settings.string("button-layout");
         if write {
-            let new_value = match (self.switch_min.get_active(), self.switch_max.get_active()) {
+            let new_value = match (self.switch_min.is_active(), self.switch_max.is_active()) {
                 (false, false) => default_value,
                 (false, true) => "appmenu:maximize,close",
                 (true, false) => "appmenu:minimize,close",
@@ -385,7 +384,7 @@ fn dock_options<C: ContainerExt>(container: &C) {
         let list_box = settings_list_box(container, &fl!("dock-options"));
 
         let switch = switch_row(&list_box, &fl!("dock-extend"));
-        settings.bind("extend-height", &switch, "active", SettingsBindFlags::DEFAULT);
+        settings.bind("extend-height", &switch, "active").build();
 
         let shell_settings = gio::Settings::new("org.gnome.shell");
         let launcher_switch = switch_row(&list_box, &fl!("dock-launcher"));
@@ -395,7 +394,7 @@ fn dock_options<C: ContainerExt>(container: &C) {
             let mut launcher_active = false;
             let mut workspaces_active = false;
             let mut applications_active = false;
-            for favorite in shell_settings.get_strv("favorite-apps") {
+            for favorite in shell_settings.strv("favorite-apps") {
                 match favorite.as_str() {
                     "pop-cosmic-launcher.desktop" => launcher_active = true,
                     "pop-cosmic-workspaces.desktop" => workspaces_active = true,
@@ -432,9 +431,9 @@ fn dock_options<C: ContainerExt>(container: &C) {
         let connect_switch = move |switch: &gtk::Switch, desktop, pos: usize| {
             let shell_settings = shell_settings.clone();
             let handler_id = handler_id.clone();
-            let id = switch.connect_property_active_notify(move |switch| {
-                let active = switch.get_active();
-                let favorites = shell_settings.get_strv("favorite-apps");
+            let id = switch.connect_active_notify(move |switch| {
+                let active = switch.is_active();
+                let favorites = shell_settings.strv("favorite-apps");
                 let mut favorites = favorites.iter().map(|x| x.as_str()).collect::<Vec<_>>();
                 let index = favorites.iter().position(|x| *x == desktop);
                 if !active {
@@ -469,8 +468,8 @@ fn dock_options<C: ContainerExt>(container: &C) {
         connect_switch(&applications_switch, "pop-cosmic-applications.desktop", 2);
 
         let switch = switch_row(&list_box, &fl!("dock-mounted-drives"));
-        settings.bind("show-mounts", &switch, "active", SettingsBindFlags::DEFAULT);
-        
+        settings.bind("show-mounts", &switch, "active").build();
+
         fn map_click_action_selection(selection: i32) -> &'static str {
             return match selection {
                 0 => "cycle-windows",
@@ -496,9 +495,9 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 minimize,
                 minimize_or_previews
             ]);
-            ..set_active(Some(map_click_action_setting(&settings.get_string("click-action").unwrap())));
+            ..set_active(Some(map_click_action_setting(&settings.string("click-action"))));
             ..connect_changed(clone!(@strong settings => move |combo| {
-                let click_action_selection = combo.get_active().unwrap_or(0) as i32;
+                let click_action_selection = combo.active().unwrap_or(0) as i32;
                 settings.set_string("click-action", map_click_action_selection(click_action_selection)).unwrap();
             }));
         };
@@ -517,18 +516,18 @@ fn dock_selector() -> gtk::Box {
         gtk_extras::settings::new_checked("org.gnome.shell.extensions.dash-to-dock")
     {
         let radio_no_dock = gtk::RadioButton::with_label(&fl!("dock-disable"));
-        settings.bind("manualhide", &radio_no_dock, "active", gio::SettingsBindFlags::DEFAULT);
+        settings.bind("manualhide", &radio_no_dock, "active").build();
 
         let radio_extend =
             gtk::RadioButton::with_label_from_widget(&radio_no_dock, &fl!("dock-extends"));
-        settings.bind("extend-height", &radio_extend, "active", gio::SettingsBindFlags::DEFAULT);
+        settings.bind("extend-height", &radio_extend, "active").build();
 
         let radio_no_extend =
             gtk::RadioButton::with_label_from_widget(&radio_extend, &fl!("dock-dynamic"));
 
-        (if settings.get_boolean("manualhide") {
+        (if settings.boolean("manualhide") {
             &radio_no_dock
-        } else if settings.get_boolean("extend-height") {
+        } else if settings.boolean("extend-height") {
             &radio_extend
         } else {
             &radio_no_extend
@@ -576,27 +575,27 @@ fn dock_visibility<C: ContainerExt>(container: &C) {
         radio_intellihide.join_group(Some(&radio_visible));
 
         let update_radios = clone!(@strong radio_visible, @strong radio_autohide, @strong radio_intellihide => move |settings: &gio::Settings| {
-            let radio = if settings.get_boolean("dock-fixed") {
+            let radio = if settings.boolean("dock-fixed") {
                 &radio_visible
-            } else if settings.get_boolean("intellihide") {
+            } else if settings.boolean("intellihide") {
                 &radio_intellihide
             } else {
                 &radio_autohide
             };
-            if !radio.get_active() {
+            if !radio.is_active() {
                 radio.set_active(true);
             }
         });
         update_radios(&settings);
         // shell_settings.block_signal(&handler_id);
-        let handler_id = Rc::new(settings.connect_changed(move |settings, key| {
+        let handler_id = Rc::new(settings.connect_changed(None, move |settings, key| {
             if key == "dock-fixed" || key == "intellihide" {
                 update_radios(settings);
             }
         }));
-        radio_visible.connect_property_active_notify(
+        radio_visible.connect_active_notify(
             clone!(@strong settings, @strong handler_id => move |radio| {
-                if !radio.get_active() {
+                if !radio.is_active() {
                     return;
                 }
                 settings.block_signal(&handler_id);
@@ -605,9 +604,9 @@ fn dock_visibility<C: ContainerExt>(container: &C) {
                 settings.unblock_signal(&handler_id);
             }),
         );
-        radio_intellihide.connect_property_active_notify(
+        radio_intellihide.connect_active_notify(
             clone!(@strong settings, @strong handler_id => move |radio| {
-                if !radio.get_active() {
+                if !radio.is_active() {
                     return;
                 }
                 settings.block_signal(&handler_id);
@@ -616,8 +615,8 @@ fn dock_visibility<C: ContainerExt>(container: &C) {
                 settings.unblock_signal(&handler_id);
             }),
         );
-        radio_autohide.connect_property_active_notify(clone!(@strong settings => move |radio| {
-            if !radio.get_active() {
+        radio_autohide.connect_active_notify(clone!(@strong settings => move |radio| {
+            if !radio.is_active() {
                 return;
             }
             settings.block_signal(&handler_id);
@@ -630,10 +629,10 @@ fn dock_visibility<C: ContainerExt>(container: &C) {
         let primary = fl!("display-primary");
         let all = fl!("display-all");
         let combo = combo_row(&list_box, &fl!("dock-show-on-display"), &primary, &[&primary, &all]);
-        let id = if settings.get_boolean("multi-monitor") { &all } else { &primary };
+        let id = if settings.boolean("multi-monitor") { &all } else { &primary };
         combo.set_active_id(Some(id));
         combo.connect_changed(clone!(@strong settings => move |combo| {
-            let all_displays = combo.get_active_id().map_or(false, |x| &x == &all );
+            let all_displays = combo.active_id().map_or(false, |x| &x == &all );
             settings.set_boolean("multi-monitor", all_displays).unwrap();
         }));
     }
@@ -659,15 +658,15 @@ fn dock_size<C: ContainerExt>(container: &C) {
         radio_custom.join_group(Some(&radio_small));
 
         let spin = spin_row(&list_box, &fl!("size-custom"), 8.0, 128.0, 1.0);
-        settings.bind("dash-max-icon-size", &spin, "value", SettingsBindFlags::DEFAULT);
+        settings.bind("dash-max-icon-size", &spin, "value").build();
 
         radio_bindings(
             &settings,
             "dash-max-icon-size",
             vec![
-                (glib::Variant::from(36i32), radio_small),
-                (glib::Variant::from(48i32), radio_medium),
-                (glib::Variant::from(60i32), radio_large),
+                (36i32.to_variant(), radio_small),
+                (48i32.to_variant(), radio_medium),
+                (60i32.to_variant(), radio_large),
             ],
             Some(radio_custom),
         );
@@ -688,9 +687,9 @@ fn dock_position<C: ContainerExt>(container: &C) {
             &settings,
             "dock-position",
             vec![
-                (glib::Variant::from("BOTTOM"), radio_bottom),
-                (glib::Variant::from("LEFT"), radio_left),
-                (glib::Variant::from("RIGHT"), radio_right),
+                ("BOTTOM".to_variant(), radio_bottom),
+                ("LEFT".to_variant(), radio_left),
+                ("RIGHT".to_variant(), radio_right),
             ],
             None,
         );
@@ -710,8 +709,9 @@ pub fn dock_page() -> gtk::Box {
             "manualhide",
             &switch,
             "active",
-            SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN,
-        );
+        ).flags(
+            SettingsBindFlags::INVERT_BOOLEAN,
+        ).build();
     }
 
     dock_options(&page);
@@ -731,7 +731,7 @@ pub fn dock_page() -> gtk::Box {
 fn framed_list_box() -> gtk::ListBox {
     cascade! {
         gtk::ListBox::new();
-        ..get_style_context().add_class("frame");
+        ..style_context().add_class("frame");
         ..set_header_func(Some(Box::new(header_func)));
         ..set_selection_mode(gtk::SelectionMode::None);
     }
@@ -749,7 +749,7 @@ fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
     radio_bindings(
         &settings,
         "workspaces-only-on-primary",
-        vec![(glib::Variant::from(false), radio_span), (glib::Variant::from(true), radio_primary)],
+        vec![(false.to_variant(), radio_span), (true.to_variant(), radio_primary)],
         None,
     );
 }
@@ -757,7 +757,7 @@ fn workspaces_multi_monitor<C: ContainerExt>(container: &C) {
 fn workspaces_position<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.pop-cosmic") {
         if !settings
-            .get_property_settings_schema()
+            .settings_schema()
             .map_or(false, |x| x.has_key("workspace-picker-left"))
         {
             return;
@@ -772,8 +772,8 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
             &settings,
             "workspace-picker-left",
             vec![
-                (glib::Variant::from(false), radio_right),
-                (glib::Variant::from(true), radio_left),
+                (false.to_variant(), radio_right),
+                (true.to_variant(), radio_left),
             ],
             None,
         );
@@ -782,7 +782,7 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
             settings::new_checked("org.gnome.shell.extensions.multi-monitors-add-on")
         {
             if mm_settings
-                .get_property_settings_schema()
+                .settings_schema()
                 .map_or(false, |x| x.has_key("thumbnails-on-left-side"))
             {
                 let settings_clone = settings.clone();
@@ -791,7 +791,7 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
                         mm_settings
                             .set_boolean(
                                 "thumbnails-on-left-side",
-                                settings_clone.get_boolean("workspace-picker-left"),
+                                settings_clone.boolean("workspace-picker-left"),
                             )
                             .unwrap();
                         None
@@ -807,7 +807,7 @@ pub fn workspaces_page() -> gtk::Box {
 
     let list_box = cascade! {
         gtk::ListBox::new();
-        ..get_style_context().add_class("frame");
+        ..style_context().add_class("frame");
         ..set_header_func(Some(Box::new(header_func)));
         ..set_selection_mode(gtk::SelectionMode::None);
     };
@@ -827,17 +827,18 @@ pub fn workspaces_page() -> gtk::Box {
         );
 
         radio_fixed.join_group(Some(&radio_dynamic));
-        settings.bind("dynamic-workspaces", &radio_dynamic, "active", SettingsBindFlags::DEFAULT);
+        settings.bind("dynamic-workspaces", &radio_dynamic, "active").build();
         settings.bind(
             "dynamic-workspaces",
             &radio_fixed,
             "active",
+        ).flags(
             SettingsBindFlags::DEFAULT | SettingsBindFlags::INVERT_BOOLEAN,
-        );
+        ).build();
 
         if let Some(settings) = settings::new_checked("org.gnome.desktop.wm.preferences") {
             let spin_number = spin_row(&list_box, &fl!("workspaces-amount"), 1.0, 36.0, 1.0);
-            settings.bind("num-workspaces", &spin_number, "value", SettingsBindFlags::DEFAULT);
+            settings.bind("num-workspaces", &spin_number, "value").build();
             radio_fixed
                 .bind_property("active", &spin_number, "sensitive")
                 .flags(glib::BindingFlags::SYNC_CREATE)
@@ -855,8 +856,8 @@ impl PopDesktopWidget {
     pub fn new(stack: &gtk::Stack) -> Self {
         let mut children = Vec::new();
         stack.foreach(|w| {
-            let name = stack.get_child_name(w).unwrap();
-            let title = stack.get_child_title(w).unwrap();
+            let name = stack.child_name(w).unwrap();
+            let title = stack.child_title(w).unwrap();
             stack.remove(w);
             children.push((w.clone(), name, title));
         });
