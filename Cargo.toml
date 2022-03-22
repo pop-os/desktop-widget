@@ -19,7 +19,7 @@ gtk = "0.14"
 gtk-extras = { git = "https://github.com/pop-os/gtk-extras" }
 gio = "0.14"
 libhandy = "0.8"
-pop-theme-switcher = { git = "https://github.com/pop-os/theme-switcher", branch = "master_impish" }
+pop-theme-switcher = { git = "https://github.com/pop-os/theme-switcher", branch = "master" }
 gdk-pixbuf = "0.14"
 gstreamer = "0.17"
 i18n-embed = { version = "0.12", features = ["fluent-system", "desktop-requester"] }
