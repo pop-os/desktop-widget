@@ -38,7 +38,6 @@ dock-visibility = Visibilidade do Dock
 dock-workspaces = Exibir Ícone das Mesas no Dock
 
 gis-dock-description = Aparência, tamanho e posição do Dock podem ser alterados a qualquer momento nas Configurações.
-gis-dock-header = Continue the desktop setup by choosing your preferred layout.
 gis-dock-header = Para continuar, escolha um layout.
 gis-dock-title = Bem vindo ao Pop!_OS
 
