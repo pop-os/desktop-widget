@@ -3,7 +3,7 @@ action-applications-description = Pressez la touche Super pour ouvrir l'aperçu 
 action-launcher = Lanceur
 action-launcher-description = Pressez la touche Super pour ouvrir le Lanceur
 action-workspaces = Espaces de travail
-action-workspaces-description = Presser la touche Super pour ouvrir la Fenêtre et l'aperçu des espaces de travail.
+action-workspaces-description = Pressez la touche Super pour ouvrir la Fenêtre et l'aperçu des espaces de travail.
 
 click-action-cycle = Lancer ou naviguer entre les fenêtres
 click-action-minimize = Lancer ou réduire les fenêtres
@@ -21,7 +21,7 @@ dock-always-hide = Toujours masquer
 dock-always-hide-description = Toujours masquer le Dock sauf s'il est survolé par la souris
 dock-always-visible = Toujours visible
 dock-applications = Afficher l'icône des applications dans le Dock
-dock-click-action = Icône d'action du clic
+dock-click-action = Action lorsque vous cliquez sur l'icône
 dock-disable = Pas de Dock
 dock-dynamic = Ne pas étendre le Dock jusqu'aux bords
 dock-enable = Activer le Dock
@@ -30,7 +30,7 @@ dock-extends = Le Dock s'étend jusqu'aux bords
 dock-intelligently-hide = Masquer de manière intelligente
 dock-intelligently-hide-description = Le Dock est masqué lorsqu'une fenêtre recouvre sa zone
 dock-launcher = Afficher l'icône du Lanceur dans le Dock
-dock-mounted-drives = Afficher les Lecteurs montés
+dock-mounted-drives = Afficher les disques montés
 dock-options = Options du Dock
 dock-position = Position sur le bureau
 dock-show-on-display = Afficher le Dock à l'écran
@@ -59,8 +59,8 @@ gis-launcher-title = Ouvrir et changer d'application depuis le Lanceur
 gis-panel-notice = La configuration de la barre supérieure peut être modifiée à tout moment depuis les Paramètres
 gis-panel-title = Configurer la barre supérieure
 
-hot-corner = Hot Corner
-hot-corner-description = Activer le hot corner en haut à gauche pour les espaces de travail
+hot-corner = Coin actif
+hot-corner-description = Activer le coin actif en haut à gauche pour les espaces de travail
 
 multi-monitor-behavior = Comportement multi-écrans
 
@@ -87,7 +87,7 @@ super-key-action = Action de la touche Super
 
 top-bar = Barre supérieure
 
-window-controls = Commandes de fenêtres
+window-controls = Options de fenêtre
 
 workspace-picker-position = Placement du sélecteur d'espace de travail
 
