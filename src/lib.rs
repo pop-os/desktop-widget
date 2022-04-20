@@ -15,12 +15,15 @@ use gtk_extras::settings;
 use i18n_embed::DesktopLanguageRequester;
 use libhandy::prelude::*;
 use pop_theme_switcher::PopThemeSwitcher;
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, path::Path, rc::Rc};
 
 const PAGE_APPEARANCE: &str = "appearance";
 const PAGE_DOCK: &str = "dock";
 const PAGE_MAIN: &str = "main";
 const PAGE_WORKSPACES: &str = "workspaces";
+
+const EXTENSIONS_DIR: &str = "/usr/share/gnome-shell/extensions/";
+const VERTICAL_OVERVIEW_EXT: &str = "vertical-overview@RensAlthuis.github.com";
 
 pub fn localize() {
     let localizer = crate::localize::localizer();
@@ -41,6 +44,17 @@ fn header_func(row: &gtk::ListBoxRow, before: Option<&gtk::ListBoxRow>) {
             gtk::Separator::new(gtk::Orientation::Horizontal);
             ..show();
         }));
+    }
+}
+
+// Set add/remove operation, on a Vec
+fn vec_add_remove<T: std::cmp::PartialEq>(vec: &mut Vec<T>, item: T, add: bool) {
+    if let Some(position) = vec.iter().position(|x| x == &item) {
+        if !add {
+            vec.remove(position);
+        }
+    } else if add {
+        vec.push(item);
     }
 }
 
@@ -765,9 +779,46 @@ fn workspaces_position<C: ContainerExt>(container: &C) {
 
         let list_box = settings_list_box(container, &fl!("workspace-picker-position"));
 
+        let switch = if Path::new(&format!("{}{}", EXTENSIONS_DIR, VERTICAL_OVERVIEW_EXT)).exists() {
+            let shell_settings = gio::Settings::new("org.gnome.shell");
+            let switch = switch_row(&list_box, &fl!("vertical-workspaces"));
+
+            // Extension is enabled if in `enabled-extensions` but not `disabled-extensions`
+            let enabled = shell_settings.get_strv("enabled-extensions");
+            let disabled = shell_settings.get_strv("disabled-extensions");
+            let active = enabled.iter().find(|x| *x == VERTICAL_OVERVIEW_EXT).is_some() &&
+                         !disabled.iter().find(|x| *x == VERTICAL_OVERVIEW_EXT).is_some();
+            switch.set_active(active);
+
+            switch.connect_property_active_notify(move |switch| {
+                // Add/remove from `enabled-extensions`
+                let enabled = shell_settings.get_strv("enabled-extensions");
+                let mut enabled = enabled.iter().map(|x| x.as_str()).collect::<Vec<_>>();
+                vec_add_remove(&mut enabled, VERTICAL_OVERVIEW_EXT, switch.get_active());
+                shell_settings.set_strv("enabled-extensions", &enabled).unwrap();
+
+                // Add/remove from `disabled-extensions`
+                let disabled = shell_settings.get_strv("disabled-extensions");
+                let mut disabled = disabled.iter().map(|x| x.as_str()).collect::<Vec<_>>();
+                vec_add_remove(&mut disabled, VERTICAL_OVERVIEW_EXT, !switch.get_active());
+                shell_settings.set_strv("disabled-extensions", &disabled).unwrap();
+            });
+
+            Some(switch)
+        } else {
+            None
+        };
+
         let radio_left = radio_row(&list_box, &fl!("position-left"), None);
         let radio_right = radio_row(&list_box, &fl!("position-right"), None);
         radio_right.join_group(Some(&radio_left));
+
+        if let Some(switch) = switch {
+            list_box.get_children().iter().rev().take(2).for_each(|row| {
+                switch.bind_property("active", row, "sensitive").flags(glib::BindingFlags::SYNC_CREATE).build();
+            });
+        }
+
         radio_bindings(
             &settings,
             "workspace-picker-left",
