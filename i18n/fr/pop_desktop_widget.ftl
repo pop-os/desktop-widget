@@ -7,9 +7,9 @@ action-workspaces-description = Pressez la touche Super pour ouvrir la Fenêtre 
 
 click-action-cycle = Lancer ou naviguer entre les fenêtres
 click-action-minimize = Lancer ou réduire les fenêtres
-click-action-minimize-or-previews = Lancer, Réduire ou Prévisualiser les  fenêtres
+click-action-minimize-or-previews = Lancer, Réduire ou Prévisualiser les fenêtres
 
-date-combo = Date & Heure et position du panneau de notifications
+date-combo = Date & Heure et position des Notifications
 date-combo-center = Au Centre
 date-combo-left =  À Gauche
 date-combo-right =  À Droite
@@ -18,10 +18,10 @@ display-all = Tous les écrans
 display-primary =  Écran principal
 
 dock-always-hide = Toujours masquer
-dock-always-hide-description = Toujours masquer le Dock sauf s'il est survolé par la souris
+dock-always-hide-description = Masquer le Dock sauf s'il est survolé par la souris
 dock-always-visible = Toujours visible
 dock-applications = Afficher l'icône des applications dans le Dock
-dock-click-action = Action lorsque vous cliquez sur l'icône
+dock-click-action = Action en cliquant sur l'icône
 dock-disable = Pas de Dock
 dock-dynamic = Ne pas étendre le Dock jusqu'aux bords
 dock-enable = Activer le Dock
