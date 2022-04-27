@@ -50,7 +50,7 @@ gis-extensions-title = Actualización de las extensiones de GNOME Shell
 gis-gestures-description = Deslice cuatro dedos hacia la izquierda para abrir las áreas de trabajo y la descripción general de las ventanas, deslice cuatro dedos hacia la derecha para abrir las aplicaciones y deslice cuatro dedos hacia arriba o hacia abajo para cambiar entre las áreas de trabajo. Desliza con tres dedos para cambiar entre ventanas.
 gis-gestures-title = Use gestos para una navegación más sencilla
 
-gis-launcher-description = Presione la tecla Super o use un ícono en el dock para mostrar el campo de búsqueda del Lanzador. Use las teclas de flecha para cambiar rápidamente entre las ventanas abiertas o escriba el nombre de la aplicación para iniciarla. El Lanzador hace que la navegación por el escritorio sea más rápida y fluida.
+gis-launcher-description = Presione la tecla Super o use un icono en el dock para mostrar el campo de búsqueda del Lanzador. Use las teclas de flecha para cambiar rápidamente entre las ventanas abiertas o escriba el nombre de la aplicación para iniciarla. El Lanzador hace que la navegación por el escritorio sea más rápida y fluida.
 gis-launcher-notice = La configuración de la tecla Super se puede cambiar en cualquier momento desde la aplicación Configuración.
 gis-launcher-title = Abrir y cambiar aplicaciones desde el Lanzador
 
