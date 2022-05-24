@@ -706,6 +706,10 @@ fn dock_alignment<C: ContainerExt>(container: &C) {
         let radio_end = radio_row(&list_box, &fl!("alignment-end"), None);
         radio_end.join_group(Some(&radio_center));
 
+        switch.bind_property("active", &radio_center, "sensitive").build();
+        switch.bind_property("active", &radio_start, "sensitive").build();
+        switch.bind_property("active", &radio_end, "sensitive").build();
+
         radio_bindings(
             &settings,
             "dock-alignment",
