@@ -383,9 +383,6 @@ fn dock_options<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
         let list_box = settings_list_box(container, &fl!("dock-options"));
 
-        let switch = switch_row(&list_box, &fl!("dock-extend"));
-        settings.bind("extend-height", &switch, "active").build();
-
         let shell_settings = gio::Settings::new("org.gnome.shell");
         let launcher_switch = switch_row(&list_box, &fl!("dock-launcher"));
         let workspaces_switch = switch_row(&list_box, &fl!("dock-workspaces"));
@@ -699,6 +696,9 @@ fn dock_position<C: ContainerExt>(container: &C) {
 fn dock_alignment<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
         let list_box = settings_list_box(container, &fl!("dock-alignment"));
+
+        let switch = switch_row(&list_box, &fl!("dock-extend"));
+        settings.bind("extend-height", &switch, "active").build();
 
         let radio_center = radio_row(&list_box, &fl!("alignment-center"), None);
         let radio_start = radio_row(&list_box, &fl!("alignment-start"), None);
