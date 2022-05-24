@@ -33,6 +33,7 @@ dock-launcher = Show Launcher Icon in Dock
 dock-mounted-drives = Show Mounted Drives
 dock-options = Dock Options
 dock-position = Position on the Desktop
+dock-alignment = Dock Alignment when Extended
 dock-show-on-display = Show Dock on Display
 dock-size = Dock Size
 dock-visibility = Dock Visibility
@@ -71,6 +72,10 @@ page-workspaces = Workspaces
 position-bottom = Bottom of the screen
 position-left = Along the left side
 position-right = Along the right side
+
+alignment-center = Center of the screen
+alignment-start = Start of the screen
+alignment-end = End of the screen
 
 show-applications-button = Show Applications Button
 show-maximize-button = Show Maximize Button
