@@ -700,22 +700,22 @@ fn dock_alignment<C: ContainerExt>(container: &C) {
         let switch = switch_row(&list_box, &fl!("dock-extend"));
         settings.bind("extend-height", &switch, "active").build();
 
-        let radio_center = radio_row(&list_box, &fl!("alignment-center"), None);
         let radio_start = radio_row(&list_box, &fl!("alignment-start"), None);
-        radio_start.join_group(Some(&radio_center));
+        let radio_center = radio_row(&list_box, &fl!("alignment-center"), None);
+        radio_start.join_group(Some(&radio_start));
         let radio_end = radio_row(&list_box, &fl!("alignment-end"), None);
-        radio_end.join_group(Some(&radio_center));
+        radio_end.join_group(Some(&radio_start));
 
-        switch.bind_property("active", &radio_center, "sensitive").build();
         switch.bind_property("active", &radio_start, "sensitive").build();
+        switch.bind_property("active", &radio_center, "sensitive").build();
         switch.bind_property("active", &radio_end, "sensitive").build();
 
         radio_bindings(
             &settings,
             "dock-alignment",
             vec![
-                ("CENTER".to_variant(), radio_center),
                 ("START".to_variant(), radio_start),
+                ("CENTER".to_variant(), radio_center),
                 ("END".to_variant(), radio_end),
             ],
             None,
