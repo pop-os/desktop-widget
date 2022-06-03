@@ -702,7 +702,7 @@ fn dock_alignment<C: ContainerExt>(container: &C) {
 
         let radio_start = radio_row(&list_box, &fl!("alignment-start"), None);
         let radio_center = radio_row(&list_box, &fl!("alignment-center"), None);
-        radio_start.join_group(Some(&radio_start));
+        radio_center.join_group(Some(&radio_start));
         let radio_end = radio_row(&list_box, &fl!("alignment-end"), None);
         radio_end.join_group(Some(&radio_start));
 
