@@ -700,18 +700,18 @@ fn dock_alignment<C: ContainerExt>(container: &C) {
     if let Some(settings) = settings::new_checked("org.gnome.shell.extensions.dash-to-dock") {
         let list_box = settings_list_box(container, &fl!("dock-alignment"));
 
-        let radio_start = radio_row(&list_box, &fl!("alignment-start"), None);
         let radio_center = radio_row(&list_box, &fl!("alignment-center"), None);
-        radio_center.join_group(Some(&radio_start));
+        let radio_start = radio_row(&list_box, &fl!("alignment-start"), None);
+        radio_start.join_group(Some(&radio_center));
         let radio_end = radio_row(&list_box, &fl!("alignment-end"), None);
-        radio_end.join_group(Some(&radio_start));
+        radio_end.join_group(Some(&radio_center));
 
         radio_bindings(
             &settings,
             "dock-alignment",
             vec![
-                ("START".to_variant(), radio_start),
                 ("CENTER".to_variant(), radio_center),
+                ("START".to_variant(), radio_start),
                 ("END".to_variant(), radio_end),
             ],
             None,
