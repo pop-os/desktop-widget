@@ -33,6 +33,7 @@ dock-launcher = Uygulama Başlatıcı Simgesini Rıhtımda Göster
 dock-mounted-drives = Bağlanmış Aygıtları Göster
 dock-options = Rıhtım Ayarları
 dock-position = Masaüstü Konumu
+dock-alignment = Rıhtımı ve Simgeleri Ekranda Hizala
 dock-show-on-display = Rıhtımı Ekranda Göster
 dock-size = Rıhtım Boyutu
 dock-visibility = Rıhtım Görünürlüğü
@@ -71,6 +72,10 @@ page-workspaces = Çalışma Alanları
 position-bottom = Ekranın altına
 position-left = Sol tarafa
 position-right = Sağ tarafa
+
+alignment-center = Merkezde
+alignment-start = Başlangıçta
+alignment-end = Sonda
 
 show-applications-button = Uygulamalar Düğmesini Göster
 show-maximize-button = Ekranı Kapla Düğmesini Göster
