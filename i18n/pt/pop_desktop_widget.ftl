@@ -33,6 +33,7 @@ dock-launcher = Mostrar o ícone do iniciador na doca
 dock-mounted-drives = Mostrar unidades montadas
 dock-options = Opções da doca
 dock-position = Posição no ambiente de trabalho
+dock-alignment = Alinhamento da doca e ícones no ecrã
 dock-show-on-display = Mostrar a doca no ecrã
 dock-size = Tamanho da doca
 dock-visibility = Visibilidade da doca
@@ -72,15 +73,19 @@ position-bottom = Parte inferior do ecrã
 position-left = No lado esquerdo
 position-right = No lado direito
 
+alignment-center = Centro
+alignment-start = Início
+alignment-end = Final
+
 show-applications-button = Mostrar o botão de aplicações
 show-maximize-button = Mostrar o botão de maximizar
 show-minimize-button = Mostrar o botão de minimizar
 show-workspaces-button = Mostrar o botão de áreas de trabalho
 
-size-custom = Personalizado
+size-custom = Personalizada
 size-large = Grande
-size-medium = Médio
-size-small = Pequeno
+size-medium = Média
+size-small = Pequena
 
 super-key-action = Ação da tecla Super
 
