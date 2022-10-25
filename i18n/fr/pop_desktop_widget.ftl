@@ -33,6 +33,7 @@ dock-launcher = Afficher l'icône du Lanceur dans le Dock
 dock-mounted-drives = Afficher les disques montés
 dock-options = Options du Dock
 dock-position = Position sur le bureau
+dock-alignment =  Alignement du Dock et des icônes
 dock-show-on-display = Afficher le Dock à l'écran
 dock-size = Taille du Dock
 dock-visibility = Visibilité du Dock
@@ -72,6 +73,10 @@ page-workspaces = Espaces de travail
 position-bottom = Bas de l'écran
 position-left = Le long du côté gauche
 position-right = Le long du côté droit
+
+alignment-center = Au Centre
+alignment-start = Au Début
+alignment-end = À la fin
 
 show-applications-button = Afficher le bouton des applications
 show-maximize-button = Afficher le bouton Maximiser
