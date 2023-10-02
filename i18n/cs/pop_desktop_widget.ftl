@@ -33,7 +33,9 @@ dock-launcher = Zobrazovat ikonu spouštěče v doku
 dock-mounted-drives = Zobrazovat připojené jednotky
 dock-options = Nastavení doku
 dock-position = Pozice doku na ploše
+dock-alignment = Zarovnání doku a ikon na obrazovce
 dock-show-on-display = Ukazovat dok na monitoru
+dock-size = Velikost doku
 dock-visibility = Viditelnost doku
 dock-workspaces = Ukazovat ikonu pracovních ploch v doku
 
@@ -70,6 +72,10 @@ page-workspaces = Pracovní plochy
 position-bottom = Spodek obrazovky
 position-left = Po levé straně
 position-right = Po pravé straně
+
+alignment-center = Uprostřed
+alignment-start = Začátek
+alignment-end = Konec
 
 show-applications-button = Zobrazovat tlačítko pro seznam aplikací
 show-maximize-button = Zobrazovat tlačítko pro maximalizaci
