@@ -1,9 +1,9 @@
-action-applications = Toepassingen
-action-applications-description = De supertoets opent het applicatie-overzicht
+action-applications = Appmenu
+action-applications-description = De supertoets opent het appmenu
 action-launcher = Snelstarter
-action-launcher-description = De supertoets opent de Snelstarter
-action-workspaces = Werkbladen
-action-workspaces-description = De supertoets opent het Venster en Werkbladen overzicht
+action-launcher-description = De supertoets opent de snelstarter
+action-workspaces = Werkbladoverzicht
+action-workspaces-description = De supertoets opent het werkbladoverzicht
 
 click-action-cycle = Start of Wissel Vensters
 click-action-minimize = Start of Minimaliseer Vensters
