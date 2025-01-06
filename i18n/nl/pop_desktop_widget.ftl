@@ -33,6 +33,7 @@ dock-launcher = Toon Starter Icoon in het Dock
 dock-mounted-drives = Toon Gekoppelde Schijven
 dock-options = Dock Opties
 dock-position = Positie op het scherm
+dock-alignment = Dock en icoontjes uitlijnen op het scherm
 dock-show-on-display = Toon Dock op Scherm
 dock-size = Dock Grootte
 dock-visibility = Dock Zichtbaarheid
@@ -58,10 +59,10 @@ gis-launcher-title = Open en Wissel Vensters vanuit de Starter
 gis-panel-notice = De configuratie van de Bovenste Balk kan altijd veranderd worden in de toepassing Instellingen.
 gis-panel-title = Configureer de Bovenste Balk
 
-hot-corner = Gevoelige Hoeken
-hot-corner-description = Activeer de gevoelige hoek linksboven voor Werkbladen
+hot-corner = Slimme hoek
+hot-corner-description = Activeer slimme hoek linksboven voor het werkbladenoverzicht
 
-multi-monitor-behavior = Gedrag meerdere schermen
+multi-monitor-behavior = Werking over meerdere beeldschermen
 
 page-appearance = Uiterlijk
 page-dock = Dock
@@ -72,17 +73,21 @@ position-bottom = Onderkant van het scherm
 position-left = Langs links
 position-right = Langs rechts
 
-show-applications-button = Toon Toepassingen knop
-show-maximize-button = Toon Maximaliseer knop
-show-minimize-button = Toon Minimaliseer knop
-show-workspaces-button = Toon Werkbladen Knop
+alignment-center = Middenstuk
+alignment-start = Beginstuk
+alignment-end = Eindstuk
+
+show-applications-button = Toon knop 'toepassingen'
+show-maximize-button = Toon knop 'maximaliseren'
+show-minimize-button = Toon knop 'minimaliseren'
+show-workspaces-button = Toon knop 'werkbaden'
 
 size-custom = Aangepaste Grootte
 size-large = Groot
 size-medium = Gemiddeld
 size-small = Klein
 
-super-key-action = Super Toets Actie
+super-key-action = Actie van de supertoets
 
 top-bar = Bovenste Balk
 
