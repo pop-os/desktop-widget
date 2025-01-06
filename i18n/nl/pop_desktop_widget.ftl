@@ -37,7 +37,7 @@ dock-alignment = Dock en icoontjes uitlijnen op het scherm
 dock-show-on-display = Toon Dock op Scherm
 dock-size = Dock Grootte
 dock-visibility = Dock Zichtbaarheid
-dock-workspaces = Toon Werkbladen Icoon in het Dock
+dock-workspaces = Werkbladwisselaar in de dock tonen
 
 gis-dock-description = Dock uiterlijk, grootte en positie kan altijd gewijzigd worden in de toepassing Instellingen.
 gis-dock-header = Configureer de werkomgeving verder door je favoriete opmaak te kiezen.
@@ -77,10 +77,10 @@ alignment-center = Middenstuk
 alignment-start = Beginstuk
 alignment-end = Eindstuk
 
-show-applications-button = Knop toepassingen tonen
-show-maximize-button = Knop maximaliseren tonen
-show-minimize-button = Knop minimaliseren tonen
-show-workspaces-button = Knop werkbaden tonen
+show-applications-button = Knop 'Appmenu' tonen
+show-maximize-button = Maximaliseerknop tonen
+show-minimize-button = Minimaliseerknop tonen
+show-workspaces-button = Knop 'Werkbaden' tonen
 
 size-custom = Aangepaste Grootte
 size-large = Groot
@@ -91,7 +91,7 @@ super-key-action = Actie van de supertoets
 
 top-bar = Bovenste Balk
 
-window-controls = Venster knoppen
+window-controls = Vensterknoppen
 
 workspace-picker-position = Plaatsing van de Werkbladen Kiezer
 
