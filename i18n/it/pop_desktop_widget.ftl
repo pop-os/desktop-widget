@@ -33,7 +33,9 @@ dock-launcher = Mostra l'icona del launcher nel dock
 dock-mounted-drives = Mostra dischi montati
 dock-options = Opzioni dock
 dock-position = Posizione sullo schermo
+dock-alignment = Allineamento del dock e delle icone sullo schermo
 dock-show-on-display = Mostra il dock sullo schermo
+dock-size = Dimensione dock
 dock-visibility = Visibilità dock
 dock-workspaces = Mostra l'icona degli spazi di lavoro nel dock
 
@@ -71,6 +73,10 @@ position-bottom = In basso
 position-left = Sul lato sinistro
 position-right = Sul lato destro
 
+alignment-center = Centro
+alignment-start = Inizio
+alignment-end = Fine
+
 show-applications-button = Mostra pulsante applicazioni
 show-maximize-button = Mostra pulsante massimizza
 show-minimize-button = Mostra pulsante minimizza
@@ -96,4 +102,3 @@ workspaces-fixed = Numero fisso di spazi di lavoro
 workspaces-fixed-description = Specifica un numero di spazi di lavoro
 workspaces-primary = Spazi di lavoro solo sullo schermo principale
 workspaces-span-displays = Gli spazi di lavoro attraversano gli schermi
-
