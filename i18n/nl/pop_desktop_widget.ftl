@@ -1,100 +1,104 @@
 action-applications = Toepassingen
-action-applications-description = De Super-toets opent het applicatie-overzicht
-action-launcher = Starter
-action-launcher-description = De Super-toets opent de starter
+action-applications-description = Met de supertoets het toepassingsoverzicht openen 
+action-launcher = Snelstarter
+action-launcher-description = Met de supertoets de snelstarter openen
 action-workspaces = Werkbladen
-action-workspaces-description = De Super-toets opent het Venster en Werkbladen overzicht
+action-workspaces-description = Met de supertoets het werkbladoverzicht openen
 
-click-action-cycle = Start of Wissel Vensters
-click-action-minimize = Start of Minimaliseer Vensters
-click-action-minimize-or-previews = Start, Minimaliseer of Toon Vensters
+click-action-cycle = Start of wissel tussen vensters
+click-action-minimize = Start of minimaliseer vensters
+click-action-minimize-or-previews = Start apps, minimaliseer vensters of toon vensterminiaturen
 
-date-combo = Datum & Tijd en Notificaties Positie
+date-combo = Positie van het 'Datum, tijd en meldingen'-applet
 date-combo-center = Midden
 date-combo-left = Links
 date-combo-right = Rechts
 
-display-all = Alle Schermen
-display-primary = Primaire Scherm
+display-all = Alle schermen
+display-primary = Primaire scherm
 
 dock-always-hide = Altijd verbergen
-dock-always-hide-description = Dock altijd verbergen tenzij actief getoond door de muis.
+dock-always-hide-description = De dock automatisch verbergen tenzij u er met de muis overheen gaat
 dock-always-visible = Altijd zichtbaar
-dock-applications = Toon het Icoon Toepassingen in het Dock
-dock-click-action = Actie Klik Icoon
-dock-disable = Geen Dock
+dock-applications = Pictogram 'Toepassingen' in de dock tonen
+dock-click-action = Actie na het klikken op het pictogram
+dock-disable = Dock uitschakelen
 dock-dynamic = Dock reikt niet tot de randen
-dock-enable = Zet Dock aan
+dock-enable = Dock inschakelen 
 dock-extend = Dock reikt tot de randen van het scherm
 dock-extends = Dock reikt tot de randen
-dock-intelligently-hide = Intelligent verbergen
-dock-intelligently-hide-description = Dock verbergt als een venster het Dockgebied overlapt
-dock-launcher = Toon Starter Icoon in het Dock
-dock-mounted-drives = Toon Gekoppelde Schijven
-dock-options = Dock Opties
+dock-intelligently-hide = Slim verbergen
+dock-intelligently-hide-description = De dock verbergt zich automatisch als er een venster in de buurt komt
+dock-launcher = Pictogram 'Snelstarter' in de dock tonen
+dock-mounted-drives = Aangekoppelde schijven tonen
+dock-options = Opties voor de dock
 dock-position = Positie op het scherm
-dock-show-on-display = Toon Dock op Scherm
-dock-size = Dock Grootte
-dock-visibility = Dock Zichtbaarheid
-dock-workspaces = Toon Werkbladen Icoon in het Dock
+dock-alignment = Uitlijning van de dock en pictogrammen op het scherm
+dock-show-on-display = De dock op dit scherm tonen
+dock-size = Grootte van de dock
+dock-visibility = Zichtbaarheid van de dock
+dock-workspaces = Pictogram 'Werkbladen' in de dock tonen
 
-gis-dock-description = Dock uiterlijk, grootte en positie kan altijd gewijzigd worden in de toepassing Instellingen.
-gis-dock-header = Configureer de werkomgeving verder door je favoriete opmaak te kiezen.
+gis-dock-description = Het uiterlijk, de grootte en de positie van de dock kunnen altijd gewijzigd worden in de COSMIC-instellingen.
+gis-dock-header = Configureer de werkomgeving verder door uw favoriete lay-out te kiezen.
 gis-dock-title = Welkom bij Pop!_OS
 
-gis-extensions-label1 = Handmatig geïnstalleerde GNOME Shell extensies zijn uitgeschakeld om ervoor te zorgen dat upgrades betrouwbaar zijn. De extensies zijn normaal niet getest als onderdeel van Pop!_OS en kunnen problemen veroorzaken. Je kan ze één per één handmatig terug activeren om ervoor te zorgen dat elke extensie compatibel is. Om ze opnieuw te activeren kan je ze opnieuw installeren vanuit {$url}, of herstel ze vanuit de backup map.
+gis-extensions-label1 = Handmatig geïnstalleerde GNOME Shell-extensies zijn uitgeschakeld zodat de upgrades betrouwbaar zijn. De extensies worden normaal gesproken niet getest als onderdeel van Pop!_OS en kunnen problemen veroorzaken. U kunt ze één voor één handmatig opnieuw inschakelen om de compatibiliteit van elke extensie te garanderen. Om ze opnieuw in te schakelen, installeert u ze opnieuw vanaf {$url}, of herstelt u ze vanuit de back-up map.     
 
- Uw GNOME Shell extensies zijn verplaatst van:
-gis-extensions-label2 = Naar deze backup map:
-gis-extensions-title = GNOME Shell Extensies Update
+ Uw GNOME Shell-extensies zijn verplaatst van:
+gis-extensions-label2 = Naar deze back-up map:
+gis-extensions-title = GNOME Shell-extensies updaten
 
-gis-gestures-description = Veeg vier vingers naar links voor het Werkbladen en vensters overzicht, veeg vier vingers naar rechts om het toepassingenoverzicht te openen, veeg vier vingers  naar boven of onder om te wisselen tussen werkbladen. Veeg met drie vinger om tussen vensters te wisselen.
-gis-gestures-title = Gebruik gebaren voor Simpelere Navigatie
+gis-gestures-description = Veeg vier vingers naar links voor het werkblad- en vensteroverzicht, veeg vier vingers naar rechts om het toepassingsoverzicht te openen, veeg vier vingers naar boven of onder om te wisselen tussen werkbladen. Veeg met drie vinger om tussen vensters te wisselen.
+gis-gestures-title = Gebruik veeggebaren om efficiënt te navigeren
 
-gis-launcher-description = Druk op de Super-toets of gebruik een icoon in het dock om het zoekveld van de starter te tonen. Gebruik pijltjestoetsen om snel te wisselen tussen open vensters of typ de naam van een toepassing om die te starten. De starter maakt het navigeren van de werkomgeving sneller en vloeiender.
-gis-launcher-notice = De Super-toets instellingen kunnen altijd veranderd worden in de toepassing Instellingen.
-gis-launcher-title = Open en Wissel Vensters vanuit de Starter
+gis-launcher-description = Druk op de supertoets of gebruik een pictogram in de dock om het zoekveld van de snelstarter te tonen. Gebruik pijltjestoetsen om snel te wisselen tussen open vensters of typ de naam van de app die u wilt starten. Met behulp van de snelstarter maakt u uw werkwijze sneller en vloeiender.
+gis-launcher-notice = De configuratie van de supertoets kan altijd worden aangepast in de COSMIC-instellingen.
+gis-launcher-title = Start en schakel tussen toepassingen met de snelstarter
 
-gis-panel-notice = De configuratie van de Bovenste Balk kan altijd veranderd worden in de toepassing Instellingen.
-gis-panel-title = Configureer de Bovenste Balk
+gis-panel-notice = De configuratie van het paneel kan altijd worden aangepast in COSMIC-instellingen.
+gis-panel-title = Paneel configureren
 
-hot-corner = Gevoelige Hoeken
-hot-corner-description = Activeer de gevoelige hoek linksboven voor Werkbladen
+hot-corner = Slimme hoek
+hot-corner-description = Activeer de slimme hoek linksboven om het werkbladoverzicht te openen
 
-multi-monitor-behavior = Gedrag meerdere schermen
+multi-monitor-behavior = Werking over meerdere beeldschermen
 
 page-appearance = Uiterlijk
 page-dock = Dock
 page-main = Algemeen
 page-workspaces = Werkbladen
 
-position-bottom = Onderkant van het scherm
+position-bottom = Aan de onderkant van het scherm
 position-left = Langs links
 position-right = Langs rechts
 
-show-applications-button = Toon Toepassingen knop
-show-maximize-button = Toon Maximaliseer knop
-show-minimize-button = Toon Minimaliseer knop
-show-workspaces-button = Toon Werkbladen Knop
+alignment-center = Middenstuk
+alignment-start = Beginstuk
+alignment-end = Eindstuk
 
-size-custom = Aangepaste Grootte
+show-applications-button = Knop 'Toepassingen' tonen
+show-maximize-button = Maximaliseerknop tonen
+show-minimize-button = Minimaliseerknop tonen
+show-workspaces-button = Knop 'Werkbaden' tonen
+
+size-custom = Aangepaste grootte
 size-large = Groot
 size-medium = Gemiddeld
 size-small = Klein
 
-super-key-action = Super Toets Actie
+super-key-action = Actie van de supertoets
 
-top-bar = Bovenste Balk
+top-bar = Bovenbalk
 
-window-controls = Venster knoppen
+window-controls = Vensterknoppen
 
-workspace-picker-position = Plaatsing van de Werkbladen Kiezer
+workspace-picker-position = Plaatsing van de Werkbladwisselaar 
 
-workspaces-amount = Aantal Werkbladen
-workspaces-dynamic = Dynamische Werkbladen
-workspaces-dynamic-description = Automatisch lege werkbladen verwijderen.
-workspaces-fixed = Vast aantal Werkbladen
-workspaces-fixed-description = Kies het aantal Werkbladen
-workspaces-primary = Werkbladen enkel op het Primaire Scherm
-workspaces-span-displays = Werkbladen op alle Schermen
-
+workspaces-amount = Aantal werkbladen
+workspaces-dynamic = Dynamische werkbladen
+workspaces-dynamic-description = Lege werkbladen automatisch verwijderen.
+workspaces-fixed = Vast aantal werkbladen
+workspaces-fixed-description = Kies een vast aantal werkbladen
+workspaces-primary = Werkruimtes alleen op het primaire scherm
+workspaces-span-displays = Schermoverkoepelende werkbladen
