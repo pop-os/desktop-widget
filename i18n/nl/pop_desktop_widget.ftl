@@ -52,7 +52,7 @@ gis-extensions-title = GNOME Shell-extensies updaten
 gis-gestures-description = Veeg vier vingers naar links voor het werkblad- en vensteroverzicht, veeg vier vingers naar rechts om het toepassingsoverzicht te openen, veeg vier vingers naar boven of onder om te wisselen tussen werkbladen. Veeg met drie vinger om tussen vensters te wisselen.
 gis-gestures-title = Gebruik veeggebaren om efficiënt te navigeren
 
-gis-launcher-description = Druk op de supertoets of gebruik een pictogram in de dock om het zoekveld van de snelstarter te tonen. Gebruik pijltjestoetsen om snel te wisselen tussen open vensters of typ de naam van de app die u wilt starten. Met behulp van de snelstarter maakt u uw werkwijze sneller en dynamischer.
+gis-launcher-description = Druk op de supertoets of gebruik een pictogram in de dock om het zoekveld van de snelstarter te tonen. Gebruik pijltjestoetsen om snel te wisselen tussen open vensters of typ de naam van de app die u wilt starten. Met behulp van de snelstarter maakt u uw werkwijze sneller en vloeiender.
 gis-launcher-notice = De configuratie van de supertoets kan altijd worden aangepast in de COSMIC-instellingen.
 gis-launcher-title = Start en schakel tussen toepassingen met de snelstarter
 
