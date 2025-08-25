@@ -29,6 +29,7 @@ dock-extend = Extend dock to the edges of the screen
 dock-extends = Dock extends to edges
 dock-intelligently-hide = Intelligently hide
 dock-intelligently-hide-description = Dock hides when any window overlaps the dock area
+dock-isolate-workspaces = Only show windows on the current workspace
 dock-launcher = Show Launcher Icon in Dock
 dock-mounted-drives = Show Mounted Drives
 dock-options = Dock Options

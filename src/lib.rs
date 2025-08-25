@@ -501,6 +501,9 @@ fn dock_options<C: ContainerExt>(container: &C) {
                 settings.set_string("click-action", map_click_action_selection(click_action_selection)).unwrap();
             }));
         };
+
+        let switch = switch_row(&list_box, &fl!("dock-isolate-workspaces"));
+        settings.bind("isolate-workspaces", &switch, "active").build();
     }
 }
 
